@@ -21,63 +21,11 @@
 #' @export
 create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
                         include_land_query = TRUE, include_nonco2_query = TRUE) {
-  db_path <- file.path(base_path,'output')
   prj_dir <- file.path(base_path,'prj_files')
   if (!dir.exists(prj_dir)) dir.create(prj_dir, recursive = TRUE)
   query_path <- system.file("extdata", package = "gcamsdg")
   
-  ##############################################################################
-  ##############################################################################
-  # # 1. append all XML files into one
-  # 
-  # # read all available XMLs and remove special ones
-  # xml_files <- list.files(query_path, full.names = TRUE, pattern = "\\.xml$")
-  # xml_files <- xml_files[!basename(xml_files) %in% c("queries_all_sdg.xml", "queries_rfasst_nonCO2.xml")]
-  # 
-  # combined_xml <- xml2::xml_new_document()
-  # 
-  # # through each XML file, extract its root node and add it as a child to the combined XML document
-  # for (xml_file in xml_files) {
-  #   xml_data <- xml2::read_xml(xml_file)
-  #   root_node <- xml2::xml_root(xml_data)
-  #   xml2::xml_add_child(combined_xml, root_node)
-  # }
-  # 
-  # # extract the root node from the combined XML document
-  # root_node <- xml2::xml_root(combined_xml)
-  # 
-  # # find all query nodes in the combined XML document
-  # query_nodes <- xml2::xml_find_all(root_node, "//aQuery")
-  # 
-  # # remove duplicated queries based on some criteria (e.g., query title)
-  # unique_query_nodes <- unique(query_nodes)
-  # 
-  # # create a new XML document to hold the cleaned data
-  # cleaned_xml <- xml2::xml_new_document()
-  # cleaned_xml <- xml2::xml_add_child(cleaned_xml, "queries")
-  # 
-  # # add query nodes with unique titles to the cleaned XML document
-  # for (node in unique_query_nodes) {
-  #   xml2::xml_add_child(cleaned_xml, node)
-  # }
-  # 
-  # # save the combined XML document
-  # output_file <- file.path(query_path,"queries_all_sdg.xml")
-  # xml2::write_xml(cleaned_xml, output_file)
-  
-  
-  ##############################################################################
-  ##############################################################################
-  # 2. perform checks
-  
-  
-  # prj name checks and/or definition
-  if (!is.null(prj_name)) {
-    assertthat::assert_that(substr(prj_name, nchar(prj_name) - 3, nchar(prj_name)) == ".dat", msg = 'In `load_prj` function: The specified project name does not contain the extension (.dat)')
-  } else {
-    prj_name = paste0(db_name, '.dat')
-  }
-  
+
   # scenarios checks and/or definition
   conn <- rgcam::localDBConn(db_path, db_name)
   available_scen <- rgcam::listScenariosInDB(conn)$name
@@ -86,11 +34,6 @@ create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
   } else {
     desired_scen <- available_scen
   }
-  
-  
-  ##############################################################################
-  ##############################################################################
-  # 3. create project
   
   # create/load prj
   if (!file.exists(file.path(prj_dir,prj_name))) {
@@ -129,10 +72,24 @@ create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
     saveProject(prj, file = file.path(prj_dir,prj_name))
   }
   
-  print(rgcam::listQueries(prj))
-  print(rgcam::listScenarios(prj))
-  print(rgcam::listQueries(prj, anyscen = F))
 
+  # checkers  
+  missing_scens <- setdiff(desired_scen, rgcam::listScenarios(prj))
+  if (length(missing_scens) > 0) {
+    stop(sprintf(
+      "Scenario(s) missing from the project: %s", 
+      paste(sort(missing_scens), collapse = ", ")
+    ))
+  }
+
+  inconsistent_queries <- setdiff(rgcam::listQueries(prj, anyscen = FALSE),
+                                  c(rgcam::listQueries(prj, anyscen = TRUE),'food demand prices'))
+  if (length(inconsistent_queries) > 0) {
+    stop(sprintf(
+      "Inconsistent queries (not present in all scenarios): %s", 
+      paste(sort(inconsistent_queries), collapse = ", ")
+    ))
+  }
 }
 
 

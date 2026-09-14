@@ -1,5 +1,5 @@
 #' run
-#'
+#' 
 #' Single entry point to extract SDG indicators for a GCAM scenario set.
 #' Accepts one of three ways to get the underlying data: an already-loaded
 #' rgcam project (`prj`), one or more existing project files (`prj_name`,
@@ -30,10 +30,9 @@
 #' @param desired_scen scenarios to extract/consider, applied to every
 #'   database in `db_name`. NULL uses every scenario present.
 #' @param sdgs which indicators to compute: any of "population", "gdp",
-#'   "expenditure", "poverty", "health", "water", "land", or "all"
-#'   (default) for every one of them
-#' @param ssp SSP tag needed by the "expenditure" indicator (or "base" if
-#'   this project *is* the baseline)
+#'   "expenditure", "poverty", "health", "water", "land", or "all" (default)
+#' @param ssp SSP tag needed by the "expenditure" indicator to determine the 
+#'   "baseline" to compare with (or "base" if this project *is* the baseline)
 #' @param prj_base rgcam project holding the baseline (REF) scenario,
 #'   needed by the "expenditure" indicator. If not supplied and `base_scen`
 #'   is set, `run()` looks for `base_scen` among the already-resolved
@@ -43,7 +42,8 @@
 #'   pivoted wide) instead of raw per-scenario values
 #' @param base_scen name of the baseline scenario to diff every other
 #'   scenario against. Required when `show_diff = TRUE`.
-#' @param final_db_year last model year to consider
+#' @param final_db_year last model year to consider. Takes last available
+#'   year in the db by default
 #' @param saveOutput save each indicator's individual output to disk (under
 #'   `gcamsdg/output/<SDG>/`), same as the underlying `get_sdgX_*()` calls
 #' @param makeFigures generate and save a basic figure for each computed
@@ -69,7 +69,7 @@
 #'   the same project (requires the `gcamreport` package, `GCAM_version`,
 #'   and a single database/project - not combinable with a vector `db_name`)
 #' @param GCAM_version GCAM version tag (e.g. "v7.1"), required when
-#'   `run_gcamreport = TRUE`
+#'   `run_gcamreport = TRUE`. Check gcamreport::available_GCAM_versions()
 #' @param gcamreport_args additional named arguments passed through to
 #'   `gcamreport::generate_report()`
 #' @return a named list, one data frame per computed SDG indicator (using
@@ -116,22 +116,26 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     ))
   }
 
+  # ---- resolve which entries (project/database pairs) to process and perform internal checks ---- # TODO try again that the workflow works
   if (run_gcamreport && (length(db_name) > 1 || length(prj_name) > 1)) {
     stop("run_gcamreport = TRUE is only supported for a single database/project, not a vector of several.")
   }
 
   if (is.null(db_path) && !is.null(db_name)) db_path <- file.path(base_path, "output")
   prj_dir <- file.path(base_path, "prj_files")
+  
+  if (!is.null(prj_name)) prj_name <- ifelse(!endsWith(prj_name, ".dat"), paste0(prj_name, ".dat"), prj_name)
 
-  # ---- resolve which entries (project/database pairs) to process ----
   if (!is.null(prj)) {
-    if (length(db_name) > 1) {
+    if (length(db_name) >= 1 || length(db_path) >= 1) {
       stop("prj can't be combined with a vector db_name - pass either an existing project, or db_path/db_name (single or several).")
     }
     entries <- list(list(prj = prj, prj_name = if (is.null(prj_name)) "gcamsdg_project.dat" else prj_name[[1]], db_name = NULL))
   } else if (!is.null(db_name)) {
     prj_name_vec <- if (is.null(prj_name)) paste0(db_name, ".dat") else rep_len(prj_name, length(db_name))
-    entries <- Map(function(dbn, pjn) list(prj = NULL, prj_name = pjn, db_name = dbn), db_name, prj_name_vec)
+    entries <- list(prj = rep(list(NULL), length(db_name)),
+                    prj_name = prj_name_vec,
+                    db_name = db_name)
   } else if (!is.null(prj_name)) {
     entries <- lapply(prj_name, function(pjn) list(prj = NULL, prj_name = pjn, db_name = NULL))
   } else {
@@ -140,10 +144,10 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   }
 
   loaded <- lapply(entries, function(e) {
-    if (!is.null(e$prj)) {
+    if (!sapply(e$prj, is.null)) {
       list(prj = e$prj, prj_name = e$prj_name)
-    } else if (!is.null(e$db_name)) {
-      create_prj(db_name = e$db_name, base_path = base_path, desired_scen = desired_scen,
+    } else if (!sapply(e$db_name, is.null)) {
+      create_prj(db_name = e$db_name, base_path = db_path, desired_scen = desired_scen,
                  prj_name = e$prj_name,
                  include_land_query = "land" %in% sdgs,
                  include_nonco2_query = "health" %in% sdgs)
@@ -154,6 +158,19 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       stop("Project file not found and no database given to extract it from: ", e$prj_name)
     }
   })
+  
+  prj <<- prj
+  
+  # check final db year
+  final_available_year <- max(
+    rgcam::getQuery(prj, 'population by region')[['year']]) # TODO check this query is ok to stablish the max available year
+  if (!is.null(final_db_year)) {
+    final_db_year <<- min(final_db_year, final_available_year)
+  } else {
+    final_db_year <<- final_available_year
+  }
+  available_years <<- c(1990, seq(2005, final_db_year, 5))
+  
 
   # ---- auto-detect prj_base for "expenditure" from base_scen, if not supplied ----
   if ("expenditure" %in% sdgs && is.null(prj_base) && !is.null(base_scen)) {
