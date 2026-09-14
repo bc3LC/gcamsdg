@@ -23,5 +23,5 @@ get_sdg1_gdp <- function(prj, prj_name, saveOutput = T, makeFigures = F){
                             file = file.path('output/SDG1-GDP/indiv_results',paste0('SDG1_gdppc_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
   
-  return(gdppc)
+  return(invisible(gdppc))
 } 

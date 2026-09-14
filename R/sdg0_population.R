@@ -23,5 +23,5 @@ get_sdg0_pop <- function(prj, prj_name, saveOutput = T, makeFigures = F){
                             file = file.path('output/SDG0-POP/indiv_results',paste0('SDG0_pop_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
   
-  return(pop)
+  return(invisible(pop))
 } 

@@ -114,5 +114,5 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
                             file = file.path('output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGlobal_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
 
-  return(food_basket_bill_percent_GDP_global)
+  return(invisible(food_basket_bill_percent_GDP_global))
 }
