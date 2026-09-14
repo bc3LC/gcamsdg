@@ -67,7 +67,7 @@ create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
     prj <- rgcam::mergeProjects(prj_name, list(prj, prj_tmp), clobber = FALSE, saveProj = FALSE)
   }
 
-  if (!is.null(prj_tmp)) {
+  if (!is.null(prj)) {
     print('save prj')
     saveProject(prj, file = file.path(prj_dir,prj_name))
   }
