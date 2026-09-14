@@ -225,7 +225,12 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     )
   }
   if ("health" %in% sdgs) {
-    result$health <- compute_across(function(p, n) get_sdg3_health(p, n, saveOutput = saveOutput, makeFigures = makeFigures, final_db_year = final_db_year))
+    result$health <- mapply(
+      FUN = function(p, n) get_sdg3_health(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
+      p = list(prj),
+      n = list(e$prj_name),
+      SIMPLIFY = FALSE
+    )
   }
   if ("water" %in% sdgs) {
     result$water <- mapply(
