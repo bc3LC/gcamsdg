@@ -1,10 +1,18 @@
+# R artifacts
 .Rproj.user
 .Rhistory
 .RData
-.Ruserdata
-output/*
-/data_PSL
-prj_files/
 *.Rcheck/
+.Ruserdata
+
+# big files
 *.tar.gz
+
+# debugging scripts
 debug.R
+*copy*
+
+# storing artifacts
+output/*
+prj_files/
+*data_PSL/
