@@ -197,8 +197,6 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     )
   }
   if ("gdp" %in% sdgs) {
-    result$gdp <- compute_across(function(p, n) get_sdg1_gdp(p, n, saveOutput = saveOutput, makeFigures = makeFigures))
-  }
   if ("expenditure" %in% sdgs) {
     if (is.null(prj_base)) {
       if (sdgs_is_all) {
@@ -211,6 +209,12 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
         get_sdg1_expenditure(p, n, ssp = ssp, prj_base = prj_base, final_db_year = final_db_year,
                               saveOutput = saveOutput, makeFigures = makeFigures))
     }
+    result$gdp <- mapply(
+      FUN = function(p, n) get_sdg1_gdp(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
+      p = list(prj),
+      n = list(e$prj_name),
+      SIMPLIFY = FALSE
+    )
   }
   if ("poverty" %in% sdgs) {
     result$poverty <- compute_across(function(p, n) get_sdg2_food_basket_bill(p, n, saveOutput = saveOutput, makeFigures = makeFigures))

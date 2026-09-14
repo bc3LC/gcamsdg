@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 #' get_sdg1_gdp
 #'
 #' Extract GDP per capita (PPP) by region, used as the SDG 1 (Poverty) economy
@@ -16,16 +13,14 @@ get_sdg1_gdp <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   print('computing sdg1 - GDP...')
   
   # Create the directories if they do not exist:
-  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
-  if (!dir.exists("gcamsdg/output/SDG1-GDP")) dir.create("gcamsdg/output/SDG1-GDP")
-  if (!dir.exists("gcamsdg/output/SDG1-GDP/indiv_results")) dir.create("gcamsdg/output/SDG1-GDP/indiv_results")
-  if (!dir.exists("gcamsdg/output/SDG1-GDP/figures")) dir.create("gcamsdg/output/SDG1-GDP/figures")
+  if (!dir.exists("output/SDG1-GDP/indiv_results")) dir.create("output/SDG1-GDP/indiv_results", recursive = T)
+  if (!dir.exists("output/SDG1-GDP/figures")) dir.create("output/SDG1-GDP/figures", recursive = T)
   
   # Perform computations
   gdppc <- rgcam::getQuery(prj, "GDP per capita PPP by region")
   
   if (saveOutput) write.csv(gdppc, 
-                            file = file.path('gcamsdg/output/SDG1-GDP/indiv_results',paste0('SDG1_gdppc_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG1-GDP/indiv_results',paste0('SDG1_gdppc_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
   
   return(gdppc)
