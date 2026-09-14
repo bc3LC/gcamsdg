@@ -228,7 +228,12 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     result$health <- compute_across(function(p, n) get_sdg3_health(p, n, saveOutput = saveOutput, makeFigures = makeFigures, final_db_year = final_db_year))
   }
   if ("water" %in% sdgs) {
-    result$water <- compute_across(function(p, n) get_sdg6_water_scarcity(p, n, saveOutput = saveOutput, makeFigures = makeFigures))
+    result$water <- mapply(
+      FUN = function(p, n) get_sdg6_water_scarcity(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
+      p = list(prj),
+      n = list(e$prj_name),
+      SIMPLIFY = FALSE
+    )
   }
   if ("land" %in% sdgs) {
     result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,

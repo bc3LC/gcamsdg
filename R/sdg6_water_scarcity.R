@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 #' get_sdg6_water_scarcity
 #'
 #' Compute SDG 6 (Clean Water and Sanitation) as the physical water scarcity
@@ -17,76 +14,68 @@ get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures =
   print('computing sdg6 - water scarcity ...')
 
   # Create the directories if they do not exist:
-  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
-  if (!dir.exists("gcamsdg/output/SDG6-Water")) dir.create("gcamsdg/output/SDG6-Water")
-  if (!dir.exists("gcamsdg/output/SDG6-Water/indiv_results")) dir.create("gcamsdg/output/SDG6-Water/indiv_results")
-  if (!dir.exists("gcamsdg/output/SDG6-Water/figures")) dir.create("gcamsdg/output/SDG6-Water/figures")
+  if (!dir.exists("output/SDG6-Water/indiv_results")) dir.create("output/SDG6-Water/indiv_results", recursive = T)
+  if (!dir.exists("output/SDG6-Water/figures")) dir.create("output/SDG6-Water/figures", recursive = T)
 
   # Get Water Supply Data
   water_supply = rgcam::getQuery(prj, "Basin level available runoff") %>%
-      select(-region) %>%
-      filter(year < 2055) %>%
-      bind_rows(
+    dplyr::select(-region) %>%
+    dplyr::filter(year < 2055) %>%
+    dplyr::bind_rows(
         rgcam::getQuery(prj, "resource supply curves") %>%
-          filter(stringr::str_detect(subresource, "groundwater")) %>%
-          mutate(subresource = "groundwater") %>%
-          group_by(scenario, year, resource, subresource, Units) %>%
-          summarize(value = sum(value)) %>%
-          ungroup() %>%
-          rename(basin = resource)) %>%
-      rename(value_sup = value)
+          dplyr::filter(stringr::str_detect(subresource, "groundwater")) %>%
+          dplyr::mutate(subresource = "groundwater") %>%
+          dplyr::group_by(scenario, year, resource, subresource, Units) %>%
+          dplyr::summarize(value = sum(value)) %>%
+          dplyr::ungroup() %>%
+          dplyr::rename(basin = resource)) %>%
+    dplyr::rename(value_sup = value)
 
   # Get Water Withdrawal Data
   water_withdrawal = rgcam::getQuery(prj, "Water Withdrawals by Basin (Runoff)") %>%
-    select(-region) %>%
-    rename(basin = "runoff water") %>%
-    filter(year < 2055) %>%
-    bind_rows(
+    dplyr::select(-region) %>%
+    dplyr::rename(basin = "runoff water") %>%
+    dplyr::filter(year < 2055) %>%
+    dplyr::bind_rows(
       rgcam::getQuery(prj, "Water Withdrawals by Basin (Groundwater)") %>%
-        filter(stringr::str_detect(subresource, "groundwater")) %>%
-        mutate(subresource = "groundwater") %>%
-        group_by(scenario, year, groundwater, subresource, Units) %>%
-        summarize(value = sum(value)) %>%
-        ungroup() %>%
-        rename(basin = groundwater)) %>%
-    rename(value_wd = value)
+        dplyr::filter(stringr::str_detect(subresource, "groundwater")) %>%
+        dplyr::mutate(subresource = "groundwater") %>%
+        dplyr::group_by(scenario, year, groundwater, subresource, Units) %>%
+        dplyr::summarize(value = sum(value)) %>%
+        dplyr::ungroup() %>%
+        dplyr::rename(basin = groundwater)) %>%
+    dplyr::rename(value_wd = value)
 
   # Extract values of baseline 
-  water_withdrawal_2015 = water_withdrawal %>% filter(year == 2015) %>% rename(value_wd_2015 = value_wd)
-  water_supply_2015 = water_supply %>% filter(year == 2015) %>% rename(value_sup_2015 = value_sup)
+  water_withdrawal_2015 = water_withdrawal %>% dplyr::filter(year == 2015) %>% dplyr::rename(value_wd_2015 = value_wd)
+  water_supply_2015 = water_supply %>% dplyr::filter(year == 2015) %>% dplyr::rename(value_sup_2015 = value_sup)
   
   # Compute the Weighted Water Scarcity Index (Weighted per Basin both by Supply & by Withdrawal)
   water_scarcity_index = water_supply %>%
-    left_join(water_withdrawal) %>%
-    mutate(index = value_wd / value_sup) 
+    dplyr::left_join(water_withdrawal) %>%
+    dplyr::mutate(index = value_wd / value_sup) 
   water_scarcity_index = merge(water_scarcity_index, water_withdrawal_2015, by = c("basin", "scenario", "subresource"))
   water_scarcity_index = merge(water_scarcity_index, water_supply_2015, by = c("basin", "scenario", "subresource"))
   water_scarcity_index = water_scarcity_index %>% 
-    # group_by(scenario, basin, subresource, year) %>% 
-    # summarize(value_sup = mean(value_sup),
-    #           value_wd = mean(value_wd),
-    #           index = mean(index)) %>% 
-    # ungroup() %>% 
-  # %>% filter(!index > 1)
-    mutate(weighted_sup = index * value_sup_2015,
+    dplyr::mutate(weighted_sup = index * value_sup_2015,
            weighted_wd = index * value_wd_2015) %>%
-    select(-year, -year.y) %>% 
-    rename(year = year.x) %>% 
-    group_by(scenario, year, resource = if_else(subresource == "runoff", "runoff", "groundwater")) %>%
-    summarize(index_sup = sum(weighted_sup) / sum(value_sup_2015),
-              index_wd = sum(weighted_wd) / sum(value_wd_2015)) %>%
-    ungroup() 
+    dplyr::select(-year, -year.y) %>% 
+    dplyr::rename(year = year.x) %>% 
+    dplyr::group_by(scenario, year, resource = dplyr::if_else(subresource == "runoff", "runoff", "groundwater")) %>%
+    dplyr::summarize(index_sup = sum(weighted_sup) / sum(value_sup_2015),
+                     index_wd = sum(weighted_wd) / sum(value_wd_2015)) %>%
+    dplyr::ungroup() 
 
     # Filter out groundwater and index weighted by water supply
   water_scarcity_index_runoff_wd = water_scarcity_index %>%
-    select(-index_sup) %>%
-    filter(resource == "runoff")
+    dplyr::select(-index_sup) %>%
+    dplyr::filter(resource == "runoff")
 
   if (saveOutput) write.csv(water_scarcity_index, 
-                            file = file.path('gcamsdg/output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndex_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndex_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
   if (saveOutput) write.csv(water_scarcity_index_runoff_wd, 
-                            file = file.path('gcamsdg/output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndexRunOff_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndexRunOff_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
 
   if (makeFigures) {
@@ -105,7 +94,7 @@ get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures =
             legend.title = ggplot2::element_text(size = 40),
             title = ggplot2::element_text(size = 40))
     # print(pl_water_scarcity_index_sup)
-    ggplot2::ggsave(pl_water_scarcity_index_sup, file = file.path('gcamsdg/output/SDG6-Water/figures', paste0('sdg6_water_scarcity_index_sup.png')),
+    ggplot2::ggsave(pl_water_scarcity_index_sup, file = file.path('output/SDG6-Water/figures', paste0('sdg6_water_scarcity_index_sup.png')),
            width = 1000, height = 1000, units = 'mm', limitsize = FALSE)
 
     pl_water_scarcity_index_wd = ggplot2::ggplot(data = water_scarcity_index) +
@@ -123,11 +112,11 @@ get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures =
             legend.title = ggplot2::element_text(size = 40),
             title = ggplot2::element_text(size = 40))
     # print(pl_water_scarcity_index_wd)
-    ggplot2::ggsave(pl_water_scarcity_index_wd, file = file.path('gcamsdg/output/SDG6-Water/figures', paste0('sdg6_water_scarcity_index_wd.png')),
+    ggplot2::ggsave(pl_water_scarcity_index_wd, file = file.path('output/SDG6-Water/figures', paste0('sdg6_water_scarcity_index_wd.png')),
            width = 1000, height = 1000, units = 'mm', limitsize = FALSE)
   }
 
-  return(water_scarcity_index)
+  return(invisible(water_scarcity_index))
 
-  }
+}
 
