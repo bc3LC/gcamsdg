@@ -189,7 +189,12 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   result <- list()
 
   if ("population" %in% sdgs) {
-    result$population <- compute_across(function(p, n) get_sdg0_pop(p, n, saveOutput = saveOutput, makeFigures = makeFigures))
+    result$population <- mapply(
+      FUN = function(p, n) get_sdg0_pop(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
+      p = list(prj),
+      n = list(e$prj_name),
+      SIMPLIFY = FALSE
+    )
   }
   if ("gdp" %in% sdgs) {
     result$gdp <- compute_across(function(p, n) get_sdg1_gdp(p, n, saveOutput = saveOutput, makeFigures = makeFigures))

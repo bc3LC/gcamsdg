@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 #' get_sdg0_pop
 #'
 #' Extract population by region, used as the population base for the other
@@ -16,16 +13,14 @@ get_sdg0_pop <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   print('computing sdg0 - POP...')
   
   # Create the directories if they do not exist:
-  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
-  if (!dir.exists("gcamsdg/output/SDG0-POP")) dir.create("gcamsdg/output/SDG0-POP")
-  if (!dir.exists("gcamsdg/output/SDG0-POP/indiv_results")) dir.create("gcamsdg/output/SDG0-POP/indiv_results")
-  if (!dir.exists("gcamsdg/output/SDG0-POP/figures")) dir.create("gcamsdg/output/SDG0-POP/figures")
+  if (!dir.exists("output/SDG0-POP/indiv_results")) dir.create("output/SDG0-POP/indiv_results", recursive = T)
+  if (!dir.exists("output/SDG0-POP/figures")) dir.create("output/SDG0-POP/figures", recursive = T)
   
   # Perform computations
   pop <- rgcam::getQuery(prj, "population by region")
   
   if (saveOutput) write.csv(pop, 
-                            file = file.path('gcamsdg/output/SDG0-POP/indiv_results',paste0('SDG0_pop_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG0-POP/indiv_results',paste0('SDG0_pop_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
   
   return(pop)
