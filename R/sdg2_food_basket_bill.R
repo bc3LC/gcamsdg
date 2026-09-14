@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 #' get_sdg2_food_basket_bill
 #'
 #' Compute SDG 2 (Zero Hunger) as the per-capita food basket bill, expressed
@@ -16,24 +13,22 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
   print('computing sdg2 - food basket bill...')
 
   # Create the directories if they do not exist:
-  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
-  if (!dir.exists("gcamsdg/output/SDG2-Poverty")) dir.create("gcamsdg/output/SDG2-Poverty")
-  if (!dir.exists("gcamsdg/output/SDG2-Poverty/indiv_results")) dir.create("gcamsdg/output/SDG2-Poverty/indiv_results")
-  if (!dir.exists("gcamsdg/output/SDG2-Poverty/figures")) dir.create("gcamsdg/output/SDG2-Poverty/figures")
+  if (!dir.exists("output/SDG2-Poverty/indiv_results")) dir.create("output/SDG2-Poverty/indiv_results", recursive = T)
+  if (!dir.exists("output/SDG2-Poverty/figures")) dir.create("output/SDG2-Poverty/figures", recursive = T)
 
   # Perform computations
-  food_subsector <- read.csv(system.file("extdata", "food_subsector.csv", package = "gcamsdg"))
+  food_subsector <- get('food_subsector', envir = asNamespace("gcamsdg"))
 
-  food_basket_bill_regional <- rgcam::getQuery(prj, "food consumption by type (specific)") %>%
-    dplyr::group_by(Units, region, scenario, subsector...4, subsector...5, technology, year) %>%
+  food_basket_bill_regional <- rbind(
+    rgcam::getQuery(prj, "food consumption by type (specific)"),
+    rgcam::getQuery(prj, "food consumption by type (specific) v2")) %>%
+    dplyr::distinct() %>% 
+    dplyr::group_by(Units, region, scenario, technology, year) %>%
     dplyr::summarise(value = sum(value)) %>%
     dplyr::ungroup() %>%
-    dplyr::rename(nestingSector1 = subsector...4) %>%
-    tidyr::separate(nestingSector1, into = c("nestingSector1", "rest"), sep = ",", extra = "merge") %>% dplyr::select(-rest) %>%
-    dplyr::rename(nestingSector2 = subsector...5) %>%
-    tidyr::separate(nestingSector2, into = c("nestingSector2", "rest"), sep = ",", extra = "merge") %>% dplyr::select(-rest) %>%
     dplyr::left_join(food_subsector %>%
-                       dplyr::rename('technology' = 'subsector')) %>%
+                       dplyr::rename('technology' = 'subsector'),
+                     relationship = "many-to-many") %>%
     # Pcal to kcal/capita/day
     dplyr::left_join(rgcam::getQuery(prj, "population by region") %>%
                        dplyr::mutate(value = value * 1000) %>% # Convert from thous ppl to total ppl
@@ -46,18 +41,32 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     # total staples and nonstaples kcal consumption
     dplyr::group_by(Units,region,scenario,year,supplysector) %>%
     dplyr::summarise(consumption = sum(value)) %>%
+    dplyr::ungroup() %>% 
+    dplyr::filter(year %in% available_years) %>%
     # compute the expenditure by supplysector
-    dplyr::left_join(rgcam::getQuery(prj, "food demand prices by income group") %>%
-                       dplyr::group_by(Units, region, scenario, input, year) %>%
-                       dplyr::summarise(value = sum(value)) %>%
-                       dplyr::ungroup() %>%
-                       dplyr::mutate(price = value / 1e3, # Mcal to kcal
-                                     units_price = '2005$/kcal/day') %>%
-                       dplyr::select(-c(Units,value)) %>%
-                       dplyr::rename('supplysector' = 'input'),
-                     by = c('region','year','supplysector','scenario')) %>%
+    dplyr::left_join(
+      rgcam::getQuery(prj, "food demand prices v2") %>% 
+        dplyr::mutate(value = value / 0.923287) %>% 
+        dplyr::mutate(Units = "2005$/Mcal/day") %>%
+        dplyr::filter(year %in% available_years) %>% 
+        # add food_weights to estimate Staples & NonStaples price
+       left_join_strict(.get_food_weights() %>%
+                          tidyr::complete(tidyr::nesting(scenario, region, supplysector, supplysector_disaggregated),
+                                          year = unique(year),
+                                          fill = list(weight = 0)) %>%
+                          dplyr::filter(year %in% available_years) %>% 
+                          dplyr::rename(sector = supplysector_disaggregated) %>% 
+                          dplyr::mutate(supplysector = stringr::str_remove(supplysector, '_block')),
+                        by = c('scenario','region','sector','year')) %>%
+        # compute weighted price by supplysector & Mcal to kcal
+        dplyr::mutate(value = value * weight / 1e3) %>%
+        dplyr::group_by(scenario,region,year,supplysector) %>%
+        dplyr::summarise(price = sum(value)) %>%
+        dplyr::ungroup(),
+      by = c('region','year','supplysector','scenario')) %>% 
+    # compute expenditure by supplysector
     dplyr::mutate(expenditure = consumption * price,
-                  units_expenditure = '2005$/capita/day') %>%
+                  units_expenditure = '2005$/capita/day') %>% 
     # total expenditure (staples + nonstaples)
     dplyr::group_by(units_expenditure,region,scenario,year) %>%
     dplyr::summarise(expenditure = sum(expenditure)) %>%
@@ -79,7 +88,7 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     mutate(units = 'percentage')
 
   if (saveOutput) write.csv(food_basket_bill_percent_GDP, 
-                            file = file.path('gcamsdg/output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGDP_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGDP_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                             row.names = F)
 
   # compute GLOBAL food basket expenditure
@@ -102,7 +111,7 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     ungroup()
 
   if (saveOutput) write.csv(food_basket_bill_percent_GDP_global, 
-                            file = file.path('gcamsdg/output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGlobal_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGlobal_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
                             row.names = F)
 
   return(food_basket_bill_percent_GDP_global)
