@@ -1,3 +1,109 @@
+#' .data_query
+#'
+#' Retrieves non-CO2 emissions data based on large queries.
+#' This function allows you to specify and fetch non-CO2 emissions data from a GCAM project or database.
+#' Source: adapted from gcamreport
+#'
+#' @param db_path Path to the GCAM database. Required for accessing the database.
+#' @param db_name Name of the GCAM database. Required for identifying the database.
+#' @param prj_name Name of the GCAM project. Can be an existing project or a new one. Accepts extensions such as .dat and .proj.
+#' @param scenarios Names of the scenarios to consider. Defaults to all scenarios available in the project or database.
+#' @param type Type of non-CO2 emissions query. Must be one of 'nonCO2 emissions by region' or 'nonCO2 emissions by subsector'.
+#' @param desired_regions Regions to include in the report. Defaults to 'All'. Specify a vector for specific regions. To view available options, run `available_regions()`. Note: The dataset will include only the specified regions, which will make up "World".
+#' @param GCAM_version Name of the GCAM compatible version. Run `available_GCAM_versions()` to see the list of supported options.
+#' @param queries_nonCO2_file Full path to an XML query file (including file name and extension) for long non-CO2 queries: "nonCO2 emissions by sector (excluding resource production)" and "nonCO2 emissions by region". Defaults to the nonCO2 query file compatible with the specified `GCAM_version`.
+#'
+#' @return A dataframe containing the data retrieved from the specified non-CO2 emissions query.
+.data_query <- function(type, db_path, db_name, prj_name, scenarios,
+                        desired_regions = "All", #GCAM_version = 'v8.2',
+                        queries_nonCO2_file = NULL) {
+  if (identical(desired_regions, "All")) {
+    desired_regions <- NULL
+  }
+  
+  dt <- data.frame()
+  full_nonCO2_emissions_list = c('BC','BC_AWB','C2F6','CF4','CH4','CH4_AGR','CH4_AWB','CO','CO_AWB','H2',
+                                 'H2_AWB','HFC125','HFC134a','HFC143a','HFC152a','HFC227ea','HFC23','HFC236fa',
+                                 'HFC245fa','HFC32','HFC365mfc','HFC43','N2O','N2O_AGR','N2O_AWB','NH3','NH3_AGR',
+                                 'NH3_AWB','NMVOC','NMVOC_AGR','NMVOC_AWB','NOx','NOx_AGR','NOx_AWB','OC','OC_AWB',
+                                 'PM10','PM2.5','SF6','SO2_1','SO2_1_AWB','SO2_2','SO2_2_AWB','SO2_3','SO2_3_AWB',
+                                 'SO2_4','SO2_4_AWB')
+  
+  
+  if(is.null(queries_nonCO2_file)) {
+    # xml <- transform_to_xml(get(paste('queries_nonCO2',GCAM_version,sep='_'), envir = asNamespace("gcamsdg")))
+    xml <- .transform_to_xml(get('queries_nonCO2', envir = asNamespace("gcamsdg")))
+  } else if (is.list(queries_nonCO2_file)) {
+    xml <- .transform_to_xml(queries_nonCO2_file)
+  } else {
+    xml <- xml2::read_xml(queries_nonCO2_file)
+  }
+  qq <- xml2::xml_find_first(xml, paste0("//*[@title='", type, "']"))
+  
+  for (sc in scenarios) {
+    # emiss_list <- get(paste('nonco2_emissions_list',GCAM_version,sep='_'), envir = asNamespace("gcamreport"))
+    emiss_list <- full_nonCO2_emissions_list
+    while (length(emiss_list) > 0) {
+      current_emis <- emiss_list[1:min(21, length(emiss_list))]
+      qq_sec <- gsub("current_emis", paste0("(@name = '", paste(current_emis, collapse = "' or @name = '"), "')"), qq)
+      
+      prj_tmp <- rgcam::addSingleQuery(
+        conn = rgcam::localDBConn(db_path,
+                                  db_name,
+                                  migabble = FALSE
+        ),
+        proj = prj_name,
+        qn = type,
+        query = qq_sec,
+        scenario = sc,
+        regions = desired_regions,
+        clobber = TRUE,
+        transformations = NULL,
+        saveProj = FALSE,
+        warn.empty = FALSE
+      )
+      
+      tmp <- data.frame(prj_tmp[[sc]][type])
+      if (nrow(tmp) > 0) {
+        dt <- dplyr::bind_rows(dt, tmp)
+      }
+      rm(prj_tmp)
+      
+      if (length(emiss_list) > 21) {
+        emiss_list <- emiss_list[(21 + 1):length(emiss_list)]
+      } else {
+        emiss_list <- c()
+      }
+    }
+  }
+  # Rename columns
+  new_colnames <- sub(".*\\.(.*)", "\\1", names(dt))
+  names(dt) <- new_colnames
+  
+  return(dt)
+}
+
+
+
+#' .transform_to_xml
+#'
+#' Converts a list of parsed queries into an XML document.
+#' Source: adapted from gcamreport
+#'
+#' @param parsed_queries_list List of parsed queries.
+#' @return XML document generated from the provided queries list.
+#' @keywords internal
+.transform_to_xml <- function(parsed_queries_list) {
+  queries <- lapply(parsed_queries_list, function(query) {
+    query_title <- query$title
+    query_xml <- paste("<aQuery>\n  <all-regions/>\n", query$query, "</aQuery>\n", sep = "")
+    return(query_xml)
+  })
+  xml_string <- paste("<queries>", paste(queries, collapse = ""), "</queries>", sep = "")
+  xml_doc <- xml2::read_xml(xml_string)
+  return(xml_doc)
+}
+
 
 #' .left_join_strict
 #'

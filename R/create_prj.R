@@ -4,11 +4,15 @@
 #' create_prj
 #'
 #' Function to create a GCAM project provided a database and a queries file
-#' @param db_name name of the database. It will The extension will be automatically added if not present
-#' @param base_path run directory containing the `output/` (GCAM databases)
-#'   and `prj_files/` folders (defaults to the BC3 cluster path in run())
-#' @param desired_scen desired scenarios. If NULL, all the scenarios present in the database will be considered
-#' @param prj_name name of the project. If NULL, it will be the defult option, i.e., the database name. Otherwise specify
+#' @param db_name name of the database. It will The extension will be automatically 
+#'  added if not present
+#' @param db_path run directory containing the GCAM database
+#' @param prj_name name of the project. If NULL, it will be the default option, 
+#'  i.e., the database name. Otherwise specify
+#' @param desired_scen desired scenarios. If NULL, all the scenarios present in 
+#'  the database will be considered
+#' @param required_queries required queries to be loaded in the project. If 'All'
+#'  (default), all the necessary queries to compute the required SDGs will be considered
 #' @param include_land_query whether to merge in the "detailed land allocation"
 #'   query (needed for the SDG15 land indicator). Default TRUE; run() sets
 #'   this to FALSE when SDG15 isn't among the requested indicators, to avoid
@@ -19,60 +23,134 @@
 #'   this query is chunked and comparatively slow to extract.
 #' @return create the specified project
 #' @export
-create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
-                        include_land_query = TRUE, include_nonco2_query = TRUE) {
-  prj_dir <- file.path(base_path,'prj_files')
-  if (!dir.exists(prj_dir)) dir.create(prj_dir, recursive = TRUE)
-  query_path <- system.file("extdata", package = "gcamsdg")
+create_prj <- function(db_name, db_path, prj_name = NULL,
+                       desired_scen = NULL, required_queries = 'All',
+                       include_land_query = TRUE, include_nonco2_query = TRUE) {
   
-
+  prj_dir <- file.path('output/prj_files')
+  if (!dir.exists(prj_dir)) dir.create(prj_dir, recursive = TRUE)
+  query_file <- get('query_file', envir = asNamespace("gcamsdg"))
+  
+  
+  # select only the required and not-already-loaded queries
+  if (exists("prj") || required_queries != "All") {
+    loaded_queries <- if (exists("prj")) rgcam::listQueries(prj) else NULL
+    
+    queries_touse <- setdiff(names(query_file),loaded_queries)
+    
+    # in case the only missing queries are the "income group" queries, discard them
+    if (length(queries_touse) > 0 && all(grepl("by income group", queries_touse))) {
+      queries_touse <- character(0)
+    }
+  } else {
+    queries_touse <- names(query_file)
+  }
+  
+  
   # scenarios checks and/or definition
   conn <- rgcam::localDBConn(db_path, db_name)
-  available_scen <- rgcam::listScenariosInDB(conn)$name
+  
+  available_scenarios <- rgcam::listScenariosInDB(conn) %>%
+    dplyr::pull(name)
   if (!is.null(desired_scen)) {
     assertthat::assert_that(all(desired_scen %in% available_scen))
   } else {
     desired_scen <- available_scen
   }
   
-  # create/load prj
-  if (!file.exists(file.path(prj_dir,prj_name))) {
-    print('create prj')
-    prj <- rgcam::addScenario(conn, prj_name, desired_scen,
-                              file.path(query_path, 'queries_all_sdg.xml'),
-                              clobber = FALSE, saveProj = FALSE)
-  } else {
-    print('load prj')
-    prj <- rgcam::loadProject(file.path(prj_dir,prj_name))
+  # create prj
+  for (sc in desired_scen) {
+    rlang::inform(paste("Start reading queries for", sc, "scenario"))
+    
+    for (qn in queries_touse) {
+      rlang::inform(paste("Read", qn, "query"))
+      
+      bq <- queries_touse_short[[qn]]
+      
+      # read data
+      table <- suppressMessages({
+        rgcam::runQuery(conn, bq$query, sc, bq$regions, warn.empty = FALSE)
+      })
+      
+      if (nrow(table) > 0) {
+        prj_tmp <- rgcam::addQueryTable(
+          project = prj_name, qdata = table,
+          queryname = qn, clobber = FALSE,
+          saveProj = FALSE, show_col_types = FALSE
+        )
+        if (exists("prj_sdg")) {
+          prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), 
+                                          clobber = FALSE, saveProj = FALSE)
+        } else {
+          prj_sdg <- prj_tmp
+        }
+        rm(prj_tmp)
+      } else {
+        warning(paste(qn, "query is empty!"))
+      }
+    }
   }
-
-  # add detailed land query if necessary
-  prj_tmp = NULL
-  if (include_land_query && !'detailed land allocation' %in% rgcam::listQueries(prj, anyscen = F)) {
-    print('add detailed land query')
-    prj_tmp <- rgcam::addScenario(conn, prj_name, desired_scen,
-                                  file.path(query_path, 'queries_detailed_land.xml'),
-                                  clobber = FALSE, saveProj = FALSE)
-    prj <- rgcam::mergeProjects(prj_name, list(prj, prj_tmp), clobber = FALSE, saveProj = FALSE)
-  }
-
-  # add 'nonCO2' large query
-  if (include_nonco2_query && !"nonCO2 emissions by sector (excluding resource production)" %in% rgcam::listQueries(prj)) {
-    print('nonCO2 emissions by sector ----------------------')
-    dt_sec <- data_query("nonCO2 emissions by sector (excluding resource production)", db_path, db_name, prj_name, desired_scen)
-    prj_tmp <- rgcam::addQueryTable(
-      project = prj_name, qdata = dt_sec, saveProj = FALSE,
-      queryname = "nonCO2 emissions by sector (excluding resource production)", clobber = FALSE
-    )
-    prj <- rgcam::mergeProjects(prj_name, list(prj, prj_tmp), clobber = FALSE, saveProj = FALSE)
-  }
-
-  if (!is.null(prj)) {
-    print('save prj')
-    saveProject(prj, file = file.path(prj_dir,prj_name))
+  if (!exists("prj_sdg")) {
+    prj_sdg <- NULL
   }
   
-
+  
+  # add detailed land query if necessary
+  if (include_land_query && 
+      (!'detailed land allocation' %in% rgcam::listQueries(prj_sdg, anyscen = F) ||
+       !'detailed land allocation' %in% rgcam::listQueries(prj, anyscen = F))) {
+    print('add detailed land query')
+    if (exists("prj_tmp")) rm(prj_tmp)
+    
+    query_land <- get('query_land', envir = asNamespace("gcamsdg"))[[1]]
+    dt_sec <- suppressMessages({
+      rgcam::runQuery(conn, query_land$query, desired_scen, NULL, warn.empty = FALSE)
+    })
+    prj_tmp <- rgcam::addQueryTable(
+      project = prj_name, qdata = dt_sec, saveProj = FALSE,
+      queryname = "detailed land query", clobber = FALSE
+    )
+    if (!is.null(prj_sdg)) {
+      prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), clobber = FALSE, saveProj = FALSE)
+    } else {
+      prj_sdg <- prj_tmp
+    }
+  }
+  
+  # add 'nonCO2' large query
+  qn = "nonCO2 emissions by sector (excluding resource production)"
+  if (include_nonco2_query && 
+      (!qn %in% rgcam::listQueries(prj_sdg, anyscen = F) ||
+       !qn %in% rgcam::listQueries(prj, anyscen = F))) {
+    print('add nonCO2 emissions by sector')
+    if (exists("prj_tmp")) rm(prj_tmp)
+    
+    query_nonCO2 <- get('query_nonCO2', envir = asNamespace("gcamsdg")) #setNames(list(get('query_nonCO2', envir = asNamespace("gcamsdg")))[[1]], qn)
+    dt_sec <- .data_query(qn, db_path, db_name, prj_name, desired_scen, NULL, queries_nonCO2_file = query_nonCO2)
+    prj_tmp <- rgcam::addQueryTable(
+      project = prj_name, qdata = dt_sec, saveProj = FALSE,
+      queryname = qn, clobber = FALSE
+    )
+    if (!is.null(prj_sdg)) {
+      prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), clobber = FALSE, saveProj = FALSE)
+    } else {
+      prj_sdg <- prj_tmp
+    }
+  }
+  
+  
+  if (exists("prj") && exists("prj_sdg") && !is.null(prj_sdg)) {
+    prj <- rgcam::mergeProjects(prj_name, list(prj, prj_sdg), clobber = FALSE, saveProj = FALSE)
+  }
+  
+  
+  if (!is.null(prj)) {
+    print('save prj')
+    rgcam::saveProject(prj, file = file.path(prj_dir,prj_name))
+    print(paste0('Project saved at ',file.path(prj_dir,prj_name)))
+  }
+  
+  
   # checkers  
   missing_scens <- setdiff(desired_scen, rgcam::listScenarios(prj))
   if (length(missing_scens) > 0) {
@@ -81,7 +159,7 @@ create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
       paste(sort(missing_scens), collapse = ", ")
     ))
   }
-
+  
   inconsistent_queries <- setdiff(rgcam::listQueries(prj, anyscen = FALSE),
                                   c(rgcam::listQueries(prj, anyscen = TRUE),'food demand prices'))
   if (length(inconsistent_queries) > 0) {
@@ -91,6 +169,8 @@ create_prj <- function(db_name, base_path, desired_scen = NULL, prj_name = NULL,
     ))
   }
 }
+
+
 
 
 #' data_query

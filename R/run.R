@@ -78,15 +78,15 @@
 #'   with the submitted job ID and the output path to check once it's done.
 #' @export
 run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
-                 desired_scen = NULL, sdgs = "all",
-                 ssp = NULL, prj_base = NULL,
-                 show_diff = FALSE, base_scen = NULL,
-                 final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
-                 base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
-                 conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
-                 cluster = FALSE, sbatch_args = list(),
-                 run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
-
+                desired_scen = NULL, sdgs = "all",
+                ssp = NULL, prj_base = NULL,
+                show_diff = FALSE, base_scen = NULL,
+                final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
+                base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
+                conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
+                cluster = FALSE, sbatch_args = list(),
+                run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
+  
   all_sdgs <- c("population", "gdp", "expenditure", "poverty", "health", "water", "land")
   sdgs_is_all <- identical(sdgs, "all")
   if (sdgs_is_all) sdgs <- all_sdgs
@@ -98,8 +98,8 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   if (show_diff && is.null(base_scen)) {
     stop("show_diff = TRUE requires base_scen (the name of the baseline scenario to diff against).")
   }
-
-  # ---- cluster submission: build + submit the sbatch job, then return ----
+  
+  # ---- cluster submission: build + submit the sbatch job, then return ----        # TODO check & test
   if (cluster) {
     if (!is.null(prj)) {
       stop("cluster = TRUE can't be combined with an in-memory prj object - ",
@@ -115,51 +115,108 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       run_gcamreport = run_gcamreport, GCAM_version = GCAM_version, gcamreport_args = gcamreport_args
     ))
   }
-
-  # ---- resolve which entries (project/database pairs) to process and perform internal checks ---- # TODO try again that the workflow works
-  if (run_gcamreport && (length(db_name) > 1 || length(prj_name) > 1)) {
-    stop("run_gcamreport = TRUE is only supported for a single database/project, not a vector of several.")
-  }
-
-  if (is.null(db_path) && !is.null(db_name)) db_path <- file.path(base_path, "output")
-  prj_dir <- file.path(base_path, "prj_files")
   
-  if (!is.null(prj_name)) prj_name <- ifelse(!endsWith(prj_name, ".dat"), paste0(prj_name, ".dat"), prj_name)
-
-  if (!is.null(prj)) {
-    if (length(db_name) >= 1 || length(db_path) >= 1) {
-      stop("prj can't be combined with a vector db_name - pass either an existing project, or db_path/db_name (single or several).")
-    }
-    entries <- list(list(prj = prj, prj_name = if (is.null(prj_name)) "gcamsdg_project.dat" else prj_name[[1]], db_name = NULL))
-  } else if (!is.null(db_name)) {
-    prj_name_vec <- if (is.null(prj_name)) paste0(db_name, ".dat") else rep_len(prj_name, length(db_name))
-    entries <- list(prj = rep(list(NULL), length(db_name)),
-                    prj_name = prj_name_vec,
-                    db_name = db_name)
-  } else if (!is.null(prj_name)) {
-    entries <- lapply(prj_name, function(pjn) list(prj = NULL, prj_name = pjn, db_name = NULL))
-  } else {
-    stop("run() needs one of: an existing rgcam project (prj), an existing ",
-         "project file (prj_name), or a GCAM database to extract (db_path + db_name).")
+  # ---- check project entries ---- # TODO try again that the workflow works, also for a list of projects
+  if (run_gcamreport && is.null(prj_name) && (length(db_name) > 1 || length(prj_name) > 1)) {
+    stop("`run_gcamreport = TRUE` does not support multiple inputs. Please",
+         "provide exactly one `prj_name` or `db_name`.")
   }
-
-  loaded <- lapply(entries, function(e) {
-    if (!sapply(e$prj, is.null)) {
-      list(prj = e$prj, prj_name = e$prj_name)
-    } else if (!sapply(e$db_name, is.null)) {
-      create_prj(db_name = e$db_name, base_path = db_path, desired_scen = desired_scen,
-                 prj_name = e$prj_name,
-                 include_land_query = "land" %in% sdgs,
-                 include_nonco2_query = "health" %in% sdgs)
-      list(prj = load_prj(prj_dir, e$prj_name), prj_name = e$prj_name)
-    } else if (file.exists(file.path(prj_dir, e$prj_name))) {
-      list(prj = load_prj(prj_dir, e$prj_name), prj_name = e$prj_name)
-    } else {
-      stop("Project file not found and no database given to extract it from: ", e$prj_name)
+  # if (length(prj) > 1) {
+  #   stop("`prj` does not support multiple inputs. Please provide exactly one loaded",
+  #        "`prj` or indicate a list of projects via the `prj_name` variable.")
+  # }
+  if (!is.null(prj) && (length(db_name) >= 1 || length(db_path) >= 1)) {
+      stop("`prj` can't be combined with specified `db_path` and/or `db_name`. Pass either an existing project, or `db_path` & `db_name` (single or several).")
     }
-  })
+  }
+  if (is.null(prj) && is.null(prj_name) && (is.null(db_name) || is.null(db_path))) {
+    stop("run() needs one of: an existing rgcam project (`prj`), an existing ",
+         "project file (`prj_name`), or a GCAM database to extract (`db_path` & `db_name`).")
+  }
   
+
+  if (is.null(db_path) && !is.null(db_name) && !endsWith(db_path, "output")) db_path <- file.path(base_path, "output")
+
+  if (is.null(prj_name)) prj_name <- prj_name <- db_name
+  if (!endsWith(prj_name, ".dat")) prj_name <- paste0(prj_name, ".dat")
+  
+  # define the entries
+  max_length <- max(length(prj_name), length(db_name), length(db_path), 1)
+  safe_db_name <- if (is.null(db_name)) vector("list", max_length) else db_name
+  safe_db_path <- if (is.null(db_path)) vector("list", max_length) else db_path
+  safe_prj_name <- if (is.null(prj_name)) "gcamsdg_project.dat" else prj_name
+  entries <- Map(
+    list,
+    prj = list(prj),
+    prj_name = safe_prj_name,
+    db_name = safe_db_name,
+    db_path = safe_db_path
+  )  
+  
+  
+  result <- list()
+  # ---- run gcamreport if desired ----
+  if (run_gcamreport) {
+    if (!requireNamespace("gcamreport", quietly = TRUE)) {
+      stop('run_gcamreport = TRUE requires the gcamreport package. Run ',
+           '`devtools::install_github("bc3LC/gcamreport")`  to install the pkg')
+    }
+    if (is.null(GCAM_version)) {
+      stop('run_gcamreport = TRUE requires GCAM_version (e.g. "v8.2"): Run ',
+           '`gcamreport::available_GCAM_versions()` to see all the available options')
+    }
+    if (length(db_name) > 1 || length(db_path) > 1) {
+      stop("`gcamreport` requires a single `db_path` and `db_name`. If you have ",
+           "multiple sources, please combine them into a single project file first ",
+           "and pass it via `prj_name`; or run this function for each of them.")
+    }
+    print('GCAMSDG info: running gcamreport...')
+    suppressPackageStartupMessages(require(gcamreport, quietly = TRUE))
+    do.call(generate_report, 
+            c(
+              list(db_path = db_path, db_name = db_name, prj_name = prj_name,
+                   scenarios = desired_scen, final_year = final_db_year, 
+                   GCAM_version = GCAM_version, save_output = TRUE, 
+                   launch_ui = FALSE),
+              gcamreport_args
+              )
+            )
+    result$gcamreport <- report
+  }
+  
+  # ---- create/modify project to estimate the remaining SDGs ----
   prj <<- prj
+  
+  # if prj is not already loaded, check if it already exists
+  if (is.null(prj)) {
+    # load project
+    all_prj_names <- sapply(entries, function(x) x$prj_name)
+    valid_paths <- ifelse(!is.null(all_prj_names), all_prj_names[file.exists(all_prj_names)], NULL)
+    if (length(valid_paths) > 0) {
+      prj_list <- lapply(valid_paths, rgcam::loadProject)
+      
+      if (length(prj_list) == 1) {
+        prj <- prj_list[[1]]
+      } else if (length(prj_list) > 1) {
+        prj <- do.call(rgcam::mergeProjects, prj_list)
+      } else {
+        stop("None of the specified project files were found or loaded succesfully")
+      }
+    }
+    
+  # otherwise, create project from scratch or add 
+  # necessary queries to an already existing prj
+  } else {
+      for (e in entries) {
+        create_prj(db_path = e$db_path, db_name = e$db_name, 
+                   prj_name = e$prj_name, desired_scen = desired_scen,
+                   include_land_query = "land" %in% sdgs,
+                   include_nonco2_query = "health" %in% sdgs)
+        
+      }
+  }
+  prj <<- prj
+  
   
   # check final db year
   final_available_year <- max(
@@ -171,23 +228,21 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   }
   available_years <<- c(1990, seq(2005, final_db_year, 5))
   
-
-  # ---- auto-detect prj_base for "expenditure" from base_scen, if not supplied ----
-  if ("expenditure" %in% sdgs && is.null(prj_base) && !is.null(base_scen)) {
-    for (l in loaded) {
-      scens <- tryCatch(rgcam::listScenarios(l$prj), error = function(e) character())
-      if (base_scen %in% scens) {
-        prj_base <- l$prj
-        break
-      }
+  
+  # ---- auto-detect prj_base base_scen, if not supplied ----
+  if (show_diff) {
+    scens <- tryCatch(rgcam::listScenarios(l$prj), error = function(e) character())
+    if (base_scen %in% scens) {
+    } else {
+      base_scen <- grep("base|ref", scens, ignore.case = TRUE, value = TRUE)[1]
     }
+    prj_base <- rgcam::dropScenarios(prj, base_scen, invert = TRUE)
   }
-
-  compute_across <- function(fn) dplyr::bind_rows(lapply(loaded, function(l) fn(l$prj, l$prj_name)))
+  
 
   # ---- compute the requested indicators, across every loaded project ----
   result <- list()
-
+  
   if ("population" %in% sdgs) {
     result$population <- mapply(
       FUN = function(p, n) get_sdg0_pop(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
@@ -197,18 +252,6 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     )
   }
   if ("gdp" %in% sdgs) {
-  if ("expenditure" %in% sdgs) {
-    if (is.null(prj_base)) {
-      if (sdgs_is_all) {
-        message('Skipping "expenditure": prj_base (baseline project) was not supplied or auto-detected from base_scen.')
-      } else {
-        stop('sdgs includes "expenditure" but prj_base was not supplied (and could not be auto-detected from base_scen).')
-      }
-    } else {
-      result$expenditure <- compute_across(function(p, n)
-        get_sdg1_expenditure(p, n, ssp = ssp, prj_base = prj_base, final_db_year = final_db_year,
-                              saveOutput = saveOutput, makeFigures = makeFigures))
-    }
     result$gdp <- mapply(
       FUN = function(p, n) get_sdg1_gdp(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
       p = list(prj),
@@ -240,39 +283,22 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       SIMPLIFY = FALSE
     )
   }
-  if ("land" %in% sdgs) {
-    result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,
-                                                                           base_path = base_path, conda_env = conda_env))
-  }
-
-  # ---- optional basic figures (time series / bar charts, one per indicator) ----
-  if (makeFigures) {
-    .make_sdg_figures(result, base_path)
-  }
-
-  # ---- optional companion gcamreport run, sharing the same project ----
-  if (run_gcamreport) {
-    if (!requireNamespace("gcamreport", quietly = TRUE)) {
-      stop('run_gcamreport = TRUE requires the gcamreport package: ',
-           'devtools::install_github("bc3LC/gcamreport")')
-    }
-    if (is.null(GCAM_version)) {
-      stop('run_gcamreport = TRUE requires GCAM_version (e.g. "v7.1").')
-    }
-    result$gcamreport <- do.call(gcamreport::generate_report, c(
-      list(prj_name = file.path(prj_dir, loaded[[1]]$prj_name),
-           db_path = db_path, db_name = db_name, scenarios = desired_scen,
-           final_year = final_db_year, GCAM_version = GCAM_version,
-           save_output = TRUE, launch_ui = FALSE),
-      gcamreport_args
-    ))
-  }
-
-  # ---- optional diff-vs-baseline (replaces the old run_comparisson()) ----
+  # if ("land" %in% sdgs) {
+  #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,
+  #                                                                          base_path = base_path, conda_env = conda_env))
+  # }
+  # 
+  # # ---- optional basic figures (time series / bar charts, one per indicator) ----
+  # if (makeFigures) {
+  #   .make_sdg_figures(result, base_path)
+  # }
+  
+  
+  # ---- optional diff-vs-baseline (replaces the old run_comparison()) ----
   if (show_diff) {
     result <- .diff_vs_baseline(result, loaded, base_scen, final_db_year)
   }
-
+  
   result
 }
 
@@ -284,7 +310,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
 .diff_vs_baseline <- function(result, loaded, base_scen, final_db_year) {
   fmy <- .gcamsdg_first_model_year
   out <- list()
-
+  
   if (!is.null(result$gdp)) {
     pop <- dplyr::bind_rows(lapply(loaded, function(l) rgcam::getQuery(l$prj, "population by region")))
     gdp_pre <- result$gdp %>%
@@ -306,7 +332,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = GDPpc_thous - GDPpc_thous_base) %>%
       postprocess_sdg_diff("Economy", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$expenditure)) {
     exp_base <- result$expenditure %>%
       dplyr::filter(scenario == base_scen) %>%
@@ -319,7 +345,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = total_expenditure_per_world - total_expenditure_per_world_base) %>%
       postprocess_sdg_diff("Poverty", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$poverty)) {
     poverty_base <- result$poverty %>%
       dplyr::filter(scenario == base_scen) %>%
@@ -332,7 +358,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = expenditure_percent_GDP - expenditure_percent_GDP_base) %>%
       postprocess_sdg_diff("Hunger", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$health)) {
     health_pre <- result$health %>%
       dplyr::group_by(scenario, year) %>%
@@ -348,7 +374,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = mort - mort_base, unit = "Mortalities") %>%
       postprocess_sdg_diff("Health", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$water)) {
     water_runoff <- result$water %>% dplyr::filter(resource == "runoff")
     water_base <- water_runoff %>%
@@ -362,7 +388,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = index - index_base) %>%
       postprocess_sdg_diff("Water", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$land)) {
     land_base <- result$land %>%
       dplyr::filter(scenario == base_scen) %>%
@@ -376,9 +402,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::select(scenario, unit, diff) %>%
       postprocess_sdg_diff("Land", base_scen, match = "exact")
   }
-
+  
   if (!is.null(result$population)) out$population <- result$population
   if (!is.null(result$gcamreport)) out$gcamreport <- result$gcamreport
-
+  
   out
 }
