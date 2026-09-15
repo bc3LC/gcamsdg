@@ -11,7 +11,7 @@
 #' @export
 get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   
-  print('computing sdg3 - health impacts......')
+  print('GCAMSDG info: computing sdg3 - health impacts......')
   
   # Create the directories if they do not exist:
   if (!dir.exists("output/SDG3-Health/mort.list")) dir.create("output/SDG3-Health/mort.list", recursive = T)

@@ -10,7 +10,7 @@
 #' @export
 get_sdg0_pop <- function(prj, prj_name, saveOutput = T, makeFigures = F){
 
-  print('computing sdg0 - POP...')
+  print('GCAMSDG info: computing sdg0 - POP...')
   
   # Create the directories if they do not exist:
   if (!dir.exists("output/SDG0-POP/indiv_results")) dir.create("output/SDG0-POP/indiv_results", recursive = T)

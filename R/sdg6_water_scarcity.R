@@ -11,7 +11,7 @@
 #' @export
 get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures = F){
 
-  print('computing sdg6 - water scarcity ...')
+  print('GCAMSDG info: computing sdg6 - water scarcity ...')
 
   # Create the directories if they do not exist:
   if (!dir.exists("output/SDG6-Water/indiv_results")) dir.create("output/SDG6-Water/indiv_results", recursive = T)

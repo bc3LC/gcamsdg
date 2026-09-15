@@ -10,7 +10,7 @@
 #' @export
 get_sdg1_gdp <- function(prj, prj_name, saveOutput = T, makeFigures = F){
 
-  print('computing sdg1 - GDP...')
+  print('GCAMSDG info: computing sdg1 - GDP...')
   
   # Create the directories if they do not exist:
   if (!dir.exists("output/SDG1-GDP/indiv_results")) dir.create("output/SDG1-GDP/indiv_results", recursive = T)
