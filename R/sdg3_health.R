@@ -1,34 +1,34 @@
-library(dplyr)
-library(tidyr)
-library(rgcam)
-library(gcamdata)
-library(rfasst)
-
+#' get_sdg3_health
+#'
+#' Compute SDG 3 (Health) as premature mortalities attributable to long-term
+#' exposure to PM2.5 and O3, using rfasst, downscaled to country level by
+#' population share and re-aggregated to GCAM region.
 #' @param prj uploaded project file
+#' @param prj_name project file name, used to tag the saved output file
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
-get_sdg3_health <- function(prj, saveOutput = T, makeFigures = F, final_db_year = 2050){
+#' @return data frame with mortalities by scenario, GCAM region and year
+#' @export
+get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   
-  print('computing sdg3 - health impacts......')
+  print('GCAMSDG info: computing sdg3 - health impacts......')
   
   # Create the directories if they do not exist:
-  if (!dir.exists("gcam_sdg/output")) dir.create("gcam_sdg/output")
-  if (!dir.exists("gcam_sdg/output/SDG3-Health")) dir.create("gcam_sdg/output/SDG3-Health")
-  if (!dir.exists("gcam_sdg/output/SDG3-Health/mort.list")) dir.create("gcam_sdg/output/SDG3-Health/mort.list")
-  if (!dir.exists("gcam_sdg/output/SDG3-Health/mort.fin")) dir.create("gcam_sdg/output/SDG3-Health/mort.fin")
-  if (!dir.exists("gcam_sdg/output/SDG3-Health/figures")) dir.create("gcam_sdg/output/SDG3-Health/figures")
-  if (!dir.exists("gcam_sdg/output/SDG3-Health/maps")) dir.create("gcam_sdg/output/SDG3-Health/maps")
+  if (!dir.exists("output/SDG3-Health/mort.list")) dir.create("output/SDG3-Health/mort.list", recursive = T)
+  if (!dir.exists("output/SDG3-Health/mort.fin")) dir.create("output/SDG3-Health/mort.fin", recursive = T)
+  if (!dir.exists("output/SDG3-Health/figures")) dir.create("output/SDG3-Health/figures", recursive = T)
+  if (!dir.exists("output/SDG3-Health/maps")) dir.create("output/SDG3-Health/maps", recursive = T)
   
   mort <- NULL
   for (i in rgcam::listScenarios(prj)) {
-    print('PM25')
+    print(paste(i,'PM25',sep = ' - '))
     mort_pre <- rfasst::m3_get_mort_pm25(prj = prj,
-                                          prj_name = prj_name,
-                                          scen_name = i,
-                                          final_db_year = final_db_year,
-                                          saveOutput = saveOutput,
-                                          map = makeFigures,
-                                          recompute = T) %>%
+                                         prj_name = prj_name,
+                                         scen_name = i,
+                                         final_db_year = final_db_year,
+                                         saveOutput = saveOutput,
+                                         map = makeFigures,
+                                         recompute = T) %>%
       # select the only one model (GBD)
       dplyr::select(scenario, region, year, age, disease, mort = GBD) %>%
       # Aggregate to region-level
@@ -78,8 +78,8 @@ get_sdg3_health <- function(prj, saveOutput = T, makeFigures = F, final_db_year 
     mort.pm25_country<- dplyr::bind_rows(country_shares, twn_share) %>%
       dplyr::rename(region = fasst_region) %>%
       dplyr::mutate(tibble(scenario = i)) %>%
-      filter(year <= final_db_year,
-              year %in% rfasst::all_years) %>%
+      dplyr::filter(year <= final_db_year,
+                    year %in% rfasst::all_years) %>%
       gcamdata::left_join_error_no_match(mort_adj, by = c('scenario','region', 'year')) %>%
       dplyr::mutate(mort = round(mort * share, 0)) %>%
       dplyr::select(scenario, country, year, mort)
@@ -95,7 +95,7 @@ get_sdg3_health <- function(prj, saveOutput = T, makeFigures = F, final_db_year 
       
     #--------------------
     # ADD O3
-    print('O3')
+    print(paste(i,'O3',sep = ' - '))
     o3_mort_pre <- rfasst::m3_get_mort_o3(prj = prj,
                                           prj_name = prj_name,
                                           scen_name = i,
@@ -125,8 +125,8 @@ get_sdg3_health <- function(prj, saveOutput = T, makeFigures = F, final_db_year 
     mort.o3_country<- dplyr::bind_rows(country_shares, twn_share) %>%
       dplyr::rename(region = fasst_region) %>%
       dplyr::mutate(tibble(scenario = i)) %>%
-      filter(year <= final_db_year,
-              year %in% rfasst::all_years) %>%
+      dplyr::filter(year <= final_db_year,
+                    year %in% rfasst::all_years) %>%
       gcamdata::left_join_error_no_match(o3_mort_adj, by = c('scenario','region', 'year')) %>%
       dplyr::mutate(mort = round(mort * share, 0)) %>%
       dplyr::select(scenario, country, year, mort)
@@ -159,8 +159,9 @@ get_sdg3_health <- function(prj, saveOutput = T, makeFigures = F, final_db_year 
   }
   #--------------------
  
-  print('Save Output')
-  if (saveOutput) write.csv(mort, file = file.path('gcam_sdg/output/SDG3-Health/mort.fin',paste0('mort_fin_',gsub("\\.dat$", "", prj_name), ".csv")), row.names = F)
+  if (saveOutput) write.csv(mort, 
+                            file = file.path('output/SDG3-Health/mort.fin',paste0('mort_fin_',gsub("\\.dat$", "", prj_name), ".csv")),
+                            row.names = F)
   
   return(invisible(mort))
   

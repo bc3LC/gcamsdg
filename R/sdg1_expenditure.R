@@ -1,28 +1,37 @@
 library(dplyr)
 library(tidyr)
 
+#' get_sdg1_expenditure
+#'
+#' Compute the food + energy expenditure as a percentage of income by region
+#' and income decile, for SDG 1 (Poverty).
+#'
+#' Energy expenditure: `building service costs` * `building service output by
+#' service`, then rescaled to real-world data via the energy_mult dataset.
+#' Food expenditure: `food demand prices by income group` * `food demand by
+#' income group`, then rescaled via a multiplier computed as the average
+#' regional expenditure vs. real-world data from the food_exp dataset.
+#' World aggregation: decile-regional annual values weighted by population.
+#' The indicator itself considers the 2020-2050 average output.
 #' @param prj uploaded project file
+#' @param prj_name project file name, used to tag saved output files
+#' @param ssp SSP tag used to select the matching income scenario (or "base")
+#' @param prj_base rgcam project holding the baseline (REF) scenario's
+#'   `subregional income` query, used as the income denominator
+#' @param final_db_year last model year to consider
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
-#' The idea is to compute the food + energy expenditure as a percentage of the income
-#' by region and group
-#' Energy expenditure: `building service costs` * `building service output by service`, careful units;
-#' then, we multiply the expenditure by the energy_mult data to rescale the values to real-world data
-#' Food expenditure: `food demand prices by income group` * `food demand by income group`, careful units;
-#' then, we compute the multiplier as the average expendityre by region vs the real-word data from food_exp
-#' dataset. Afterwards, we multiply the decile-regional expenditure by the new multipliers to rescale the 
-#' values to real-world data
-#' World aggergation: we aggergate the decile-regional annual values weighted by population. For the indicator,
-#' we consider the 2020-2050 average output
-get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
+#' @return data frame with the global population-weighted expenditure share of income by scenario and year
+#' @export
+get_sdg1_expenditure <- function(prj, prj_name, ssp, prj_base, final_db_year = 2050, saveOutput = T, makeFigures = F){
   
   print('computing sdg1 - expenditure...')
   
   # Create the directories if they do not exist:
-  if (!dir.exists("gcam_sdg/output")) dir.create("gcam_sdg/output")
-  if (!dir.exists("gcam_sdg/output/SDG1-Expenditure")) dir.create("gcam_sdg/output/SDG1-Expenditure")
-  if (!dir.exists("gcam_sdg/output/SDG1-Expenditure/indiv_results")) dir.create("gcam_sdg/output/SDG1-Expenditure/indiv_results")
-  if (!dir.exists("gcam_sdg/output/SDG1-Expenditure/figures")) dir.create("gcam_sdg/output/SDG1-Expenditure/figures")
+  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
+  if (!dir.exists("gcamsdg/output/SDG1-Expenditure")) dir.create("gcamsdg/output/SDG1-Expenditure")
+  if (!dir.exists("gcamsdg/output/SDG1-Expenditure/indiv_results")) dir.create("gcamsdg/output/SDG1-Expenditure/indiv_results")
+  if (!dir.exists("gcamsdg/output/SDG1-Expenditure/figures")) dir.create("gcamsdg/output/SDG1-Expenditure/figures")
   
   # POPULATION WEIGHTS
   population_weights <- 
@@ -37,7 +46,7 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
     dplyr::select(scenario, region, year, wpop)
 
   if (saveOutput) write.csv(population_weights, 
-                        file = file.path('gcam_sdg/output/SDG0-POP/indiv_results',paste0('SDG0_popw_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                        file = file.path('gcamsdg/output/SDG0-POP/indiv_results',paste0('SDG0_popw_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                         row.names = F)
 
   
@@ -64,8 +73,8 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
   
   
   # ENERGY EXPENDITURE
-  energy_mult <- read.csv(file.path('gcam_sdg','inst','extdata','energy_mult.csv'),
-                          skip = 2) %>% 
+  energy_mult <- read.csv(system.file("extdata", "energy_mult.csv", package = "gcamsdg"),
+                          skip = 2) %>%
     dplyr::select(-year)
 
   energy_expenditure <- 
@@ -128,14 +137,14 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
   }
   
   if (saveOutput) write.csv(energy_expenditure_per, 
-                            file = file.path('gcam_sdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_energyExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('gcamsdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_energyExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                             row.names = F)
   
 
   
   # FOOD EXPENDITURE
-  food_exp <- read.csv(file.path('gcam_sdg','inst','extdata','food_exp.csv'),
-                          skip = 2) %>% 
+  food_exp <- read.csv(system.file("extdata", "food_exp.csv", package = "gcamsdg"),
+                          skip = 2) %>%
     dplyr::select(-year)
 
   food_expenditure <- 
@@ -211,7 +220,7 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
   
   
   if (saveOutput) write.csv(food_expenditure_per, 
-                            file = file.path('gcam_sdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_foodExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('gcamsdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_foodExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                             row.names = F)
   
   
@@ -225,7 +234,7 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
     
   
   if (saveOutput) write.csv(total_expenditure_per, 
-                            file = file.path('gcam_sdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_totalExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('gcamsdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_totalExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                             row.names = F)
 
   # WORLD VALUES
@@ -241,7 +250,7 @@ get_sdg1_expenditure <- function(prj, ssp, saveOutput = T, makeFigures = F){
   
 
   if (saveOutput) write.csv(world_total_expenditure, 
-                            file = file.path('gcam_sdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_totalWorldExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('gcamsdg/output/SDG1-Expenditure/indiv_results',paste0('SDG1_totalWorldExpPer_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
                             row.names = F)
   
 

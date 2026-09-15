@@ -1,0 +1,41 @@
+Package: gcamsdg
+Title: GCAM SDG Indicators Toolkit
+Version: 0.1.0
+Authors@R: person("Jon", "Sampedro", email = "jon.sampedro@bc3research.org", role = c("aut", "cre"),
+		   comment = c(ORCID = "0000-0002-2277-1530"))
+Description: R tool to extract GCAM scenario results and post-process them into Sustainable Development Goals (SDG)-related indicators.
+URL: https://github.com/bc3LC/gcamsdg
+BugReports: https://github.com/bc3LC/gcamsdg/issues
+Depends: R (>= 4.1.0)
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+    tidyr,
+    tibble,
+    stringr,
+    xml2,
+    assertthat,
+    ggplot2,
+    reticulate,
+    ncdf4,
+    sf,
+    sp,
+    raster,
+    shapefiles,
+    grid
+Suggests:
+    devtools,
+    roxygen2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Remotes:
+    github::JGCRI/rgcam,
+    github::JGCRI/gcamdata,
+    github::bc3LC/rfasst,
+    github::bc3LC/gcamreport
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0
