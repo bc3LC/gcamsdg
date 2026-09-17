@@ -27,8 +27,6 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
                        desired_scen = NULL, required_queries = 'All',
                        include_land_query = TRUE, include_nonco2_query = TRUE) {
   
-  prj_dir <- file.path('output/prj_files')
-  if (!dir.exists(prj_dir)) dir.create(prj_dir, recursive = TRUE)
   query_file <- get('query_file', envir = asNamespace("gcamsdg"))
   
   
@@ -46,47 +44,57 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
     queries_touse <- names(query_file)
   }
   
-  
-  # scenarios checks and/or definition
-  conn <- rgcam::localDBConn(db_path, db_name)
-  
-  available_scenarios <- rgcam::listScenariosInDB(conn) %>%
-    dplyr::pull(name)
-  if (!is.null(desired_scen)) {
-    assertthat::assert_that(all(desired_scen %in% available_scen))
-  } else {
-    desired_scen <- available_scen
+  establish_connection <- function() {
+    conn <- rgcam::localDBConn(db_path, db_name)
+    
+    available_scen <- rgcam::listScenariosInDB(conn) %>%
+      dplyr::pull(name)
+    if (!is.null(desired_scen)) {
+      assertthat::assert_that(all(desired_scen %in% available_scen))
+    } else {
+      desired_scen <- available_scen
+    }
+    
+    return(list(conn = conn, desired_scen = desired_scen))
   }
   
-  # create prj
-  for (sc in desired_scen) {
-    rlang::inform(paste("Start reading queries for", sc, "scenario"))
+  # if some query needs to be loaded
+  if (length(queries_touse) > 0) {
+    # scenarios checks and/or definition
+    t <- establish_connection()
+    conn <- t$conn
+    desired_scen <- t$desired_scen
     
-    for (qn in queries_touse) {
-      rlang::inform(paste("Read", qn, "query"))
+    # create prj
+    for (sc in desired_scen) {
+      rlang::inform(paste("Start reading queries for", sc, "scenario"))
       
-      bq <- queries_touse_short[[qn]]
-      
-      # read data
-      table <- suppressMessages({
-        rgcam::runQuery(conn, bq$query, sc, bq$regions, warn.empty = FALSE)
-      })
-      
-      if (nrow(table) > 0) {
-        prj_tmp <- rgcam::addQueryTable(
-          project = prj_name, qdata = table,
-          queryname = qn, clobber = FALSE,
-          saveProj = FALSE, show_col_types = FALSE
-        )
-        if (exists("prj_sdg")) {
-          prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), 
-                                          clobber = FALSE, saveProj = FALSE)
+      for (qn in queries_touse) {
+        rlang::inform(paste("Read", qn, "query"))
+        
+        bq <- queries_touse_short[[qn]]
+        
+        # read data
+        table <- suppressMessages({
+          rgcam::runQuery(conn, bq$query, sc, bq$regions, warn.empty = FALSE)
+        })
+        
+        if (nrow(table) > 0) {
+          prj_tmp <- rgcam::addQueryTable(
+            project = prj_name, qdata = table,
+            queryname = qn, clobber = FALSE,
+            saveProj = FALSE, show_col_types = FALSE
+          )
+          if (exists("prj_sdg")) {
+            prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), 
+                                            clobber = FALSE, saveProj = FALSE)
+          } else {
+            prj_sdg <- prj_tmp
+          }
+          rm(prj_tmp)
         } else {
-          prj_sdg <- prj_tmp
+          warning(paste(qn, "query is empty!"))
         }
-        rm(prj_tmp)
-      } else {
-        warning(paste(qn, "query is empty!"))
       }
     }
   }
@@ -94,21 +102,20 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
     prj_sdg <- NULL
   }
   
-  
   # add detailed land query if necessary
+  qn = "detailed land allocation"
   if (include_land_query && 
-      (!'detailed land allocation' %in% rgcam::listQueries(prj_sdg, anyscen = F) ||
-       !'detailed land allocation' %in% rgcam::listQueries(prj, anyscen = F))) {
+      (!qn %in% rgcam::listQueries(prj_sdg, anyscen = F) &&
+       !qn %in% rgcam::listQueries(prj, anyscen = F))) {
     print('add detailed land query')
     if (exists("prj_tmp")) rm(prj_tmp)
-    
     query_land <- get('query_land', envir = asNamespace("gcamsdg"))[[1]]
-    dt_sec <- suppressMessages({
-      rgcam::runQuery(conn, query_land$query, desired_scen, NULL, warn.empty = FALSE)
-    })
+    t <- establish_connection()
+
+    dt_sec <- .data_query(qn, db_path, db_name, prj_name, t$desired_scen, NULL, queries_nonCO2_file = query_nonCO2)
     prj_tmp <- rgcam::addQueryTable(
       project = prj_name, qdata = dt_sec, saveProj = FALSE,
-      queryname = "detailed land query", clobber = FALSE
+      queryname = qn, clobber = FALSE
     )
     if (!is.null(prj_sdg)) {
       prj_sdg <- rgcam::mergeProjects(prj_name, list(prj_sdg, prj_tmp), clobber = FALSE, saveProj = FALSE)
@@ -120,13 +127,14 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
   # add 'nonCO2' large query
   qn = "nonCO2 emissions by sector (excluding resource production)"
   if (include_nonco2_query && 
-      (!qn %in% rgcam::listQueries(prj_sdg, anyscen = F) ||
+      (!qn %in% rgcam::listQueries(prj_sdg, anyscen = F) &&
        !qn %in% rgcam::listQueries(prj, anyscen = F))) {
     print('add nonCO2 emissions by sector')
     if (exists("prj_tmp")) rm(prj_tmp)
+    query_nonCO2 <- get('query_nonCO2', envir = asNamespace("gcamsdg"))
+    t <- establish_connection()
     
-    query_nonCO2 <- get('query_nonCO2', envir = asNamespace("gcamsdg")) #setNames(list(get('query_nonCO2', envir = asNamespace("gcamsdg")))[[1]], qn)
-    dt_sec <- .data_query(qn, db_path, db_name, prj_name, desired_scen, NULL, queries_nonCO2_file = query_nonCO2)
+    dt_sec <- .data_query(qn, db_path, db_name, prj_name, t$desired_scen, NULL, queries_nonCO2_file = query_nonCO2)
     prj_tmp <- rgcam::addQueryTable(
       project = prj_name, qdata = dt_sec, saveProj = FALSE,
       queryname = qn, clobber = FALSE
@@ -146,8 +154,9 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
   
   if (!is.null(prj)) {
     print('save prj')
-    rgcam::saveProject(prj, file = file.path(prj_dir,prj_name))
-    print(paste0('Project saved at ',file.path(prj_dir,prj_name)))
+    dir.create(prj_name, recursive = T)
+    rgcam::saveProject(prj, file = prj_name)
+    print(paste0('Project saved at ',prj_name))
   }
   
   

@@ -126,8 +126,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   #        "`prj` or indicate a list of projects via the `prj_name` variable.")
   # }
   if (!is.null(prj) && (length(db_name) >= 1 || length(db_path) >= 1)) {
-      stop("`prj` can't be combined with specified `db_path` and/or `db_name`. Pass either an existing project, or `db_path` & `db_name` (single or several).")
-    }
+    stop("`prj` can't be combined with specified `db_path` and/or `db_name`. Pass either an existing project, or `db_path` & `db_name` (single or several).")
   }
   if (is.null(prj) && is.null(prj_name) && (is.null(db_name) || is.null(db_path))) {
     stop("run() needs one of: an existing rgcam project (`prj`), an existing ",
@@ -144,7 +143,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   max_length <- max(length(prj_name), length(db_name), length(db_path), 1)
   safe_db_name <- if (is.null(db_name)) vector("list", max_length) else db_name
   safe_db_path <- if (is.null(db_path)) vector("list", max_length) else db_path
-  safe_prj_name <- if (is.null(prj_name)) "gcamsdg_project.dat" else prj_name
+  safe_prj_name <- if (is.null(prj_name)) "gcamsdg_project.dat" else unlist(prj_name)
   entries <- Map(
     list,
     prj = list(prj),
@@ -207,13 +206,13 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   # otherwise, create project from scratch or add 
   # necessary queries to an already existing prj
   } else {
-      for (e in entries) {
-        create_prj(db_path = e$db_path, db_name = e$db_name, 
-                   prj_name = e$prj_name, desired_scen = desired_scen,
-                   include_land_query = "land" %in% sdgs,
-                   include_nonco2_query = "health" %in% sdgs)
-        
-      }
+    for (i in seq_along(entries)) {
+      e <- entries[[i]]
+      create_prj(db_path = e$db_path, db_name = e$db_name, 
+                 prj_name = e$prj_name, desired_scen = desired_scen,
+                 include_land_query = "land" %in% sdgs,
+                 include_nonco2_query = "health" %in% sdgs)
+    }
   }
   prj <<- prj
   
@@ -299,7 +298,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     result <- .diff_vs_baseline(result, loaded, base_scen, final_db_year)
   }
   
-  result
+  result # TODO check the showdiff, cluster, and do more testing
 }
 
 
