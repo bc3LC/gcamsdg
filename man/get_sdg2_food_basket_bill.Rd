@@ -4,12 +4,13 @@
 \alias{get_sdg2_food_basket_bill}
 \title{get_sdg2_food_basket_bill}
 \usage{
-get_sdg2_food_basket_bill(prj, prj_name, saveOutput = T, makeFigures = F)
+get_sdg2_food_basket_bill(prj, output_name, saveOutput = T, makeFigures = F)
 }
 \arguments{
 \item{prj}{uploaded project file}
 
-\item{prj_name}{project file name, used to tag the saved output file}
+\item{output_name}{output file name, used to tag the saved output file in 
+the 'output' directory.}
 
 \item{saveOutput}{save the produced output}
 

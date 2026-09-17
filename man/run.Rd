@@ -9,6 +9,7 @@ run(
   prj_name = NULL,
   db_path = NULL,
   db_name = NULL,
+  output_name = NULL,
   desired_scen = NULL,
   sdgs = "all",
   ssp = NULL,
@@ -46,15 +47,18 @@ is supplied)}
 character vector processes each database separately and combines the
 results - use this when each policy scenario is its own database.}
 
+\item{output_name}{name of the output file. When processing multiple projects 
+(`prj_name`), this specifies the filename for the SDG outputs saved in 
+the 'output' directory. Defaults to the first `prj_name`.}
+
 \item{desired_scen}{scenarios to extract/consider, applied to every
 database in `db_name`. NULL uses every scenario present.}
 
 \item{sdgs}{which indicators to compute: any of "population", "gdp",
-"expenditure", "poverty", "health", "water", "land", or "all"
-(default) for every one of them}
+"expenditure", "poverty", "health", "water", "land", or "all" (default)}
 
-\item{ssp}{SSP tag needed by the "expenditure" indicator (or "base" if
-this project *is* the baseline)}
+\item{ssp}{SSP tag needed by the "expenditure" indicator to determine the 
+"baseline" to compare with (or "base" if this project *is* the baseline)}
 
 \item{prj_base}{rgcam project holding the baseline (REF) scenario,
 needed by the "expenditure" indicator. If not supplied and `base_scen`
@@ -68,7 +72,8 @@ pivoted wide) instead of raw per-scenario values}
 \item{base_scen}{name of the baseline scenario to diff every other
 scenario against. Required when `show_diff = TRUE`.}
 
-\item{final_db_year}{last model year to consider}
+\item{final_db_year}{last model year to consider. Takes last available
+year in the db by default}
 
 \item{saveOutput}{save each indicator's individual output to disk (under
 `gcamsdg/output/<SDG>/`), same as the underlying `get_sdgX_*()` calls}
@@ -102,7 +107,7 @@ the same project (requires the `gcamreport` package, `GCAM_version`,
 and a single database/project - not combinable with a vector `db_name`)}
 
 \item{GCAM_version}{GCAM version tag (e.g. "v7.1"), required when
-`run_gcamreport = TRUE`}
+`run_gcamreport = TRUE`. Check gcamreport::available_GCAM_versions()}
 
 \item{gcamreport_args}{additional named arguments passed through to
 `gcamreport::generate_report()`}

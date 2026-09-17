@@ -4,24 +4,17 @@
 \alias{get_sdg3_health}
 \title{get_sdg3_health}
 \usage{
-get_sdg3_health(
-  prj,
-  prj_name,
-  saveOutput = T,
-  makeFigures = F,
-  final_db_year = 2050
-)
+get_sdg3_health(prj, output_name, saveOutput = T, makeFigures = F)
 }
 \arguments{
 \item{prj}{uploaded project file}
 
-\item{prj_name}{project file name, used to tag the saved output file}
+\item{output_name}{output file name, used to tag the saved output file in 
+the 'output' directory.}
 
 \item{saveOutput}{save the produced output}
 
 \item{makeFigures}{generate and save graphical representation/s of the output}
-
-\item{final_db_year}{last model year to consider}
 }
 \value{
 data frame with mortalities by scenario, GCAM region and year
