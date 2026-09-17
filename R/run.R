@@ -27,6 +27,9 @@
 #' @param db_name name(s) of the GCAM database(s) to extract from. A
 #'   character vector processes each database separately and combines the
 #'   results - use this when each policy scenario is its own database.
+#' @param output_name name of the output file. When processing multiple projects 
+#'   (`prj_name`), this specifies the filename for the SDG outputs saved in 
+#'   the 'output' directory. Defaults to the first `prj_name`.
 #' @param desired_scen scenarios to extract/consider, applied to every
 #'   database in `db_name`. NULL uses every scenario present.
 #' @param sdgs which indicators to compute: any of "population", "gdp",
@@ -78,7 +81,7 @@
 #'   with the submitted job ID and the output path to check once it's done.
 #' @export
 run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
-                desired_scen = NULL, sdgs = "all",
+                output_name = NULL, desired_scen = NULL, sdgs = "all",
                 ssp = NULL, prj_base = NULL,
                 show_diff = FALSE, base_scen = NULL,
                 final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
@@ -139,6 +142,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   if (is.null(prj_name)) prj_name <- prj_name <- db_name
   if (!endsWith(prj_name, ".dat")) prj_name <- paste0(prj_name, ".dat")
   
+  if (is.null(output_name)) output_name <- prj_name[1]
+  output_name <- file.path('output',basename(gsub("\\.dat$", "", output_name)))
+  
   # define the entries
   max_length <- max(length(prj_name), length(db_name), length(db_path), 1)
   safe_db_name <- if (is.null(db_name)) vector("list", max_length) else db_name
@@ -152,6 +158,8 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     db_path = safe_db_path
   )  
   
+  # create necessary directories
+  dir.create(file.path(getwd(),'output'), recursive = T, showWarnings = F)
   
   result <- list()
   # ---- run gcamreport if desired ----
@@ -176,7 +184,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
               list(db_path = db_path, db_name = db_name, prj_name = prj_name,
                    scenarios = desired_scen, final_year = final_db_year, 
                    GCAM_version = GCAM_version, save_output = TRUE, 
-                   launch_ui = FALSE),
+                   output_file = file.path(getwd(),'output',output_name), launch_ui = FALSE),
               gcamreport_args
               )
             )
@@ -208,8 +216,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   } else {
     for (i in seq_along(entries)) {
       e <- entries[[i]]
-      create_prj(db_path = e$db_path, db_name = e$db_name, 
-                 prj_name = e$prj_name, desired_scen = desired_scen,
+      .create_prj(db_path = e$db_path, db_name = e$db_name, 
+                 prj_name = e$prj_name, output_name = output_name,
+                 desired_scen = desired_scen,
                  include_land_query = "land" %in% sdgs,
                  include_nonco2_query = "health" %in% sdgs)
     }
@@ -229,58 +238,70 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   
   
   # ---- auto-detect prj_base base_scen, if not supplied ----
-  if (show_diff) {
-    scens <- tryCatch(rgcam::listScenarios(l$prj), error = function(e) character())
-    if (base_scen %in% scens) {
-    } else {
-      base_scen <- grep("base|ref", scens, ignore.case = TRUE, value = TRUE)[1]
+  if (show_diff) { # TODO cont from here
+    scens_list <- rgcam::listScenarios(prj) 
+    
+    # if only one scenario availabe, set show_diff to FALSE and warn the user
+    if (length(scens_list) == 1) {       
+      warning(
+        sprintf(
+          "Only one scenarios detected [%s]. `show_diff` set to FALSE. Provide more than one scenario to activate this option.",
+          scens_list
+        ),
+        call. = FALSE
+      )
+      
+      
+    # search for scenarios containing "base" or "ref" in their names
+    # if multiple matches are found, raise a warning and default to the first one
+    } else if (!base_scen %in% scens_list) {
+      base_scen <- grep("base|ref", scens_list, ignore.case = TRUE, value = TRUE)
+      if (length(base_scen) > 1) {
+        warning(
+          sprintf(
+            "Multiple baseline scenarios detected for the `show_diff` tag. Available options: [%s]. Defaulting to '%s'. To choose a different baseline, specify it via the `show_diff` variable.",
+            paste(base_scen, collapse = ", "),
+            base_scen[1]
+          ),
+          call. = FALSE
+        )
+      }
+      base_scen <- base_scen[1]
     }
+    
+    # if none of the available scenarios has the "ref" or "base" tag in 
+    # their names, pick the first available scenarios
+    if (length(scens_list) > 1 && is.null(base_scen)) {
+      base_scen <- scens_list[1]
+    }
+    
     prj_base <- rgcam::dropScenarios(prj, base_scen, invert = TRUE)
   }
   
 
+  
   # ---- compute the requested indicators, across every loaded project ----
   result <- list()
   
   if ("population" %in% sdgs) {
-    result$population <- mapply(
-      FUN = function(p, n) get_sdg0_pop(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
-      p = list(prj),
-      n = list(e$prj_name),
-      SIMPLIFY = FALSE
-    )
+    result$population <- 
+      get_sdg0_pop(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("gdp" %in% sdgs) {
-    result$gdp <- mapply(
-      FUN = function(p, n) get_sdg1_gdp(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
-      p = list(prj),
-      n = list(e$prj_name),
-      SIMPLIFY = FALSE
-    )
+    result$gdp <- 
+      get_sdg1_gdp(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("poverty" %in% sdgs) {
-    result$poverty <- mapply(
-      FUN = function(p, n) get_sdg2_food_basket_bill(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
-      p = list(prj),
-      n = list(e$prj_name),
-      SIMPLIFY = FALSE
-    )
+    result$poverty <- 
+      get_sdg2_food_basket_bill(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("health" %in% sdgs) {
-    result$health <- mapply(
-      FUN = function(p, n) get_sdg3_health(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
-      p = list(prj),
-      n = list(e$prj_name),
-      SIMPLIFY = FALSE
-    )
+    result$health <- 
+      get_sdg3_health(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("water" %in% sdgs) {
-    result$water <- mapply(
-      FUN = function(p, n) get_sdg6_water_scarcity(p, n, saveOutput = saveOutput, makeFigures = makeFigures),
-      p = list(prj),
-      n = list(e$prj_name),
-      SIMPLIFY = FALSE
-    )
+    result$water <- 
+      get_sdg6_water_scarcity(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   # if ("land" %in% sdgs) {
   #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,

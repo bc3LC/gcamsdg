@@ -3,12 +3,13 @@
 #' Compute SDG 2 (Zero Hunger) as the per-capita food basket bill, expressed
 #' as a percentage of GDP, weighted globally by population.
 #' @param prj uploaded project file
-#' @param prj_name project file name, used to tag the saved output file
+#' @param output_name output file name, used to tag the saved output file in 
+#' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with the global food basket bill (% GDP) by scenario and year
 #' @export
-get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures = F){
+get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T, makeFigures = F){
 
   print('computing sdg2 - food basket bill...')
 
@@ -73,7 +74,7 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     dplyr::ungroup()
 
   # report food basket expenditure as % of the GDP
-  GDP <- get_sdg1_gdp(prj, prj_name) %>%
+  GDP <- get_sdg1_gdp(prj, output_name) %>%
     rename(GDP = value) %>%
     # take care of units
     mutate(GDP = GDP * 1e-6) %>% # million 1990$ to 1990$
@@ -88,7 +89,8 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     mutate(units = 'percentage')
 
   if (saveOutput) write.csv(food_basket_bill_percent_GDP, 
-                            file = file.path('output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGDP_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")),
+                            file = file.path('output/SDG2-Poverty/indiv_results',
+                                             paste0('SDG2_fbbPerGDP_',gsub("output/", "", output_name), ".csv")),
                             row.names = F)
 
   # compute GLOBAL food basket expenditure
@@ -110,8 +112,9 @@ get_sdg2_food_basket_bill <- function(prj, prj_name, saveOutput = T, makeFigures
     summarise(expenditure_percent_GDP = sum(weighted_expenditure_percent_GDP)) %>%
     ungroup()
 
-  if (saveOutput) write.csv(food_basket_bill_percent_GDP_global, 
-                            file = file.path('output/SDG2-Poverty/indiv_results',paste0('SDG2_fbbPerGlobal_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+  if (saveOutput) write.csv(food_basket_bill_percent_GDP_global,
+                            file = file.path('output/SDG2-Poverty/indiv_results',
+                                             paste0('SDG2_fbbPerGlobal_',gsub("output/", "", output_name), ".csv")), 
                             row.names = F)
 
   return(invisible(food_basket_bill_percent_GDP_global))

@@ -4,14 +4,17 @@
 #' exposure to PM2.5 and O3, using rfasst, downscaled to country level by
 #' population share and re-aggregated to GCAM region.
 #' @param prj uploaded project file
-#' @param prj_name project file name, used to tag the saved output file
+#' @param output_name output file name, used to tag the saved output file in 
+#' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with mortalities by scenario, GCAM region and year
+#' @import rfasst
 #' @export
-get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
+get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
   
   print('GCAMSDG info: computing sdg3 - health impacts......')
+  require(rfasst, quietly = TRUE)
   
   # Create the directories if they do not exist:
   if (!dir.exists("output/SDG3-Health/mort.list")) dir.create("output/SDG3-Health/mort.list", recursive = T)
@@ -23,7 +26,7 @@ get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   for (i in rgcam::listScenarios(prj)) {
     print(paste(i,'PM25',sep = ' - '))
     mort_pre <- rfasst::m3_get_mort_pm25(prj = prj,
-                                         prj_name = prj_name,
+                                         prj_name = gsub("output/", "", output_name),
                                          scen_name = i,
                                          final_db_year = final_db_year,
                                          saveOutput = saveOutput,
@@ -97,7 +100,7 @@ get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
     # ADD O3
     print(paste(i,'O3',sep = ' - '))
     o3_mort_pre <- rfasst::m3_get_mort_o3(prj = prj,
-                                          prj_name = prj_name,
+                                          prj_name = gsub("output/", "", output_name),
                                           scen_name = i,
                                           final_db_year = final_db_year,
                                           saveOutput = saveOutput,
@@ -160,7 +163,8 @@ get_sdg3_health <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   #--------------------
  
   if (saveOutput) write.csv(mort, 
-                            file = file.path('output/SDG3-Health/mort.fin',paste0('mort_fin_',gsub("\\.dat$", "", prj_name), ".csv")),
+                            file = file.path('output/SDG3-Health/mort.fin',
+                                             paste0('mort_fin_',gsub("output/", "", output_name), ".csv")),
                             row.names = F)
   
   return(invisible(mort))

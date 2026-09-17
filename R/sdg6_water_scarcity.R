@@ -4,12 +4,13 @@
 #' index (withdrawals over renewable water supply) by basin, weighted by the
 #' 2015 baseline withdrawal/supply volume.
 #' @param prj uploaded project file
-#' @param prj_name project file name, used to tag the saved output file
+#' @param output_name output file name, used to tag the saved output file in 
+#' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with the water scarcity index by scenario, resource and year
 #' @export
-get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures = F){
+get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T, makeFigures = F){
 
   print('GCAMSDG info: computing sdg6 - water scarcity ...')
 
@@ -72,10 +73,12 @@ get_sdg6_water_scarcity <- function(prj, prj_name, saveOutput = T, makeFigures =
     dplyr::filter(resource == "runoff")
 
   if (saveOutput) write.csv(water_scarcity_index, 
-                            file = file.path('output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndex_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG6-Water/indiv_results',
+                                             paste0('SDG6_wscarIndex_',gsub("output/", "", output_name), ".csv")), 
                             row.names = F)
   if (saveOutput) write.csv(water_scarcity_index_runoff_wd, 
-                            file = file.path('output/SDG6-Water/indiv_results',paste0('SDG6_wscarIndexRunOff_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG6-Water/indiv_results',
+                                             paste0('SDG6_wscarIndexRunOff_',gsub("output/", "", output_name), ".csv")), 
                             row.names = F)
 
   if (makeFigures) {

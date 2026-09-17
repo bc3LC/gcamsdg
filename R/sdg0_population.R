@@ -3,12 +3,13 @@
 #' Extract population by region, used as the population base for the other
 #' SDG indicators (e.g. population weighting in SDG1, SDG2).
 #' @param prj uploaded project file
-#' @param prj_name project file name, used to tag the saved output file
+#' @param output_name output file name, used to tag the saved output file in 
+#' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with population by region, scenario and year
 #' @export
-get_sdg0_pop <- function(prj, prj_name, saveOutput = T, makeFigures = F){
+get_sdg0_pop <- function(prj, output_name, saveOutput = T, makeFigures = F){
 
   print('GCAMSDG info: computing sdg0 - POP...')
   
@@ -20,7 +21,8 @@ get_sdg0_pop <- function(prj, prj_name, saveOutput = T, makeFigures = F){
   pop <- rgcam::getQuery(prj, "population by region")
   
   if (saveOutput) write.csv(pop, 
-                            file = file.path('output/SDG0-POP/indiv_results',paste0('SDG0_pop_',gsub("\\.dat$", "", gsub("^database_basexdb_", "", prj_name)), ".csv")), 
+                            file = file.path('output/SDG0-POP/indiv_results',
+                                             paste0('SDG0_pop_',gsub("output/", "", output_name), ".csv")), 
                             row.names = F)
   
   return(invisible(pop))

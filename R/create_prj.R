@@ -1,7 +1,7 @@
 # Project creation auxiliary functions
 
 
-#' create_prj
+#' .create_prj
 #'
 #' Function to create a GCAM project provided a database and a queries file
 #' @param db_name name of the database. It will The extension will be automatically 
@@ -9,6 +9,9 @@
 #' @param db_path run directory containing the GCAM database
 #' @param prj_name name of the project. If NULL, it will be the default option, 
 #'  i.e., the database name. Otherwise specify
+#' @param output_name name of the output file. When processing multiple projects 
+#'   (`prj_name`), this specifies the filename for the SDG outputs saved in 
+#'   the 'output' directory. Defaults to the first `prj_name`.
 #' @param desired_scen desired scenarios. If NULL, all the scenarios present in 
 #'  the database will be considered
 #' @param required_queries required queries to be loaded in the project. If 'All'
@@ -22,13 +25,12 @@
 #'   Default TRUE; run() sets this to FALSE when SDG3 isn't requested, since
 #'   this query is chunked and comparatively slow to extract.
 #' @return create the specified project
-#' @export
-create_prj <- function(db_name, db_path, prj_name = NULL,
+.create_prj <- function(db_name, db_path, prj_name = NULL, output_name = NULL,
                        desired_scen = NULL, required_queries = 'All',
                        include_land_query = TRUE, include_nonco2_query = TRUE) {
   
   query_file <- get('query_file', envir = asNamespace("gcamsdg"))
-  
+
   
   # select only the required and not-already-loaded queries
   if (exists("prj") || required_queries != "All") {
@@ -154,9 +156,8 @@ create_prj <- function(db_name, db_path, prj_name = NULL,
   
   if (!is.null(prj)) {
     print('save prj')
-    dir.create(prj_name, recursive = T)
-    rgcam::saveProject(prj, file = prj_name)
-    print(paste0('Project saved at ',prj_name))
+    rgcam::saveProject(prj, file = paste0(output_name,'.dat'))
+    print(paste0('Project saved at ',output_name))
   }
   
   
