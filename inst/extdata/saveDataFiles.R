@@ -6,9 +6,9 @@ library(magrittr)
 rawDataFolder <- here::here()
 
 
-## -- constants
-# first model year considered for every indicator's diff-vs-baseline average
-.gcamsdg_first_model_year <- 2020
+# ## -- constants
+# # first model year considered for every indicator's diff-vs-baseline average
+# .gcamsdg_first_model_year <- 2020
 
 
 

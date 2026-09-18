@@ -4,7 +4,7 @@
 \alias{.get_food_weights}
 \title{.get_food_weights}
 \usage{
-.get_food_weights()
+.get_food_weights(prj)
 }
 \value{
 `food_weights` and `food_wld_weights` global variables.

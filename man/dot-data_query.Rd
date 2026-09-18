@@ -2,7 +2,117 @@
 % Please edit documentation in R/utils.R
 \name{.data_query}
 \alias{.data_query}
-\title{.data_query}
+\title{#' .diff_vs_baseline
+#' 
+#' TODO description, return
+#' 
+#' @param result list containing the calculated SDG indicators.
+#' @param base_scen name of the reference scenario used for comparisons.
+#' @param final_year last year to evaluate in the time series.
+#'
+#' @return 
+.diff_vs_baseline <- function(result, base_scen, final_year) {
+  fmy <- .gcamsdg_first_model_year
+  out <- list()
+  
+  if (!is.null(result$gdp)) {
+    pop <- dplyr::bind_rows(lapply(loaded, function(l) rgcam::getQuery(l$prj, "population by region")))
+    gdp_pre <- result$gdp %>%
+      dplyr::mutate(Units = "Thous$/pers") %>%
+      gcamdata::left_join_error_no_match(pop, by = c("scenario", "region", "year")) %>%
+      dplyr::mutate(pop = value.y * 1E3, gdp = value.x * 1E3 * pop) %>%
+      dplyr::group_by(scenario, year) %>%
+      dplyr::summarise(gdp = sum(gdp), pop = sum(pop)) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(GDPpc_thous = gdp / pop / 1E3, unit = "Thous$/pers") %>%
+      dplyr::select(scenario, year, GDPpc_thous, unit)
+    gdp_base <- gdp_pre %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::rename(GDPpc_thous_base = GDPpc_thous) %>%
+      dplyr::select(-scenario)
+    out$gdp <- gdp_pre %>%
+      gcamdata::left_join_error_no_match(gdp_base, by = c("year", "unit")) %>%
+      dplyr::filter(year <= final_year, year >= fmy) %>%
+      dplyr::mutate(diff = GDPpc_thous - GDPpc_thous_base) %>%
+      postprocess_sdg_diff("Economy", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$expenditure)) {
+    exp_base <- result$expenditure %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::rename(total_expenditure_per_world_base = total_expenditure_per_world) %>%
+      dplyr::select(-scenario)
+    out$expenditure <- result$expenditure %>%
+      gcamdata::left_join_error_no_match(exp_base, by = "year") %>%
+      dplyr::mutate(unit = "perc_income") %>%
+      dplyr::filter(year <= final_year, year >= fmy) %>%
+      dplyr::mutate(diff = total_expenditure_per_world - total_expenditure_per_world_base) %>%
+      postprocess_sdg_diff("Poverty", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$poverty)) {
+    poverty_base <- result$poverty %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::rename(expenditure_percent_GDP_base = expenditure_percent_GDP) %>%
+      dplyr::select(-scenario)
+    out$poverty <- result$poverty %>%
+      gcamdata::left_join_error_no_match(poverty_base, by = c("year", "units")) %>%
+      dplyr::mutate(unit = "perc_GDP") %>%
+      dplyr::filter(year <= final_year, year >= fmy) %>%
+      dplyr::mutate(diff = expenditure_percent_GDP - expenditure_percent_GDP_base) %>%
+      postprocess_sdg_diff("Hunger", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$health)) {
+    health_pre <- result$health %>%
+      dplyr::group_by(scenario, year) %>%
+      dplyr::summarise(mort = sum(mort)) %>%
+      dplyr::ungroup()
+    health_base <- health_pre %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::rename(mort_base = mort) %>%
+      dplyr::select(-scenario)
+    out$health <- health_pre %>%
+      gcamdata::left_join_error_no_match(health_base, by = "year") %>%
+      dplyr::filter(year <= final_year, year >= fmy) %>%
+      dplyr::mutate(diff = mort - mort_base, unit = "Mortalities") %>%
+      postprocess_sdg_diff("Health", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$water)) {
+    water_runoff <- result$water %>% dplyr::filter(resource == "runoff")
+    water_base <- water_runoff %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::select(year, index_base = index_wd)
+    out$water <- water_runoff %>%
+      dplyr::select(scenario, year, index = index_wd) %>%
+      gcamdata::left_join_error_no_match(water_base, by = "year") %>%
+      dplyr::mutate(unit = "Index") %>%
+      dplyr::filter(year <= final_year, year >= fmy) %>%
+      dplyr::mutate(diff = index - index_base) %>%
+      postprocess_sdg_diff("Water", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$land)) {
+    land_base <- result$land %>%
+      dplyr::filter(scenario == base_scen) %>%
+      dplyr::rename(final_PSL_base = final_PSL) %>%
+      dplyr::select(final_PSL_base)
+    if (nrow(land_base) == 0) {
+      stop('show_diff = TRUE: base_scen "', base_scen, '" not found among the "land" results.')
+    }
+    out$land <- result$land %>%
+      dplyr::mutate(unit = "PSL", diff = final_PSL - land_base$final_PSL_base[1]) %>%
+      dplyr::select(scenario, unit, diff) %>%
+      postprocess_sdg_diff("Land", base_scen, match = "exact")
+  }
+  
+  if (!is.null(result$population)) out$population <- result$population
+  if (!is.null(result$gcamreport)) out$gcamreport <- result$gcamreport
+  
+  out
+}
+.data_query}
 \usage{
 .data_query(
   type,

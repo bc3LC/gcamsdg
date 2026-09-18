@@ -47,14 +47,3 @@
 #' }
 "query_land"
 
-#' .gcamsdg_first_model_year
-#'
-#' @source local
-#' @format .csv
-#' @description constant: fist year to be reported by gcamsdg
-#' @examples
-#' \dontrun{
-#' library(gcamsdg)
-#' gcamsdg::.gcamsdg_first_model_year
-#' }
-".gcamsdg_first_model_year"
