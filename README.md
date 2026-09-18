@@ -1,5 +1,94 @@
-# gcam_sdg
+# gcamsdg
 This repository includes different scripts to automatically compute and report Sustainable development Goals (SDG)-related indicators for alternative GCAM scenarios.
+
+The tool covers two steps: (1) extracting results for a set of scenarios from a GCAM database (via [rgcam](https://github.com/JGCRI/rgcam)), and (2) post-processing those results, combined with external datasets and tools (e.g. [rfasst](https://github.com/bc3LC/rfasst) for health, [Demeter](https://github.com/JGCRI/demeter) for land) into SDG-specific indicators. Both steps happen through a single function, `run()`.
+
+## Repository structure
+
+`gcamsdg` is a real R package (not a folder of scripts to `source()`), following the same conventions as the sibling BC3 tools [gcamreport](https://github.com/bc3LC/gcamreport) and [rfasst](https://github.com/bc3LC/rfasst). Note: the repository is named `gcamsdg` (GitHub renamed from the earlier `gcam_sdg`, which R package names can't contain an underscore for anyway).
+
+```
+gcamsdg/
+├── R/
+│   ├── run.R                    - the single entry point (see below)
+│   ├── cluster_submit.R         - internal: fills in and submits the bundled sbatch job for run(cluster = TRUE)
+│   ├── load_prj.R               - load a saved rgcam project
+│   ├── create_prj.R             - create an rgcam project from a GCAM database + queries
+│   ├── sdg0_population.R        - SDG 0: population (basis for other indicators)
+│   ├── sdg1_gdp.R                - SDG 1: GDP per capita
+│   ├── sdg1_expenditure.R        - SDG 1: food + energy expenditure share of income
+│   ├── sdg2_food_basket_bill.R  - SDG 2: food basket bill
+│   ├── sdg3_health.R            - SDG 3: air-pollution-attributable mortality
+│   ├── sdg6_water_scarcity.R    - SDG 6: water scarcity index
+│   ├── sdg15_land_indicator.R   - SDG 15: potential species loss (PSL)
+│   └── postprocess_sdg_diff.R   - shared diff-vs-baseline post-processing (used by run(show_diff = TRUE))
+└── inst/extdata/                # bundled GCAM queries (queries_*.xml), lookup data (CF.csv, Ecoregions_shp/, etc.),
+                                  # and the cluster job template (gcamsdg_cluster.sbatch, run_from_args.R)
+```
+
+## Installation
+
+```r
+# install.packages("devtools")
+devtools::install_github("bc3LC/gcamsdg")
+library(gcamsdg)
+```
+
+Or, when working directly on a local clone:
+
+```r
+devtools::load_all("path/to/gcamsdg")
+```
+
+## Usage
+
+Everything goes through one function, `run()`. It accepts data three ways:
+
+- an already-loaded rgcam project (`prj`)
+- one or more existing project files (`prj_name`, no database info needed)
+- one or more raw GCAM databases to extract from (`db_path` + `db_name` — pass a vector to process several separate scenario databases and combine the results in one call)
+
+```r
+# extract a single database and compute every SDG indicator
+run(db_name = "database_basexdb_myscenario", sdgs = "all")
+
+# just the ones you need - skips SDG15's slow Demeter run entirely
+run(db_name = "database_basexdb_myscenario", sdgs = c("gdp", "water"))
+
+# several policy-scenario databases at once, diffed against a baseline
+run(db_name = c("database_basexdb_policyA", "database_basexdb_policyB", "database_basexdb_base"),
+    show_diff = TRUE, base_scen = "myBaselineScenario")
+
+# also produce the standard gcamreport output from the same project
+run(db_name = "database_basexdb_myscenario", run_gcamreport = TRUE, GCAM_version = "v7.1")
+```
+
+See `?run` for the full parameter list, and the [step-by-step vignette](vignettes/Step_By_Step_Full_Example.Rmd) for worked examples of each mode.
+
+## Outputs
+
+`run()` returns a named list in memory, one data frame per computed SDG (`result$gdp`, `result$water`, ...), plus `$gcamreport` when requested. The same data is also written to disk under `<base_path>/gcamsdg/output/<SDG folder>/`, one subfolder per indicator (`SDG0-POP`, `SDG1-GDP`, `SDG1-Expenditure`, `SDG2-Poverty`, `SDG3-Health`, `SDG6-Water`, `SDG15-Land`), each with an `indiv_results/` (or similar) folder holding the raw CSV.
+
+Set `makeFigures = TRUE` to also get a basic PNG per computed indicator under each folder's `figures/` subfolder: a scenario-colored time series for indicators with a year dimension, or a bar chart by scenario for SDG15's PSL (a single net 2020-2050 value, no year dimension). Regional indicators (population, GDP, health) are aggregated to one global series first. This does **not** produce geographic maps (e.g. water scarcity by basin, PSL by ecoregion) - the underlying indicator functions currently aggregate that spatial detail away before returning their result, so real choropleth maps would need a separate, deeper change.
+
+## Running locally vs. on the BC3 cluster
+
+`run()` takes `base_path` (run directory containing `output/`/`prj_files/`) and `conda_env` (Demeter's conda environment, only needed for `sdgs` including `"land"`) as plain arguments, defaulting to the BC3 "DIPC" cluster's values. For a local run or a different cluster, just pass your own:
+
+```r
+run(db_name = "...", base_path = "/path/to/your/GCAM_run_dir",
+    conda_env = "/path/to/your/demeter-conda-env")
+```
+
+**To actually run on the BC3 cluster as a SLURM job** instead of in your current R session, set `cluster = TRUE`:
+
+```r
+run(db_name = "database_basexdb_myscenario", sdgs = "all", cluster = TRUE)
+```
+
+This fills in the bundled sbatch template ([inst/extdata/gcamsdg_cluster.sbatch](inst/extdata/gcamsdg_cluster.sbatch)) with the call's arguments and submits it via `sbatch` — **fire-and-forget**: it returns the job ID immediately rather than waiting for the job to finish (SLURM jobs run later, asynchronously, on a compute node). Check on it the normal SLURM way (`squeue`, the log file path returned by the call); results land under `<base_path>/gcamsdg/output/` once it completes.
+
+Before your first cluster run, edit the `#SBATCH` directives at the top of `inst/extdata/gcamsdg_cluster.sbatch` once for your own account/partition/resource needs (or override individual ones per call via `run(..., cluster = TRUE, sbatch_args = list(time = "48:00:00"))` without touching the file). `cluster = TRUE` only works with the `db_path`+`db_name` or existing-`prj_name`-file input modes — an in-memory `prj` object can't be handed to a separate job on another node.
 
 ## SDG description
 
@@ -7,7 +96,7 @@ This repository includes different scripts to automatically compute and report S
 
 Source: https://www.un.org/sustainabledevelopment/poverty/
 
-Script: [SDG1_Expenditure.R](https://https://github.com/bc3LC/gcam_sdg/blob/main/R/SDG1_Expenditure.R)
+Script: [sdg1_expenditure.R](R/sdg1_expenditure.R)
 
 To measure the impact of mitigation pathways on poverty, we focus on household expenditures on residential (home) energy and food relative to their average income, reflecting the relative pressure on households to meet their basic needs. 
 
@@ -32,7 +121,7 @@ Where $E reflects home energy expenditure, $F food expenditure, $I income, r the
 ### SDG 2: Zero hunger
 Source: https://www.un.org/sustainabledevelopment/hunger/
 
-Script: [SDG2_Food_Basket_Bill.R](https://github.com/bc3lc/gcam_sdg/blob/main/R/SDG2_Food_Basket_Bill.R)
+Script: [sdg2_food_basket_bill.R](R/sdg2_food_basket_bill.R)
 
 Description: 
 
@@ -45,7 +134,7 @@ $$\sum_{fc\ in\ foodNonStapleItems} ConsumptionPC_{fn,t,r} \cdot PricePCNonStapl
 ### SDG 3: Ensure healthy lives and promote well-being for all at all ages
 Source: https://www.un.org/sustainabledevelopment/health/
 
-Script: [SDG3_Health.R](https://github.com/bc3lc/gcam_sdg/blob/main/R/SDG3_Health.R)
+Script: [sdg3_health.R](R/sdg3_health.R)
 
 Description: 
 
@@ -78,7 +167,7 @@ References SDG3
 ## SDG 6: Clean Water and Sanitation
 Source: https://www.un.org/sustainabledevelopment/water-and-sanitation/
 
-Script: [SDG6_Water_Scarcity.R](https://github.com/bc3lc/gcam_sdg/blob/main/R/SDG6_Water_Scarcity.R)
+Script: [sdg6_water_scarcity.R](R/sdg6_water_scarcity.R)
 
 Description: 
 
@@ -105,7 +194,7 @@ References SDG6
 ## SDG15: Life of Land
 Source: https://www.un.org/sustainabledevelopment/biodiversity/
 
-Script: [SDG15 Life on Land.R](https://github.com/bc3lc/gcam_sdg/blob/main/R/SDG15_Land_Indicator.R)
+Script: [sdg15_land_indicator.R](R/sdg15_land_indicator.R)
 
 Description: 
 
