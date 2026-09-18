@@ -17,14 +17,135 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
   require(rfasst, quietly = TRUE)
   
   # Create the directories if they do not exist:
-  if (!dir.exists("output/SDG3-Health/mort.list")) dir.create("output/SDG3-Health/mort.list", recursive = T)
   if (!dir.exists("output/SDG3-Health/mort.fin")) dir.create("output/SDG3-Health/mort.fin", recursive = T)
+  if (!dir.exists("output/SDG3-Health/conc.fin")) dir.create("output/SDG3-Health/conc.fin", recursive = T)
   if (!dir.exists("output/SDG3-Health/figures")) dir.create("output/SDG3-Health/figures", recursive = T)
-  if (!dir.exists("output/SDG3-Health/maps")) dir.create("output/SDG3-Health/maps", recursive = T)
-  
+
   mort <- NULL
+  conc <- NULL
+  
+  # shares of each country by rfasst region
+  country_shares_rfasstReg <- rfasst::raw.ssp.data %>%
+    dplyr::filter(grepl("SSP2", SCENARIO),
+                  VARIABLE == "Population") %>%
+    tidyr::pivot_longer(cols = starts_with("X"),
+                        names_to = "year",
+                        values_to = "pop") %>%
+    dplyr::filter(complete.cases(.)) %>%
+    dplyr::mutate(year = gsub("X", "", year)) %>%
+    dplyr::select(country = REGION, year, pop) %>%
+    gcamdata::left_join_error_no_match(fasst_reg %>% dplyr::rename(country = subRegionAlt ), 
+                                       by = 'country') %>%
+    dplyr::group_by(fasst_region, year) %>%
+    dplyr::mutate(pop_fasst_reg = sum(pop)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(share = pop / pop_fasst_reg) %>%
+    dplyr::select(fasst_region, country, year, share) %>%
+    dplyr::mutate(year = as.numeric(year))
+  # add TWN
+  country_shares_rfasstReg <- rbind(
+    country_shares_rfasstReg,
+    country_shares_rfasstReg %>%
+    dplyr::filter(country == "CHN") %>%
+    dplyr::mutate(fasst_region = "TWN",
+                  country = "TWN",
+                  share = 1))
+  
+  # shares of each country by GCAM region
+  country_shares_GCAMReg <- rfasst::raw.ssp.data %>%
+    dplyr::filter(grepl("SSP2", SCENARIO),
+                  VARIABLE == "Population") %>%
+    tidyr::pivot_longer(cols = starts_with("X"),
+                        names_to = "year",
+                        values_to = "pop") %>%
+    dplyr::filter(complete.cases(.)) %>%
+    dplyr::mutate(year = gsub("X", "", year)) %>%
+    dplyr::select(country = REGION, year, pop) %>%
+    gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
+                                         dplyr::rename(country = `ISO 3`), 
+                                       by = 'country')
+  country_shares_GCAMReg <- 
+    merge(
+      # regional shares
+      country_shares_GCAMReg %>% 
+        dplyr::group_by(`GCAM Region`, year) %>%
+        dplyr::mutate(pop_gcam_reg = sum(pop)) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(gcam_share = pop / pop_gcam_reg,
+                      GCAM_region = `GCAM Region`) %>% 
+        dplyr::select(-`GCAM Region`),
+      
+      # global shares
+      country_shares_GCAMReg %>% 
+        dplyr::group_by(year) %>%
+        dplyr::mutate(pop_gcam_global = sum(pop)) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate(w_share = pop / pop_gcam_global) %>% 
+        dplyr::select(-`GCAM Region`),
+      
+      by = c("country", "year", "pop", "Country")
+    ) %>% 
+    dplyr::select(GCAM_region, country, year, gcam_share, w_share) %>%
+    dplyr::mutate(year = as.numeric(year))
+  # add TWN
+  country_shares_GCAMReg <- rbind(
+    country_shares_GCAMReg,
+    country_shares_GCAMReg %>%
+      dplyr::filter(country == "CHN") %>%
+      dplyr::mutate(GCAM_region = "Taiwan",
+                    country = "TWN",
+                    gcam_share = 1,
+                    w_share = 0))
+  
+  
+  
   for (i in rgcam::listScenarios(prj)) {
     print(paste(i,'PM25',sep = ' - '))
+    conc.pm25_pre <- rfasst::m2_get_conc_pm25(prj = prj,
+                                         prj_name = gsub("output/", "", output_name),
+                                         scen_name = i,
+                                         final_db_year = final_db_year,
+                                         saveOutput = saveOutput,
+                                         map = makeFigures,
+                                         recompute = T) %>% 
+      dplyr::mutate(year = as.numeric(as.character(year)))
+    
+    # downscale to ctry values to aggregate to GCAM regions
+    conc.pm25_country <- country_shares_rfasstReg %>%
+      dplyr::rename(region = fasst_region,
+                    rfasst_share = share) %>%
+      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::filter(year <= final_db_year,
+                    year %in% rfasst::all_years) %>%
+      left_join_strict(country_shares_GCAMReg,
+                       by = c('country', 'year')) %>% 
+      gcamdata::left_join_error_no_match(conc.pm25_pre, by = c('scenario','region', 'year')) %>%
+      dplyr::mutate(value_reg = value * rfasst_share * gcam_share,
+                    value_w = value * rfasst_share * w_share) %>% 
+      dplyr::select(scenario, country, year, value_reg, value_w, units)
+    
+    
+    conc.pm25_reg <- conc.pm25_country %>%
+      gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
+                                           dplyr::rename(country = `ISO 3`),
+                                         by = 'country') %>%
+      dplyr::group_by(Units = units, scenario, region = `GCAM Region`, year) %>%
+      dplyr::summarise(value = sum(value_reg)) %>%
+      dplyr::ungroup()
+    
+    conc.pm25_w <- conc.pm25_country %>%
+      gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
+                                           dplyr::rename(country = `ISO 3`),
+                                         by = 'country') %>%
+      dplyr::group_by(Units = units, scenario, year) %>%
+      dplyr::summarise(value = sum(value_w),
+                       region = 'World') %>%
+      dplyr::ungroup()
+    
+    conc.pm25 <- rbind(conc.pm25_reg, conc.pm25_w)
+    
+    
+    
     mort_pre <- rfasst::m3_get_mort_pm25(prj = prj,
                                          prj_name = gsub("output/", "", output_name),
                                          scen_name = i,
@@ -51,34 +172,8 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
       dplyr::ungroup() %>%
       dplyr::mutate(year = as.numeric(year))
       
-    
-    # Downscale to country-level based on population
-    country_shares <- rfasst::raw.ssp.data %>%
-      dplyr::filter(grepl("SSP2", SCENARIO),
-                    VARIABLE == "Population") %>%
-      tidyr::pivot_longer(cols = starts_with("X"),
-                          names_to = "year",
-                          values_to = "pop") %>%
-      dplyr::filter(complete.cases(.)) %>%
-      dplyr::mutate(year = gsub("X", "", year)) %>%
-      dplyr::select(country = REGION, year, pop) %>%
-      gcamdata::left_join_error_no_match(fasst_reg %>% dplyr::rename(country = subRegionAlt ), 
-                                          by = 'country') %>%
-      dplyr::group_by(fasst_region, year) %>%
-      dplyr::mutate(pop_fasst_reg = sum(pop)) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(share = pop / pop_fasst_reg) %>%
-      dplyr::select(fasst_region, country, year, share) %>%
-      dplyr::mutate(year = as.numeric(year))
-    
-    # add TWN
-    twn_share <- country_shares %>%
-      dplyr::filter(country == "CHN") %>%
-      dplyr::mutate(fasst_region = "TWN",
-                    country = "TWN",
-                    share = 1)
-    
-    mort.pm25_country<- dplyr::bind_rows(country_shares, twn_share) %>%
+    # downscale to country-level based on population
+    mort.pm25_country<- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region) %>%
       dplyr::mutate(tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
@@ -99,6 +194,52 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     #--------------------
     # ADD O3
     print(paste(i,'O3',sep = ' - '))
+    conc.o3_pre <- rfasst::m2_get_conc_o3(prj = prj,
+                                          prj_name = gsub("output/", "", output_name),
+                                          scen_name = i,
+                                          final_db_year = final_db_year,
+                                          saveOutput = saveOutput,
+                                          map = makeFigures,
+                                          recompute = T) %>% 
+      dplyr::mutate(year = as.numeric(as.character(year)))
+    
+    # downscale to ctry values to aggregate to GCAM regions
+    conc.o3_country <- country_shares_rfasstReg %>%
+      dplyr::rename(region = fasst_region,
+                    rfasst_share = share) %>%
+      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::filter(year <= final_db_year,
+                    year %in% rfasst::all_years) %>%
+      left_join_strict(country_shares_GCAMReg,
+                       by = c('country', 'year')) %>% 
+      gcamdata::left_join_error_no_match(conc.o3_pre, by = c('scenario','region', 'year')) %>%
+      dplyr::mutate(value_reg = value * rfasst_share * gcam_share,
+                    value_w = value * rfasst_share * w_share) %>% 
+      dplyr::select(scenario, country, year, value_reg, value_w, units)
+    
+    
+    conc.o3_reg <- conc.o3_country %>%
+      gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
+                                           dplyr::rename(country = `ISO 3`),
+                                         by = 'country') %>%
+      dplyr::group_by(Units = units, scenario, region = `GCAM Region`, year) %>%
+      dplyr::summarise(value = sum(value_reg)) %>%
+      dplyr::ungroup()
+    
+    conc.o3_w <- conc.o3_country %>%
+      gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
+                                           dplyr::rename(country = `ISO 3`),
+                                         by = 'country') %>%
+      dplyr::group_by(Units = units, scenario, year) %>%
+      dplyr::summarise(value = sum(value_w),
+                       region = 'World') %>%
+      dplyr::ungroup()
+    
+    conc.o3 <- rbind(conc.o3_reg, conc.o3_w)
+
+    
+        
+    
     o3_mort_pre <- rfasst::m3_get_mort_o3(prj = prj,
                                           prj_name = gsub("output/", "", output_name),
                                           scen_name = i,
@@ -125,7 +266,7 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
       dplyr::ungroup() %>%
       dplyr::mutate(year = as.numeric(year))
     
-    mort.o3_country<- dplyr::bind_rows(country_shares, twn_share) %>%
+    mort.o3_country<- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region) %>%
       dplyr::mutate(tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
@@ -143,20 +284,42 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
       dplyr::summarise(mort = sum(mort)) %>%
       dplyr::ungroup()
     
+    
     #--------------------
-    # Sum PM2.5 and O3
+    # Sum PM2.5 and O3 mortality
     mort_tmp <- dplyr::bind_rows(
-      mort.pm25,
-      mort.o3
-    ) %>%
-      dplyr::group_by(scenario, GCAM_region, year) %>%
-      dplyr::summarise(mort = sum(mort)) %>%
-      dplyr::ungroup()
+      mort.pm25 %>% dplyr::mutate(pollutant = 'PM25'),
+      mort.o3 %>% dplyr::mutate(pollutant = 'O3')
+    ) %>% 
+      dplyr::mutate(Units = 'million')
+    mort_tmp <- rbind(
+      mort_tmp,
+      mort_tmp %>%
+      dplyr::group_by(Units, scenario, GCAM_region, year) %>%
+      dplyr::summarise(mort = sum(mort),
+                       pollutant = 'All') %>%
+      dplyr::ungroup()) %>% 
+    dplyr::rename(value = mort,
+                  region = GCAM_region)
 
     if (is.null(mort)) {
       mort <- mort_tmp
     } else {
       mort <- rbind(mort, mort_tmp)
+    }
+
+    
+    #--------------------
+    # Bind PM2.5 and O3 concentration
+    conc_tmp <- dplyr::bind_rows(
+      conc.pm25 %>% dplyr::mutate(pollutant = 'PM25'),
+      conc.o3 %>% dplyr::mutate(pollutant = 'O3')
+    )
+
+    if (is.null(conc)) {
+      conc <- conc_tmp
+    } else {
+      conc <- rbind(conc, conc_tmp)
     }
     print('-------------------------------------------------------------------')
   }
@@ -166,7 +329,11 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
                             file = file.path('output/SDG3-Health/mort.fin',
                                              paste0('mort_fin_',gsub("output/", "", output_name), ".csv")),
                             row.names = F)
+  if (saveOutput) write.csv(conc, 
+                            file = file.path('output/SDG3-Health/conc.fin',
+                                             paste0('conc_fin_',gsub("output/", "", output_name), ".csv")),
+                            row.names = F)
   
-  return(invisible(mort))
+  return(invisible(list(mort = mort,conc = conc)))
   
 } 
