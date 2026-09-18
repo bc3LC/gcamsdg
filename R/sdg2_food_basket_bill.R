@@ -51,7 +51,7 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T, makeFigu
         dplyr::mutate(Units = "2005$/Mcal/day") %>%
         dplyr::filter(year %in% available_years) %>% 
         # add food_weights to estimate Staples & NonStaples price
-       left_join_strict(.get_food_weights() %>%
+       left_join_strict(.get_food_weights(prj) %>%
                           tidyr::complete(tidyr::nesting(scenario, region, supplysector, supplysector_disaggregated),
                                           year = unique(year),
                                           fill = list(weight = 0)) %>%

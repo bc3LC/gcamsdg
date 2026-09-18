@@ -30,7 +30,7 @@
                        include_land_query = TRUE, include_nonco2_query = TRUE) {
   
   query_file <- get('query_file', envir = asNamespace("gcamsdg"))
-
+  prj_modified <- F
   
   # select only the required and not-already-loaded queries
   if (exists("prj") || required_queries != "All") {
@@ -150,11 +150,15 @@
   
   
   if (exists("prj") && exists("prj_sdg") && !is.null(prj_sdg)) {
+    prj_modified <- T
     prj <- rgcam::mergeProjects(prj_name, list(prj, prj_sdg), clobber = FALSE, saveProj = FALSE)
+  } else if (!exists("prj") && exists("prj_sdg") && !is.null(prj_sdg)) {
+    prj_modified <- T
+    prj <- prj_sdg
   }
   
   
-  if (!is.null(prj)) {
+  if (!is.null(prj) & prj_modified) {
     print('save prj')
     rgcam::saveProject(prj, file = paste0(output_name,'.dat'))
     print(paste0('Project saved at ',output_name))

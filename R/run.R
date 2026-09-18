@@ -184,7 +184,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
               list(db_path = db_path, db_name = db_name, prj_name = prj_name,
                    scenarios = desired_scen, final_year = final_db_year, 
                    GCAM_version = GCAM_version, save_output = TRUE, 
-                   output_file = file.path(getwd(),'output',output_name), launch_ui = FALSE),
+                   output_file = file.path(getwd(),output_name), launch_ui = FALSE),
               gcamreport_args
               )
             )
@@ -316,15 +316,13 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   
   # ---- optional diff-vs-baseline (replaces the old run_comparison()) ----
   if (show_diff) {
-    result <- .diff_vs_baseline(result, loaded, base_scen, final_db_year)
+    result <- .diff_vs_baseline(result, base_scen, final_db_year)
   }
   
   result # TODO check the showdiff, cluster, and do more testing
 }
 
 
-# first model year considered for every indicator's diff-vs-baseline average
-.gcamsdg_first_model_year <- 2020
 
 #' @keywords internal
 .diff_vs_baseline <- function(result, loaded, base_scen, final_db_year) {

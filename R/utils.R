@@ -165,7 +165,7 @@
 #' @keywords internal
 #' @return `food_weights` and `food_wld_weights` global variables.
 #' @importFrom magrittr %>%
-.get_food_weights <- function() {
+.get_food_weights <- function(prj) {
   sector <- input <- var <- value <- unit_conv <- scenario <- region <-
     year <- food_weights <- food_wld_weights <- NULL
   
