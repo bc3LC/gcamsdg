@@ -307,7 +307,8 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,
   #                                                                          base_path = base_path, conda_env = conda_env))
   # }
-  # 
+  
+  
   # # ---- optional basic figures (time series / bar charts, one per indicator) ----
   # if (makeFigures) {
   #   .make_sdg_figures(result, base_path)
@@ -319,7 +320,6 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     result <- .diff_vs_baseline(result, base_scen, final_db_year)
   }
   
-  result # TODO check the showdiff, cluster, and do more testing
 }
 
 
@@ -350,6 +350,8 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       dplyr::mutate(diff = GDPpc_thous - GDPpc_thous_base) %>%
       postprocess_sdg_diff("Economy", base_scen, match = "exact")
   }
+  # --- gather sdg indicators 
+  result_gathered <- .gather_sdgs(result)
   
   if (!is.null(result$expenditure)) {
     exp_base <- result$expenditure %>%
@@ -423,6 +425,8 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   
   if (!is.null(result$population)) out$population <- result$population
   if (!is.null(result$gcamreport)) out$gcamreport <- result$gcamreport
+  result_gathered
   
   out
+  # TODO check the showdiff, cluster, and do more testing
 }
