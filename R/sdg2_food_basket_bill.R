@@ -117,5 +117,11 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T, makeFigu
                                              paste0('SDG2_fbbPerGlobal_',gsub("output/", "", output_name), ".csv")), 
                             row.names = F)
 
-  return(invisible(food_basket_bill_percent_GDP_global))
+  food_basket_bill_percent <- 
+    bind_rows(food_basket_bill_percent_GDP,
+              food_basket_bill_percent_GDP_global %>% 
+                mutate(region = 'World')) %>% 
+    filter(year %in% available_years)
+  
+  return(invisible(food_basket_bill_percent))
 }
