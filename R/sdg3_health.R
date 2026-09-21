@@ -34,7 +34,7 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     dplyr::filter(complete.cases(.)) %>%
     dplyr::mutate(year = gsub("X", "", year)) %>%
     dplyr::select(country = REGION, year, pop) %>%
-    gcamdata::left_join_error_no_match(fasst_reg %>% dplyr::rename(country = subRegionAlt ), 
+    gcamdata::left_join_error_no_match(rfasst::fasst_reg %>% dplyr::rename(country = subRegionAlt ), 
                                        by = 'country') %>%
     dplyr::group_by(fasst_region, year) %>%
     dplyr::mutate(pop_fasst_reg = sum(pop)) %>%
@@ -323,6 +323,24 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     }
     print('-------------------------------------------------------------------')
   }
+  #--------------------
+  # Extrapolate years in between
+  mort <- mort %>%
+    dplyr::group_by(scenario, region, pollutant, Units) %>%
+    tidyr::complete(year = available_years) %>%
+    dplyr::mutate(
+      value = zoo::na.approx(value, x = year, na.rm = FALSE)
+    ) %>%
+    dplyr::ungroup()
+
+  conc <- conc %>%
+    dplyr::group_by(scenario, region, pollutant, Units) %>%
+    tidyr::complete(year = available_years) %>%
+    dplyr::mutate(
+      value = zoo::na.approx(value, x = year, na.rm = FALSE)
+    ) %>%
+    dplyr::ungroup()
+  
   #--------------------
  
   if (saveOutput) write.csv(mort, 

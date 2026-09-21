@@ -24,7 +24,8 @@ Imports:
     sp,
     raster,
     shapefiles,
-    grid
+    grid,
+    zoo
 Suggests:
     devtools,
     roxygen2,
