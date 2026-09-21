@@ -234,8 +234,11 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   } else {
     final_db_year <<- final_available_year
   }
-  available_years <<- c(1990, seq(2005, final_db_year, 5))
-  
+  years_in_prj <- .listYears(prj)
+  years_in_prj <- years_in_prj[!is.na(years_in_prj)]
+  base_year <<- dplyr::if_else(2021 %in% years_in_prj, 2021, 2015)
+  available_years <<- c(1990,years_in_prj[years_in_prj >= 2005 & years_in_prj <= final_available_year])
+
   
   # ---- auto-detect prj_base base_scen, if not supplied ----
   if (show_diff) { # TODO cont from here

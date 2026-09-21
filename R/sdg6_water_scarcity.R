@@ -46,31 +46,38 @@ get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T, makeFigure
     dplyr::rename(value_wd = value)
 
   # Extract values of baseline 
-  water_withdrawal_2015 = water_withdrawal %>% dplyr::filter(year == 2015) %>% dplyr::rename(value_wd_2015 = value_wd)
-  water_supply_2015 = water_supply %>% dplyr::filter(year == 2015) %>% dplyr::rename(value_sup_2015 = value_sup)
+  # lastHistYear <- 2015
+  lastHistYear <- if (2021 %in% unique(water_withdrawal$year)) 2021 else 2015
+  water_withdrawal_lastHistYear = water_withdrawal %>% dplyr::filter(year == lastHistYear) %>% dplyr::rename(value_wd_lastHistYear = value_wd)
+  water_supply_lastHistYear = water_supply %>% dplyr::filter(year == lastHistYear) %>% dplyr::rename(value_sup_lastHistYear = value_sup)
   
   # Compute the Weighted Water Scarcity Index (Weighted per Basin both by Supply & by Withdrawal)
   water_scarcity_index = water_supply %>%
     dplyr::left_join(water_withdrawal) %>%
     dplyr::mutate(index = value_wd / value_sup)
 
-  water_scarcity_index = merge(water_scarcity_index, water_withdrawal_2015, by = c("basin", "region", "scenario", "subresource"))
-  water_scarcity_index = merge(water_scarcity_index, water_supply_2015, by = c("basin", "region",  "scenario", "subresource"))
+  water_scarcity_index = merge(water_scarcity_index, water_withdrawal_lastHistYear, by = c("basin", "region", "scenario", "subresource"))
+  water_scarcity_index = merge(water_scarcity_index, water_supply_lastHistYear, by = c("basin", "region",  "scenario", "subresource"))
   water_scarcity_index = water_scarcity_index %>% 
-    dplyr::mutate(weighted_sup = index * value_sup_2015,
-                  weighted_wd = index * value_wd_2015) %>%
+    dplyr::mutate(weighted_sup = index * value_sup_lastHistYear,
+                  weighted_wd = index * value_wd_lastHistYear) %>%
     dplyr::select(-year, -year.y) %>% 
     dplyr::rename(year = year.x) %>% 
     dplyr::group_by(scenario, year, region, resource = dplyr::if_else(subresource == "runoff", "runoff", "groundwater")) %>%
-    dplyr::summarize(index_sup = sum(weighted_sup) / sum(value_sup_2015),
-                     index_wd = sum(weighted_wd) / sum(value_wd_2015),
-                     value_wd_2015 = sum(value_wd_2015)) %>%
-    dplyr::ungroup() 
+    dplyr::summarize(index_sup = sum(weighted_sup) / sum(value_sup_lastHistYear),
+                     index_wd = sum(weighted_wd) / sum(value_wd_lastHistYear),
+                     value_wd_lastHistYear = sum(value_wd_lastHistYear)) %>%
+    dplyr::ungroup() %>% 
+    tidyr::replace_na(list(
+      index_sup = 0, 
+      index_wd = 0, 
+      value_wd_lastHistYear = 0
+    ))
   
   # Compute World weighted average for Water Scarcity Index
   water_scarcity_index_world = water_scarcity_index %>% 
     dplyr::group_by(scenario, year, resource) %>%
-    dplyr::summarize(index_wd = (sum(index_wd * value_wd_2015)) / sum(value_wd_2015)) %>% 
+    dplyr::summarize(index_wd = (sum(index_wd * value_wd_lastHistYear)) / sum(value_wd_lastHistYear)) %>% 
     dplyr::ungroup() %>% 
     dplyr::mutate(region = "World")
   
@@ -79,7 +86,7 @@ get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T, makeFigure
     dplyr::bind_rows(water_scarcity_index_world) %>% 
     dplyr::filter(resource == "runoff",
                   year %in% available_years) %>% 
-    dplyr::select(-c(index_sup, value_wd_2015))
+    dplyr::select(-c(index_sup, value_wd_lastHistYear))
   
 
   if (saveOutput) write.csv(water_scarcity_index, 
