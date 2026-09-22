@@ -216,9 +216,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   } else {
     for (i in seq_along(entries)) {
       e <- entries[[i]]
-      .create_prj(db_path = e$db_path, db_name = e$db_name, 
-                 prj_name = e$prj_name, output_name = output_name,
-                 desired_scen = desired_scen,
+      prj <- .create_prj(db_path = e$db_path, db_name = e$db_name, 
+                 prj_name = e$prj_name, prj = prj, 
+                 output_name = output_name, desired_scen = desired_scen, 
                  include_land_query = "land" %in% sdgs,
                  include_nonco2_query = "health" %in% sdgs)
     }
@@ -241,7 +241,7 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
 
   
   # ---- auto-detect prj_base base_scen, if not supplied ----
-  if (show_diff) { # TODO cont from here
+  if (show_diff) {
     scens_list <- rgcam::listScenarios(prj) 
     
     # if only one scenario availabe, set show_diff to FALSE and warn the user
