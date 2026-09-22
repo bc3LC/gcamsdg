@@ -143,11 +143,9 @@
   
   # bind with the original gcamreport and organize columns
   final_report <- dplyr::bind_rows(long_indicators, base_report) %>%
-    dplyr::select(Model, Scenario, Region, Variable, Unit, 
-                  all_of(sort(grep("^[0-9]{4}$", names(final_report), value = TRUE)))) %>% 
+    dplyr::select(Model, Scenario, Region, Variable, Unit, matches("^[0-9]{4}$")) %>%
+    dplyr::select(Model, Scenario, Region, Variable, Unit, sort(names(.)[5:ncol(.)])) %>%
     dplyr::arrange(Model, Scenario, Variable, Region)
-
-  
 
   # save output
   save(final_report, file = paste0(output_name, '_reportSDGs.RData'))
