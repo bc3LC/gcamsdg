@@ -284,8 +284,6 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
 
   
   # ---- compute the requested indicators, across every loaded project ----
-  result <- list()
-  
   if ("population" %in% sdgs) {
     result$population <- 
       get_sdg0_pop(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
