@@ -1,6 +1,3 @@
-library(dplyr)
-library(tidyr)
-
 #' get_sdg15_land_indicator
 #'
 #' Compute SDG 15 (Life on Land) as the net Potential Species Loss (PSL)
@@ -9,14 +6,13 @@ library(tidyr)
 #' @param prj uploaded project file
 #' @param prj_name project file name, used to tag the saved output file
 #' @param saveOutput save the produced output
-#' @param makeFigures generate and save graphical representation/s of the output
 #' @param base_path run directory containing the `gcamsdg/` checkout and the
 #'   Demeter model (defaults to the BC3 cluster path)
 #' @param conda_env conda environment with Demeter installed, used by
 #'   reticulate (defaults to the BC3 cluster environment)
 #' @return data frame with the final PSL by scenario
 #' @export
-get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T, makeFigures = F,
+get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
                                       base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
                                       conda_env = "/scratch/bc3lc/conda-env/dem-env-3"){
 

@@ -6,10 +6,9 @@
 #' @param output_name output file name, used to tag the saved output file in 
 #' the 'output' directory.
 #' @param saveOutput save the produced output
-#' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with the global food basket bill (% GDP) by scenario and year
 #' @export
-get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T, makeFigures = F){
+get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
 
   print('computing sdg2 - food basket bill...')
 

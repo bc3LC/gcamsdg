@@ -6,10 +6,9 @@
 #' @param output_name output file name, used to tag the saved output file in 
 #' the 'output' directory.
 #' @param saveOutput save the produced output
-#' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with population by region, scenario and year
 #' @export
-get_sdg0_pop <- function(prj, output_name, saveOutput = T, makeFigures = F){
+get_sdg0_pop <- function(prj, output_name, saveOutput = T){
 
   print('GCAMSDG info: computing sdg0 - POP...')
   

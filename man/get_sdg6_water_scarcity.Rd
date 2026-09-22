@@ -4,7 +4,7 @@
 \alias{get_sdg6_water_scarcity}
 \title{get_sdg6_water_scarcity}
 \usage{
-get_sdg6_water_scarcity(prj, output_name, saveOutput = T, makeFigures = F)
+get_sdg6_water_scarcity(prj, output_name, saveOutput = T)
 }
 \arguments{
 \item{prj}{uploaded project file}
@@ -13,8 +13,6 @@ get_sdg6_water_scarcity(prj, output_name, saveOutput = T, makeFigures = F)
 the 'output' directory.}
 
 \item{saveOutput}{save the produced output}
-
-\item{makeFigures}{generate and save graphical representation/s of the output}
 }
 \value{
 data frame with the water scarcity index by scenario, resource and year

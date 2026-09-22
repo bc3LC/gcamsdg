@@ -4,7 +4,7 @@
 \alias{get_sdg0_pop}
 \title{get_sdg0_pop}
 \usage{
-get_sdg0_pop(prj, output_name, saveOutput = T, makeFigures = F)
+get_sdg0_pop(prj, output_name, saveOutput = T)
 }
 \arguments{
 \item{prj}{uploaded project file}
@@ -13,8 +13,6 @@ get_sdg0_pop(prj, output_name, saveOutput = T, makeFigures = F)
 the 'output' directory.}
 
 \item{saveOutput}{save the produced output}
-
-\item{makeFigures}{generate and save graphical representation/s of the output}
 }
 \value{
 data frame with population by region, scenario and year

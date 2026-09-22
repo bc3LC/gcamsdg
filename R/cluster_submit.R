@@ -5,7 +5,7 @@
 #' not wait for the job to finish. Internal helper for `run(cluster = TRUE)`.
 #' @keywords internal
 .submit_gcamsdg_cluster_job <- function(prj_name, db_path, db_name, desired_scen, sdgs, ssp,
-                                         show_diff, base_scen, final_db_year, saveOutput, makeFigures,
+                                         show_diff, base_scen, final_db_year, saveOutput,
                                          base_path, conda_env, sbatch_args,
                                          run_gcamreport, GCAM_version, gcamreport_args) {
 
@@ -19,7 +19,7 @@
   args <- list(prj = NULL, prj_name = prj_name, db_path = db_path, db_name = db_name,
                desired_scen = desired_scen, sdgs = sdgs, ssp = ssp, prj_base = NULL,
                show_diff = show_diff, base_scen = base_scen,
-               final_db_year = final_db_year, saveOutput = saveOutput, makeFigures = makeFigures,
+               final_db_year = final_db_year, saveOutput = saveOutput,
                base_path = base_path, conda_env = conda_env,
                cluster = FALSE, sbatch_args = list(),
                run_gcamreport = run_gcamreport, GCAM_version = GCAM_version, gcamreport_args = gcamreport_args)

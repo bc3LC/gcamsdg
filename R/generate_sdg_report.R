@@ -1,4 +1,4 @@
-#' run
+#' generate_sdg_report
 #' 
 #' Single entry point to extract SDG indicators for a GCAM scenario set.
 #' Accepts one of three ways to get the underlying data: an already-loaded
@@ -42,7 +42,8 @@
 #'   projects and uses that one automatically.
 #' @param show_diff if TRUE, return each indicator diffed against
 #'   `base_scen` (averaged over the model period, tagged by policy sector,
-#'   pivoted wide) instead of raw per-scenario values
+#'   pivoted wide) instead of raw per-scenario values. CURRENTLY NOT SUPPORTED,
+#'   WORK IN PROGRESS.
 #' @param base_scen name of the baseline scenario to diff every other
 #'   scenario against. Required when `show_diff = TRUE`.
 #' @param final_db_year last model year to consider. Takes last available
@@ -80,15 +81,15 @@
 #'   `run_gcamreport = TRUE`. When `cluster = TRUE`, instead returns a list
 #'   with the submitted job ID and the output path to check once it's done.
 #' @export
-run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
-                output_name = NULL, desired_scen = NULL, sdgs = "all",
-                ssp = NULL, prj_base = NULL,
-                show_diff = FALSE, base_scen = NULL,
-                final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
-                base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
-                conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
-                cluster = FALSE, sbatch_args = list(),
-                run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
+generate_sdg_report <- function(
+    prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
+    output_name = NULL, desired_scen = NULL, sdgs = "all",
+    ssp = NULL, prj_base = NULL, show_diff = FALSE, base_scen = NULL,
+    final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
+    base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
+    conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
+    cluster = FALSE, sbatch_args = list(),
+    run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
   
   all_sdgs <- c("population", "gdp", "expenditure", "poverty", "health", "water", "land")
   sdgs_is_all <- identical(sdgs, "all")
@@ -286,27 +287,27 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   # ---- compute the requested indicators, across every loaded project ----
   if ("population" %in% sdgs) {
     result$population <- 
-      get_sdg0_pop(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg0_pop(prj, output_name, saveOutput = saveOutput)
   }
   if ("gdp" %in% sdgs) {
     result$gdp <- 
-      get_sdg1_gdp(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg1_gdp(prj, output_name, saveOutput = saveOutput)
   }
   if ("poverty" %in% sdgs) {
     result$poverty <- 
-      get_sdg2_food_basket_bill(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg2_food_basket_bill(prj, output_name, saveOutput = saveOutput)
   }
   if ("health" %in% sdgs) {
     gcam_eur <- if(grepl('Europe',GCAM_version)) T else F
     result$health <- 
-      get_sdg3_health(prj, output_name, gcam_eur = gcam_eur, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg3_health(prj, output_name, gcam_eur = gcam_eur, saveOutput = saveOutput)
   }
   if ("water" %in% sdgs) {
     result$water <- 
-      get_sdg6_water_scarcity(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg6_water_scarcity(prj, output_name, saveOutput = saveOutput)
   }
   # if ("land" %in% sdgs) {
-  #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput, makeFigures = makeFigures,
+  #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput,
   #                                                                          base_path = base_path, conda_env = conda_env))
   # }
   
@@ -326,9 +327,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
   #   result <- .diff_vs_baseline(result, base_scen, final_db_year)
   # }
   
-  result_gathered
+  return(invisible(result_gathered))
   
-  # TODO check the showdiff, cluster, and do more testing
+  # TODO check the showdiff, cluster, figures, and do more testing
 }
 
 

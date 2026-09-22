@@ -15,7 +15,6 @@
   base_scen,
   final_db_year,
   saveOutput,
-  makeFigures,
   base_path,
   conda_env,
   sbatch_args,

@@ -8,7 +8,6 @@ get_sdg15_land_indicator(
   prj,
   prj_name,
   saveOutput = T,
-  makeFigures = F,
   base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
   conda_env = "/scratch/bc3lc/conda-env/dem-env-3"
 )
@@ -19,8 +18,6 @@ get_sdg15_land_indicator(
 \item{prj_name}{project file name, used to tag the saved output file}
 
 \item{saveOutput}{save the produced output}
-
-\item{makeFigures}{generate and save graphical representation/s of the output}
 
 \item{base_path}{run directory containing the `gcamsdg/` checkout and the
 Demeter model (defaults to the BC3 cluster path)}

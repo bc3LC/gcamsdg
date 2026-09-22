@@ -4,7 +4,7 @@
 \alias{get_sdg2_food_basket_bill}
 \title{get_sdg2_food_basket_bill}
 \usage{
-get_sdg2_food_basket_bill(prj, output_name, saveOutput = T, makeFigures = F)
+get_sdg2_food_basket_bill(prj, output_name, saveOutput = T)
 }
 \arguments{
 \item{prj}{uploaded project file}
@@ -13,8 +13,6 @@ get_sdg2_food_basket_bill(prj, output_name, saveOutput = T, makeFigures = F)
 the 'output' directory.}
 
 \item{saveOutput}{save the produced output}
-
-\item{makeFigures}{generate and save graphical representation/s of the output}
 }
 \value{
 data frame with the global food basket bill (% GDP) by scenario and year
