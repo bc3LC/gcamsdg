@@ -52,10 +52,7 @@
 #'   `gcamsdg/output/<SDG>/`), same as the underlying `get_sdgX_*()` calls
 #' @param makeFigures generate and save a basic figure for each computed
 #'   indicator (a scenario-colored time series, or a bar chart for
-#'   indicators without a year dimension) under
-#'   `<base_path>/gcamsdg/output/<SDG>/figures/`, plus whatever additional
-#'   figure(s) the underlying indicator itself supports (currently just
-#'   SDG6's more detailed resource-faceted charts)
+#'   indicators without a year dimension) under `output/figures/`
 #' @param base_path run directory containing `output/`/`prj_files/`.
 #'   Defaults to the BC3 "DIPC" cluster path; pass your own for a local run
 #'   or a different cluster.
@@ -312,10 +309,10 @@ generate_sdg_report <- function(
   # }
   
   
-  # # ---- optional basic figures (time series / bar charts, one per indicator) ----
-  # if (makeFigures) {
-  #   .make_sdg_figures(result, base_path)
-  # }
+  # ---- optional basic figures (time series / bar charts, one per indicator) ----
+  if (makeFigures) {
+    .make_sdg_figures(result, output_name)
+  }
   
   
   # --- gather sdg indicators 
