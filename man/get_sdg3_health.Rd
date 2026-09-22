@@ -4,13 +4,21 @@
 \alias{get_sdg3_health}
 \title{get_sdg3_health}
 \usage{
-get_sdg3_health(prj, output_name, saveOutput = T, makeFigures = F)
+get_sdg3_health(
+  prj_f,
+  output_name,
+  gcam_eur = F,
+  saveOutput = T,
+  makeFigures = F
+)
 }
 \arguments{
-\item{prj}{uploaded project file}
+\item{prj_f}{uploaded project file}
 
 \item{output_name}{output file name, used to tag the saved output file in 
 the 'output' directory.}
+
+\item{gcam_eur}{boolean to indicate if the GCAM version is GCAM-Europe or not}
 
 \item{saveOutput}{save the produced output}
 
