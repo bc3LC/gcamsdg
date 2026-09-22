@@ -3,15 +3,16 @@
 #' Compute SDG 3 (Health) as premature mortalities attributable to long-term
 #' exposure to PM2.5 and O3, using rfasst, downscaled to country level by
 #' population share and re-aggregated to GCAM region.
-#' @param prj uploaded project file
+#' @param prj_f uploaded project file
 #' @param output_name output file name, used to tag the saved output file in 
 #' the 'output' directory.
+#' @param gcam_eur boolean to indicate if the GCAM version is GCAM-Europe or not
 #' @param saveOutput save the produced output
 #' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with mortalities by scenario, GCAM region and year
 #' @import rfasst
 #' @export
-get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
+get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, makeFigures = F){
   
   print('GCAMSDG info: computing sdg3 - health impacts......')
   require(rfasst, quietly = TRUE)
@@ -97,16 +98,17 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
                     gcam_share = 1,
                     w_share = 0))
   
+  gcam_eur
   
-  
-  for (i in rgcam::listScenarios(prj)) {
+  for (i in rgcam::listScenarios(prj_f)) {
     print(paste(i,'PM25',sep = ' - '))
-    conc.pm25_pre <- rfasst::m2_get_conc_pm25(prj = prj,
-                                         prj_name = gsub("output/", "", output_name),
-                                         scen_name = i,
+    conc.pm25_pre <- rfasst::m2_get_conc_pm25(prj = prj_f,
+                                         prj_name = paste0(output_name,'.dat'),
+                                         scen_name = i, gcam_eur = gcam_eur,
                                          final_db_year = final_db_year,
                                          saveOutput = saveOutput,
-                                         map = makeFigures,
+                                         map = makeFigures, anim = F,
+                                         downscale = F,
                                          recompute = T) %>% 
       dplyr::mutate(year = as.numeric(as.character(year)))
     
@@ -146,12 +148,12 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     
     
     
-    mort_pre <- rfasst::m3_get_mort_pm25(prj = prj,
+    mort_pre <- rfasst::m3_get_mort_pm25(prj = prj_f,
                                          prj_name = gsub("output/", "", output_name),
-                                         scen_name = i,
+                                         scen_name = i, gcam_eur = gcam_eur,
                                          final_db_year = final_db_year,
                                          saveOutput = saveOutput,
-                                         map = makeFigures,
+                                         map = makeFigures, anim = F,
                                          recompute = T) %>%
       # select the only one model (GBD)
       dplyr::select(scenario, region, year, age, disease, mort = GBD) %>%
@@ -194,12 +196,12 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     #--------------------
     # ADD O3
     print(paste(i,'O3',sep = ' - '))
-    conc.o3_pre <- rfasst::m2_get_conc_o3(prj = prj,
+    conc.o3_pre <- rfasst::m2_get_conc_o3(prj = prj_f,
                                           prj_name = gsub("output/", "", output_name),
-                                          scen_name = i,
+                                          scen_name = i, gcam_eur = gcam_eur,
                                           final_db_year = final_db_year,
                                           saveOutput = saveOutput,
-                                          map = makeFigures,
+                                          map = makeFigures, anim = F,
                                           recompute = T) %>% 
       dplyr::mutate(year = as.numeric(as.character(year)))
     
@@ -240,12 +242,12 @@ get_sdg3_health <- function(prj, output_name, saveOutput = T, makeFigures = F){
     
         
     
-    o3_mort_pre <- rfasst::m3_get_mort_o3(prj = prj,
+    o3_mort_pre <- rfasst::m3_get_mort_o3(prj = prj_f,
                                           prj_name = gsub("output/", "", output_name),
-                                          scen_name = i,
+                                          scen_name = i, gcam_eur = gcam_eur,
                                           final_db_year = final_db_year,
                                           saveOutput = saveOutput,
-                                          map = makeFigures,
+                                          map = makeFigures, anim = F,
                                           recompute = T) %>%
       # select the only one model (GBD)
       dplyr::select(scenario, region, year, disease, mort = Jerret2009) %>%

@@ -297,8 +297,9 @@ run <- function(prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
       get_sdg2_food_basket_bill(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("health" %in% sdgs) {
+    gcam_eur <- if(grepl('Europe',GCAM_version)) T else F
     result$health <- 
-      get_sdg3_health(prj, output_name, saveOutput = saveOutput, makeFigures = makeFigures)
+      get_sdg3_health(prj, output_name, gcam_eur = gcam_eur, saveOutput = saveOutput, makeFigures = makeFigures)
   }
   if ("water" %in% sdgs) {
     result$water <- 
