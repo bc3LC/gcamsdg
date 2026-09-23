@@ -16,3 +16,4 @@ debug.R
 output/*
 prj_files/
 *data_PSL/
+/docs

@@ -83,7 +83,7 @@ generate_sdg_report <- function(
     prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     output_name = NULL, desired_scen = NULL, sdgs = "all",
     ssp = NULL, prj_base = NULL, show_diff = FALSE, base_scen = NULL,
-    final_db_year = 2050, saveOutput = TRUE, makeFigures = FALSE,
+    final_db_year = 2100, saveOutput = TRUE, makeFigures = FALSE,
     base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
     conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
     cluster = FALSE, sbatch_args = list(),

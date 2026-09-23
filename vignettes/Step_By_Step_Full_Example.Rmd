@@ -7,14 +7,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-`gcamsdg` covers two steps: 1) extracting results for a set of scenarios from a GCAM database, and 2) post-processing those results, combined with external datasets and tools, into SDG-specific indicators. Both steps happen through a single function, `run()`. This tutorial walks through its main modes: a single database ([Example 1](#example1)), several separate policy-scenario databases diffed against a baseline ([Example 2](#example2)), submitting the same call as a SLURM job on the BC3 cluster ([Example 3](#example3)), pairing it with a standard gcamreport run ([Example 4](#example4)), and generating basic figures ([Example 5](#example5)).
+This tutorial walks through the main operating modes of `gcamsdg` (which supports both GCAM and GCAM-Europe databases).
+**Note**: We highly recommend reading the [Before Starting](#beforestarting) section and [Example 1](#example1) first. Foundational concepts are explained in detail there, whereas subsequent examples assume you are already familiar with those basics to avoid repetition.
 
-To see the full parameter list, run `?run`, or look at the [reference index](https://bc3lc.github.io/gcamsdg/reference/index.html). [debug_template.R](https://github.com/bc3LC/gcamsdg/blob/main/debug_template.R) runs every example below against a real database in one script for offline testing - copy it to `debug.R` (gitignored, so your local paths never get committed), fill in the `CONFIG` section, and run. Its section numbers match the example numbers here 1:1.
+The walkthrough covers: processing a single database ([Example 1](#example1)), handling several separate policy-scenario databases ([Example 2](#example2)), using a single project file ([Example 3](#example3)), specifying multiple project files ([Example 4](#example4)), pairing the tool with a standard `gcamreport` run ([Example 5](#example5)), and selecting specific SDGs to generate basic figures ([Example 6](#example6)).
+For the complete parameter list, run `?generate_sdg_report` in your console or consult the [reference index](https://bc3lc.github.io/gcamsdg/reference/generate_sdg_report.html).
 
-<span style="color:white">newline</span>
+---
 
-
-## Example 1: compute SDG indicators for a single GCAM database {#example1}
+## Before starting: load the `gcamsdg` package {#beforestarting}
 
 1) Install the package (see the [README](https://github.com/bc3LC/gcamsdg#installation)):
 
@@ -22,7 +23,7 @@ To see the full parameter list, run `?run`, or look at the [reference index](htt
 devtools::install_github("bc3LC/gcamsdg")
 ```
 
-2) Load it. If you are using RStudio or working directly on a clone, run
+2) Load it. If you are using RStudio working directly on a clone, run
 
 ``` r
 devtools::load_all()
@@ -34,116 +35,126 @@ and otherwise
 library(gcamsdg)
 ```
 
-3) Call `run()` with your database. `db_path` defaults to `<base_path>/output`, and `base_path` defaults to the BC3 "DIPC" cluster path - pass your own for a local run or a different cluster/machine:
+<span style="color:white">newline</span>
+
+## Example 1: compute SDG indicators form a single database {#example1}
+
+
+Once the package is installed and your GCAM or GCAM-Europe database is ready, run `generate_sdg_report()` by specifying the `db_path` and `db_name` arguments:
 
 ``` r
-result <- run(
-  db_name = "my_gcam_database",       # extension added automatically if missing
-  base_path = "/path/to/your/GCAM_run_dir",
-  desired_scen = c("scen1", "scen2"), # omit to use every scenario in the database
-  sdgs = "all"                        # or e.g. c("gdp", "water") to skip the rest
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = "my_gcam_database",             # extension added automatically if missing
+  desired_scen = c("scen1", "scen2"),       # omit to use every scenario in the database
+  sdgs = "all"                              # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
 )
 ```
 
-Behind the scenes this creates (or, on a later call, loads) an rgcam project via `create_prj()` - which reads all the SDG queries bundled with the package (`inst/extdata/queries_*.xml`) plus a couple of heavier queries added only when needed (detailed land allocation for `"land"`, nonCO2 emissions for `"health"`) - then computes each requested indicator.
+Behind the scenes this creates an rgcam project via `create_prj()`, which reads all the SDG queries bundled with the package (`gcamsdg::query_file`) plus a couple of heavier queries added only when needed (*detailed land allocation* for `"land"` and *nonCO2 emissions by sector* for `"health"`); then computes each requested indicator.
 
-4) Check the result: `result` is a named list, one data frame per requested SDG (`result$gdp`, `result$water`, ...). Each indicator's raw CSV output is also written under `gcamsdg/output/<SDG>/indiv_results/` (one subfolder per SDG: `SDG0-POP`, `SDG1-GDP`, `SDG1-Expenditure`, `SDG2-Poverty`, `SDG3-Health`, `SDG6-Water`, `SDG15-Land`).
+Check the individual results: The function returns a named list containing one data frame per requested SDG (e.g., `result$gdp`, `result$water`), which is automatically saved to your local drive as `output/<output_name>_resultSDGs.RData`. Simultaneously, the raw CSV data for each indicator is exported to dedicated subfolders based on the SDG module (e.g., `SDG1-GDP`, `SDG6-Water`) located under `output/<SDG>/indiv_results/`.
 
-**SDG 1's expenditure indicator** compares each scenario's income against a baseline (REF) scenario's, so it needs `ssp` and a baseline project (`prj_base`) - if you set `base_scen` (see [Example 2](#example2)) and the baseline happens to be one of the databases you're already processing, `run()` finds it automatically; otherwise pass `prj_base` yourself:
+Review the consolidated report: The function binds these individual metrics together into a single, standardized dataset, which is saved automatically as a comprehensive CSV & RData file at `output/<output_name>_reportSDGs.csv` and `output/<output_name>_reportSDGs.RData`.
+
+
+<span style="color:white">newline</span>
+
+
+## Example 2: compute SDG indicators from several policy-scenario databases {#example2}
+
+In large scenario ensembles, each policy is typically stored in its own separate GCAM database. To process multiple databases simultaneously, pass a vector of database names to the `db_name` argument (and optionally, an `output_name` to customize the output (generated project and SDG estimates) prefixes). `generate_sdg_report()` will automatically extract and compute the requested sdgs for each one. Note: The function evaluates every possible combination of `db_path` and `db_name`. To avoid unintended paths, store all target databases in the same directory and provide a single path string for `db_path`.
 
 ``` r
-prj_base <- load_prj("prj_files", "my_baseline_database.dat")
-result <- run(db_name = "my_gcam_database", base_path = "...",
-              sdgs = "expenditure", ssp = "SSP2", prj_base = prj_base)
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = c("database_basexdb_policyA",   # extension added automatically if missing
+              "database_basexdb_policyB", 
+              "database_basexdb_policyC"),
+  sdgs = "all",                             # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
+)
 ```
 
-**SDG 15** additionally downscales GCAM land allocation with [Demeter](https://github.com/JGCRI/demeter) via `reticulate`, so it needs a conda environment with Demeter installed (`conda_env`, defaults to the BC3 cluster's):
+The function generates a combined project file stored at `output/<output_name>.dat`, 
+alongside the computed SDG metrics and the standardized comprehensive dataset, as shown in
+[Example 1](#example1).
+
+
+<span style="color:white">newline</span>
+
+
+## Example 3: compute SDG indicators from a single project file {#example3}
+
+In case you already hold the project file (with all the required queries to compute the desired SDGs),
+you can directly indicate its path via `prj_name`. The project will be loaded and the SDGs computed:
 
 ``` r
-result <- run(db_name = "my_gcam_database", base_path = "...",
-              sdgs = "land", conda_env = "/path/to/your/demeter-conda-env")
+result <- generate_sdg_report(
+  prj_name = "/path/and/name/to/my/GCAMproject",  # extension added automatically if missing
+  sdgs = "all",                                   # run `available_sdgs()` to see the options
+  final_db_year = 2050                            # defaults to 2100. Indicate otherwise
+)
+```
+<span style="color:white">newline</span>
+
+
+## Example 4: compute SDG indicators from several project files {#example4}
+
+In case your scenarios are scattered across several project files, the function
+loads them, selecting only the desired scenarios, and creates a single project file
+(save at `output/<output_name>.dat`) before computing the SDGs:
+
+``` r
+result <- generate_sdg_report(
+  prj_name = c("/path/to/prjA.dat",
+               "/path/to/prjB.dat",
+               "/path/to/prjC.dat"),        # extension added automatically if missing
+  output_name = "desired_name",             # prjA name considered if missing
+  sdgs = "all",                             # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
+)
 ```
 
 <span style="color:white">newline</span>
 
 
-## Example 2: several policy-scenario databases, diffed against a baseline {#example2}
+## Example 5: compute SDG indicators producing also the standard gcamreport output {#example5}
 
-Real mitigation-scenario ensembles often split each policy scenario into its own separate GCAM database. Pass a vector to `db_name` (and, optionally, `prj_name` to control the saved project names) - `run()` extracts/loads each one, computes the requested `sdgs` for all of them, and combines the results before anything else happens:
+If you also want the standard [gcamreport](https://github.com/bc3LC/gcamreport) IPCC-style output from the same project (instead of extracting the database a second time) and taking advantage of all the SDG variables already computed by this tool, set `run_gcamreport = TRUE` and provide `GCAM_version`. You can also specify other `gcamreport::generate_report()` variables via `gcamreport_args`: 
 
 ``` r
-result <- run(
-  db_name = c("database_basexdb_policyA", "database_basexdb_policyB", "database_basexdb_base"),
-  base_path = "/path/to/your/GCAM_run_dir",
-  sdgs = "all",
-  show_diff = TRUE,
-  base_scen = "myBaselineScenario"
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",      # path to the database
+  db_name = "my_gcam_database"            # extension added automatically if missing
+  sdgs = "all",                           # run `available_sdgs()` to see the options
+  run_gcamreport = TRUE, 
+  GCAM_version = "vEurope7.2",            # run `gcamreport::available_GCAM_versions()` to see the options
+  final_db_year = 2050                    # defaults to 2100. Indicate otherwise
 )
+result$gcamreport                         # gcamreport's standardized output
 ```
 
-With `show_diff = TRUE`, each returned indicator is averaged over the model period, diffed against `base_scen`, tagged by policy sector (afolu/ind/bld/trn/dac/sup, inferred from the scenario name), and pivoted wide - the same table `run_comparisson()` used to produce, now built in directly. Without `show_diff`, you get the raw per-scenario values instead (as in [Example 1](#example1), just combined across every database in `db_name`).
+This requires the `gcamreport` package (`devtools::install_github("bc3LC/gcamreport")`). Currently, the function supports only a single database input (`db_name`), although it can accept an array of pre-existing project files.
 
 <span style="color:white">newline</span>
 
 
-## Example 3: running on the BC3 cluster {#example3}
-
-Set `cluster = TRUE` to submit the exact same call as a SLURM job instead of running it locally:
-
-``` r
-job <- run(
-  db_name = c("database_basexdb_policyA", "database_basexdb_policyB", "database_basexdb_base"),
-  sdgs = "all", show_diff = TRUE, base_scen = "myBaselineScenario",
-  cluster = TRUE
-)
-job$job_id      # SLURM job ID
-job$log_file    # where to check progress/errors
-job$output_path # where results will land once the job completes
-```
-
-This fills in the bundled sbatch template ([inst/extdata/gcamsdg_cluster.sbatch](https://github.com/bc3LC/gcamsdg/blob/main/inst/extdata/gcamsdg_cluster.sbatch)) with the call's arguments and submits it via `sbatch`. It's **fire-and-forget**: `run()` returns the job ID immediately rather than waiting for the SLURM job to finish, since that happens later, asynchronously, on a compute node. Check on it the normal SLURM way (`squeue`, the returned log file) and read the results from `job$output_path` once it's done.
-
-Before your first cluster run, edit the `#SBATCH` directives at the top of the bundled template once for your own account/partition/resource needs, or override individual ones per call without touching the file:
-
-``` r
-run(db_name = "...", cluster = TRUE, sbatch_args = list(time = "48:00:00", mem = "64G"))
-```
-
-`cluster = TRUE` only works with the `db_path`+`db_name` or existing-`prj_name`-file input modes - an in-memory `prj` object can't be handed to a job running on a different node.
-
-<span style="color:white">newline</span>
-
-
-## Example 4: also producing the standard gcamreport output {#example4}
-
-If you also want the standard [gcamreport](https://github.com/bc3LC/gcamreport) IPCC-style output from the same project (instead of extracting the database a second time), set `run_gcamreport = TRUE` and provide `GCAM_version`:
-
-``` r
-result <- run(
-  db_name = "my_gcam_database", base_path = "/path/to/your/GCAM_run_dir",
-  sdgs = "all",
-  run_gcamreport = TRUE, GCAM_version = "v7.1"
-)
-result$gcamreport  # gcamreport's standardized output
-```
-
-This requires the `gcamreport` package (`devtools::install_github("bc3LC/gcamreport")`) and, currently, a single database/project (not a vector `db_name`).
-
-<span style="color:white">newline</span>
-
-
-## Example 5: basic figures {#example5}
+## Example 6: compute SDG indicators and produce basic figures {#example6}
 
 Set `makeFigures = TRUE` to also generate a basic PNG per computed indicator:
 
 ``` r
-result <- run(
-  db_name = "my_gcam_database", base_path = "/path/to/your/GCAM_run_dir",
-  sdgs = c("gdp", "poverty", "water"),
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = "my_gcam_database"              # extension added automatically if missing
+  sdgs = c("gdp", "poverty", "water"),      # run `available_sdgs()` to see the options
+  final_db_year = 2050,                     # defaults to 2100. Indicate otherwise
   makeFigures = TRUE
 )
 ```
 
-Each PNG is saved alongside that indicator's other output, under `gcamsdg/output/<SDG>/figures/` (e.g. `.../SDG1-GDP/figures/gdp.png`) - a scenario-colored time series line chart for indicators with a year dimension, or a bar chart by scenario for SDG15's PSL (a single net 2020-2050 value, no year dimension). Regional indicators (population, GDP, health) are aggregated to one global series first - GDP uses an unweighted regional average for this quick chart (a real population-weighted GDP per capita is what `show_diff`'s diff-vs-baseline step computes instead).
+Each PNG is saved alongside that indicator's other output, under `output/figures/` (e.g. `.../SDG1-GDP_<output_name>.png`). The figures are simple scenario-colored time series line charts for indicators with a year dimension, or a bar chart by scenario for SDG15's PSL (a single net 2020-2050 value, no year dimension). Regional indicators (population, GDP, health) are aggregated to one global series first, water indicators are depicted by region.
 
-This does **not** produce geographic maps (e.g. water scarcity by basin, PSL by ecoregion) - the underlying indicator functions currently aggregate that spatial detail away before returning their result, so real choropleth maps would need a deeper change to what they return, not just a plotting helper.
+
