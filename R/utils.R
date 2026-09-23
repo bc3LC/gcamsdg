@@ -267,6 +267,20 @@
 #' }
 
 
+#' available_sdgs
+#' 
+#' Lists all the available SDGs computable through `generate_sdg_report()` 
+#' function. They can be used when specifing the variable `sdgs` in the previous
+#' function.
+#' 
+#' @return prints all the SDG names
+available_sdgs <- function() {
+  
+  av_sdgs <- c('health','land','water','poverty')
+  paste0('Available SDGs for reporting: ', toString(sort(av_sdgs)))
+  
+}
+
 
 #' .data_query
 #'

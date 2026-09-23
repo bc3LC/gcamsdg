@@ -6,7 +6,7 @@
 #' with no database info supplied), or one or more raw GCAM databases to
 #' extract from (`db_path` + `db_name`, via `create_prj()`). `db_name`/
 #' `prj_name` can each be a vector, covering the case where every policy
-#' scenario is its own separate GCAM database - `run()` loops internally
+#' scenario is its own separate GCAM database - `generate_sdg_report()` loops internally
 #' and combines everything before any diffing, so no separate gather step
 #' is needed. Lets you pick which SDG indicators to compute (skipping
 #' expensive ones you don't need, SDG15's Demeter run especially), where
@@ -33,12 +33,13 @@
 #' @param desired_scen scenarios to extract/consider, applied to every
 #'   database in `db_name`. NULL uses every scenario present.
 #' @param sdgs which indicators to compute: any of "population", "gdp",
-#'   "expenditure", "poverty", "health", "water", "land", or "all" (default)
+#'   "poverty", "health", "water", "land", or "all" (default). 
+#'   Run `available_sdgs()` to list them.
 #' @param ssp SSP tag needed by the "expenditure" indicator to determine the 
 #'   "baseline" to compare with (or "base" if this project *is* the baseline)
 #' @param prj_base rgcam project holding the baseline (REF) scenario,
 #'   needed by the "expenditure" indicator. If not supplied and `base_scen`
-#'   is set, `run()` looks for `base_scen` among the already-resolved
+#'   is set, `generate_sdg_report()` looks for `base_scen` among the already-resolved
 #'   projects and uses that one automatically.
 #' @param show_diff if TRUE, return each indicator diffed against
 #'   `base_scen` (averaged over the model period, tagged by policy sector,
@@ -49,10 +50,10 @@
 #' @param final_db_year last model year to consider. Takes last available
 #'   year in the db by default
 #' @param saveOutput save each indicator's individual output to disk (under
-#'   `gcamsdg/output/<SDG>/`), same as the underlying `get_sdgX_*()` calls
+#'   `output/<SDG>/`)
 #' @param makeFigures generate and save a basic figure for each computed
 #'   indicator (a scenario-colored time series, or a bar chart for
-#'   indicators without a year dimension) under `output/figures/`
+#'   indicators without a year dimension) under `output/figures/`. Defaults to FALSE
 #' @param base_path run directory containing `output/`/`prj_files/`.
 #'   Defaults to the BC3 "DIPC" cluster path; pass your own for a local run
 #'   or a different cluster.
@@ -130,7 +131,7 @@ generate_sdg_report <- function(
     stop("`prj` can't be combined with specified `db_path` and/or `db_name`. Pass either an existing project, or `db_path` & `db_name` (single or several).")
   }
   if (is.null(prj) && is.null(prj_name) && (is.null(db_name) || is.null(db_path))) {
-    stop("run() needs one of: an existing rgcam project (`prj`), an existing ",
+    stop("generate_sdg_report() needs one of: an existing rgcam project (`prj`), an existing ",
          "project file (`prj_name`), or a GCAM database to extract (`db_path` & `db_name`).")
   }
   
@@ -142,6 +143,31 @@ generate_sdg_report <- function(
   
   if (is.null(output_name)) output_name <- prj_name[1]
   output_name <- file.path('output',basename(gsub("\\.dat$", "", output_name)))
+  
+  
+  
+  # If a list of projects is provided, merge them into a single file 
+  # (output_name.dat) retaining only the specified target scenarios.
+  if (length(prj_name) > 1) {
+    if (is.null(desired_scen) || desired_scen == 'All' || desired_scen == 'all') {
+      prj <<- rgcam::mergeProjects(paste0(output_name, '.dat'), prjlist = prj_name)
+    } else {
+      for (pn in prj_name) {
+        prj_tmp <- rgcam::loadProject(pn)
+        prj_tmp <- rgcam::dropScenarios(prj_tmp, 
+                                        setdiff(rgcam::listScenarios(prj_tmp), desired_scen))
+        if (exists('prj') && !is.null(prj)) {
+          prj <- prj_tmp
+        } else {
+          prj <- rgcam::mergeProjects('prj_tmp.dat', prjlist = c(prj, prj_tmp), saveProj = F)
+        }
+      }
+      rgcam::saveProject(prj, paste0(output_name, '.dat'))
+      prj <<- prj
+    }
+    prj_name <- paste0(output_name, '.dat')
+  }
+  
   
   # define the entries
   max_length <- max(length(prj_name), length(db_name), length(db_path), 1)
@@ -308,6 +334,10 @@ generate_sdg_report <- function(
   #                                                                          base_path = base_path, conda_env = conda_env))
   # }
   
+  
+  # ---- save results list ----
+  save(result, file = paste0(output_name, '_resultSDGs.RData'))
+
   
   # ---- optional basic figures (time series / bar charts, one per indicator) ----
   if (makeFigures) {

@@ -27,7 +27,7 @@
 #' @return create the specified project
 .create_prj <- function(db_name, db_path, prj_name = NULL, prj_f = NULL,
                         output_name = NULL, desired_scen = NULL, required_queries = 'All',
-                       include_land_query = TRUE, include_nonco2_query = TRUE) {
+                        include_land_query = TRUE, include_nonco2_query = TRUE) {
   
   query_file <- get('query_file', envir = asNamespace("gcamsdg"))
   prj_modified <- F
