@@ -16,7 +16,7 @@ generate_sdg_report(
   prj_base = NULL,
   show_diff = FALSE,
   base_scen = NULL,
-  final_db_year = 2050,
+  final_db_year = 2100,
   saveOutput = TRUE,
   makeFigures = FALSE,
   base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
@@ -55,14 +55,15 @@ the 'output' directory. Defaults to the first `prj_name`.}
 database in `db_name`. NULL uses every scenario present.}
 
 \item{sdgs}{which indicators to compute: any of "population", "gdp",
-"expenditure", "poverty", "health", "water", "land", or "all" (default)}
+"poverty", "health", "water", "land", or "all" (default). 
+Run `available_sdgs()` to list them.}
 
 \item{ssp}{SSP tag needed by the "expenditure" indicator to determine the 
 "baseline" to compare with (or "base" if this project *is* the baseline)}
 
 \item{prj_base}{rgcam project holding the baseline (REF) scenario,
 needed by the "expenditure" indicator. If not supplied and `base_scen`
-is set, `run()` looks for `base_scen` among the already-resolved
+is set, `generate_sdg_report()` looks for `base_scen` among the already-resolved
 projects and uses that one automatically.}
 
 \item{show_diff}{if TRUE, return each indicator diffed against
@@ -77,14 +78,11 @@ scenario against. Required when `show_diff = TRUE`.}
 year in the db by default}
 
 \item{saveOutput}{save each indicator's individual output to disk (under
-`gcamsdg/output/<SDG>/`), same as the underlying `get_sdgX_*()` calls}
+`output/<SDG>/`)}
 
 \item{makeFigures}{generate and save a basic figure for each computed
 indicator (a scenario-colored time series, or a bar chart for
-indicators without a year dimension) under
-`<base_path>/gcamsdg/output/<SDG>/figures/`, plus whatever additional
-figure(s) the underlying indicator itself supports (currently just
-SDG6's more detailed resource-faceted charts)}
+indicators without a year dimension) under `output/figures/`. Defaults to FALSE}
 
 \item{base_path}{run directory containing `output/`/`prj_files/`.
 Defaults to the BC3 "DIPC" cluster path; pass your own for a local run
@@ -126,7 +124,7 @@ rgcam project (`prj`), one or more existing project files (`prj_name`,
 with no database info supplied), or one or more raw GCAM databases to
 extract from (`db_path` + `db_name`, via `create_prj()`). `db_name`/
 `prj_name` can each be a vector, covering the case where every policy
-scenario is its own separate GCAM database - `run()` loops internally
+scenario is its own separate GCAM database - `generate_sdg_report()` loops internally
 and combines everything before any diffing, so no separate gather step
 is needed. Lets you pick which SDG indicators to compute (skipping
 expensive ones you don't need, SDG15's Demeter run especially), where

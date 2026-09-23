@@ -4,21 +4,17 @@
 \alias{.make_sdg_figures}
 \title{.make_sdg_figures}
 \usage{
-.make_sdg_figures(result, base_path)
+.make_sdg_figures(result, output_name)
+}
+\arguments{
+\item{result}{list of reported SDGs}
+
+\item{output_name}{name of the output file. When processing multiple projects 
+(`prj_name`), this specifies the filename for the SDG outputs saved in 
+the 'output' directory. Defaults to the first `prj_name`.}
 }
 \description{
 Generate a basic figure for each raw (non-diffed) SDG indicator in
-`result`, saved alongside that SDG's other output under
-`<base_path>/gcamsdg/output/<SDG folder>/figures/`. Internal helper for
-`run(makeFigures = TRUE)`. Regional indicators (population, gdp, health)
-are aggregated to a single global series first - gdp uses an unweighted
-regional average (a real population-weighted GDP per capita is only
-computed as part of show_diff's diff-vs-baseline step).
-}
-\details{
-Only produces simple scenario/time charts - genuine geographic maps
-(e.g. water scarcity by basin, PSL by ecoregion) aren't included here,
-since the underlying indicator functions currently aggregate away that
-spatial detail before returning their result.
+`result`, saved in `output/figures`.
 }
 \keyword{internal}
