@@ -74,18 +74,18 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
 
   # report food basket expenditure as % of the GDP
   GDP <- get_sdg1_gdp(prj, output_name) %>%
-    rename(GDP = value) %>%
+    dplyr::rename(GDP = value) %>%
     # take care of units
-    mutate(GDP = GDP * 1e-6) %>% # million 1990$ to 1990$
-    mutate(GDP = gcamdata::gdp_deflator(2005, 1990)) %>% # 1990$ to 2005$
-    mutate(Units = '2005$/capita')
+    dplyr::mutate(GDP = GDP * 1e-6) %>% # million 1990$ to 1990$
+    dplyr::mutate(GDP = gcamdata::gdp_deflator(2005, 1990)) %>% # 1990$ to 2005$
+    dplyr::mutate(Units = '2005$/capita')
 
   food_basket_bill_percent_GDP <- food_basket_bill_regional %>%
-    left_join(GDP,
+    dplyr::left_join(GDP,
               by = c('scenario','region','year')) %>%
-    mutate(expenditure_percent_GDP = expenditure / GDP * 100) %>%
-    select(region, year, scenario, expenditure_percent_GDP) %>%
-    mutate(units = 'percentage')
+    dplyr::mutate(expenditure_percent_GDP = expenditure / GDP * 100) %>%
+    dplyr::select(region, year, scenario, expenditure_percent_GDP) %>%
+    dplyr::mutate(units = 'percentage')
 
   if (saveOutput) write.csv(food_basket_bill_percent_GDP, 
                             file = file.path('output/SDG2-Poverty/indiv_results',
@@ -105,11 +105,11 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
     dplyr::select(region, year, scenario, w_pop)
 
   food_basket_bill_percent_GDP_global <- food_basket_bill_percent_GDP %>%
-    left_join(pop_weights, by = c('region', 'year', 'scenario')) %>%
-    mutate(weighted_expenditure_percent_GDP = expenditure_percent_GDP * w_pop) %>%
-    group_by(year, scenario, units) %>%
-    summarise(expenditure_percent_GDP = sum(weighted_expenditure_percent_GDP)) %>%
-    ungroup()
+    dplyr::left_join(pop_weights, by = c('region', 'year', 'scenario')) %>%
+    dplyr::mutate(weighted_expenditure_percent_GDP = expenditure_percent_GDP * w_pop) %>%
+    dplyr::group_by(year, scenario, units) %>%
+    dplyr::summarise(expenditure_percent_GDP = sum(weighted_expenditure_percent_GDP)) %>%
+    dplyr::ungroup()
 
   if (saveOutput) write.csv(food_basket_bill_percent_GDP_global,
                             file = file.path('output/SDG2-Poverty/indiv_results',
@@ -117,10 +117,10 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
                             row.names = F)
 
   food_basket_bill_percent <- 
-    bind_rows(food_basket_bill_percent_GDP,
-              food_basket_bill_percent_GDP_global %>% 
-                mutate(region = 'World')) %>% 
-    filter(year %in% available_years)
+    dplyr::bind_rows(food_basket_bill_percent_GDP,
+                     food_basket_bill_percent_GDP_global %>% 
+                       dplyr::mutate(region = 'World')) %>% 
+    dplyr::filter(year %in% available_years)
   
   return(invisible(food_basket_bill_percent))
 }

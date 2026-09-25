@@ -98,8 +98,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
                     gcam_share = 1,
                     w_share = 0))
   
-  gcam_eur
-  
+
   for (i in rgcam::listScenarios(prj_f)) {
     print(paste(i,'PM25',sep = ' - '))
     conc.pm25_pre <- rfasst::m2_get_conc_pm25(prj = prj_f,
@@ -116,7 +115,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
     conc.pm25_country <- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region,
                     rfasst_share = share) %>%
-      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::mutate(tibble::tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
                     year %in% rfasst::all_years) %>%
       left_join_strict(country_shares_GCAMReg,
@@ -177,7 +176,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
     # downscale to country-level based on population
     mort.pm25_country<- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region) %>%
-      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::mutate(tibble::tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
                     year %in% rfasst::all_years) %>%
       gcamdata::left_join_error_no_match(mort_adj, by = c('scenario','region', 'year')) %>%
@@ -209,7 +208,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
     conc.o3_country <- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region,
                     rfasst_share = share) %>%
-      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::mutate(tibble::tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
                     year %in% rfasst::all_years) %>%
       left_join_strict(country_shares_GCAMReg,
@@ -270,7 +269,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
     
     mort.o3_country<- country_shares_rfasstReg %>%
       dplyr::rename(region = fasst_region) %>%
-      dplyr::mutate(tibble(scenario = i)) %>%
+      dplyr::mutate(tibble::tibble(scenario = i)) %>%
       dplyr::filter(year <= final_db_year,
                     year %in% rfasst::all_years) %>%
       gcamdata::left_join_error_no_match(o3_mort_adj, by = c('scenario','region', 'year')) %>%
