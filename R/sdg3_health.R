@@ -292,7 +292,8 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
       mort.pm25 %>% dplyr::mutate(pollutant = 'PM25'),
       mort.o3 %>% dplyr::mutate(pollutant = 'O3')
     ) %>% 
-      dplyr::mutate(Units = 'million')
+      dplyr::mutate(mort = mort / 1e6,
+                    Units = 'million')
     mort_tmp <- rbind(
       mort_tmp,
       mort_tmp %>%
