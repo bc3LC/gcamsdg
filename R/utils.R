@@ -65,7 +65,7 @@
 #' @return standardised dataset with all the SDGs
 .gather_sdgs <- function(result) {
   
-  base_report <- as_tibble(result$gcamreport)
+  base_report <- tibble::as_tibble(result$gcamreport)
   
   if (nrow(base_report) == 0) {
     base_report <- tibble(
@@ -76,7 +76,7 @@
   mod_name <- if (nrow(base_report) > 0) base_report$Model[1] else "GCAM"
   
   # bind indicators
-  long_indicators <- bind_rows(
+  long_indicators <- dplyr::bind_rows(
     lapply(names(result), function(name) {
       # skip cases
       if (is.na(name) || name == "gcamreport") return(NULL)
@@ -86,7 +86,7 @@
       
       # apply standardized format
       if (name == "water") {
-        df %>% transmute(
+        df %>% dplyr::transmute(
           Scenario = scenario, 
           Region = region, 
           Variable = "Water Scarcity|Water Scarcity Index", 
@@ -100,11 +100,11 @@
         
         # mortality (if it exists)
         mort_df <- if (!is.null(df$mort) && is.data.frame(df$mort) && nrow(df$mort) > 0) {
-          df$mort %>% transmute(
+          df$mort %>% dplyr::transmute(
             Scenario = scenario,
             Region = region,
             # convert PM25 to PM2.5; do not modify O3 tag
-            Variable = paste0("Health|Premature Deaths|", if_else(pollutant == "PM25", "PM2.5", pollutant)),
+            Variable = paste0("Health|Premature Deaths|", dplyr::if_else(pollutant == "PM25", "PM2.5", pollutant)),
             Unit = Units,
             year,
             value
@@ -114,11 +114,11 @@
         
         # concentration (if it exists)
         conc_df <- if (!is.null(df$conc) && is.data.frame(df$conc) && nrow(df$conc) > 0) {
-          df$conc %>% transmute(
+          df$conc %>% dplyr::transmute(
             Scenario = scenario,
             Region = region,
             # convert PM25 to PM2.5; do not modify O3 tag
-            Variable = paste0("Air Pollution|", if_else(pollutant == "PM25", "PM2.5", pollutant), "|Urban Population"),
+            Variable = paste0("Air Pollution|", dplyr::if_else(pollutant == "PM25", "PM2.5", pollutant), "|Urban Population"),
             Unit = Units,
             year,
             value
@@ -126,7 +126,7 @@
         } else NULL
         
         # combine and return datasets
-        bind_rows(mort_df, conc_df)       
+        dplyr::bind_rows(mort_df, conc_df)       
       } else {
         NULL
       }
@@ -136,9 +136,9 @@
   # add the Model column and pivot if valid data was found
   if (nrow(long_indicators) > 0) {
     long_indicators <- long_indicators %>%
-      mutate(Model = mod_name) %>%
-      arrange(year) %>% 
-      pivot_wider(names_from = year, values_from = value)
+      dplyr::mutate(Model = mod_name) %>%
+      dplyr::arrange(year) %>% 
+      tidyr::pivot_wider(names_from = year, values_from = value)
   }
   
   # bind with the original gcamreport and organize columns
