@@ -8,11 +8,10 @@
 #' the 'output' directory.
 #' @param gcam_eur boolean to indicate if the GCAM version is GCAM-Europe or not
 #' @param saveOutput save the produced output
-#' @param makeFigures generate and save graphical representation/s of the output
 #' @return data frame with mortalities by scenario, GCAM region and year
 #' @import rfasst
 #' @export
-get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, makeFigures = F){
+get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T){
   
   print('GCAMSDG info: computing sdg3 - health impacts......')
   require(rfasst, quietly = TRUE)
@@ -183,7 +182,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
       dplyr::mutate(mort = round(mort * share, 0)) %>%
       dplyr::select(scenario, country, year, mort)
     
-    mort.pm25 <- mort.pm25_country %>%
+    mort.pm25_reg <- mort.pm25_country %>%
       gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>%
                                             dplyr::rename(country = `ISO 3`),
                                           by = 'country') %>%
@@ -192,6 +191,18 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
       dplyr::summarise(mort = sum(mort)) %>%
       dplyr::ungroup()
       
+    
+    mort.pm25 <- rbind(
+      mort.pm25_reg,
+      mort.pm25_reg %>% 
+        dplyr::group_by(scenario, pollutant, Units, year) %>% 
+        dplyr::summarise(mort = sum(mort),
+                         region = 'World') %>% 
+        dplyr::ungroup()
+    )
+    
+    
+    
     #--------------------
     # ADD O3
     print(paste(i,'O3',sep = ' - '))
@@ -276,7 +287,7 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
       dplyr::mutate(mort = round(mort * share, 0)) %>%
       dplyr::select(scenario, country, year, mort)
     
-    mort.o3 <- mort.o3_country %>%
+    mort.o3_reg <- mort.o3_country %>%
       gcamdata::left_join_error_no_match(rfasst::GCAM_reg %>% 
                                             dplyr::rename(country = `ISO 3`),
                                           by = c('country')) %>%
@@ -284,6 +295,15 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T, ma
       dplyr::group_by(scenario, GCAM_region, year) %>%
       dplyr::summarise(mort = sum(mort)) %>%
       dplyr::ungroup()
+    
+    mort.o3 <- rbind(
+      mort.o3_reg,
+      mort.o3_reg %>% 
+        dplyr::group_by(scenario, pollutant, Units, year) %>% 
+        dplyr::summarise(mort = sum(mort),
+                         region = 'World') %>% 
+        dplyr::ungroup()
+    )
     
     
     #--------------------
