@@ -5,6 +5,7 @@
 #' land-use change to the ecoregion level.
 #' @param prj uploaded project file
 #' @param prj_name project file name, used to tag the saved output file
+#' @param demeterRun run Demeter for the project
 #' @param saveOutput save the produced output
 #' @param base_path run directory containing the `gcamsdg/` checkout and the
 #'   Demeter model (defaults to the BC3 cluster path)
@@ -12,9 +13,9 @@
 #'   reticulate (defaults to the BC3 cluster environment)
 #' @return data frame with the final PSL by scenario
 #' @export
-get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
-                                      base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
-                                      conda_env = "/scratch/bc3lc/conda-env/dem-env-3"){
+get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput = T,
+                                      base_path = "C:/GCAM/Theo/gcam_sdg/",
+                                      conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"){
 
   print('computing sdg15 - land indicator ...')
 
@@ -25,24 +26,26 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
 
   # Create outputs folders
   if (!dir.exists("gcamsdg/output/SDG15-Land/results")) dir.create("gcamsdg/output/SDG15-Land/results/")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results/QGIS-input-files")) dir.create("gcamsdg/output/SDG15-Land/results/QGIS-input-files")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results/Processed-Demeter-outputs")) dir.create("gcamsdg/output/SDG15-Land/results/Processed-Demeter-outputs")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results/Output-data-by-ecoregion")) dir.create("gcamsdg/output/SDG15-Land/results/Output-data-by-ecoregion")
   if (!dir.exists("gcamsdg/output/SDG15-Land/results/PSL-results")) dir.create("gcamsdg/output/SDG15-Land/results/PSL-results")
   if (!dir.exists("gcamsdg/output/SDG15-Land/results/PSL-prj-results")) dir.create("gcamsdg/output/SDG15-Land/results/PSL-prj-results")
   
   # Set the base path for the GCAM folder
-  dipc_path = paste0(base_path, "/")
+  demeter_path = paste0(base_path, "demeter")
 
   # Set the name of the conda environment read by reticulate
+  # Sys.setenv(RETICULATE_PYTHON = file.path(conda_env, "python.exe"))
+  # library(reticulate)
   reticulate::use_condaenv(conda_env, required=TRUE)
   reticulate::py_config()
+  sys <- reticulate::import("sys")
+  demeter <- reticulate::import("demeter")
   
   # Create vector of all scenarios in the project
-  scen_name <- listScenarios(prj)
+  scen_names <- listScenarios(prj)
   
   # Upload basin mapping
   basin.id <- read.csv(system.file("extdata", "basin_to_country_mapping.csv", package = "gcamsdg"))
+
   print("Creating Demeter inputs from GCAM land allocation query")
   
   # Format GCAM land use outputs to fit as Demeter inputs 
@@ -57,30 +60,93 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
     merge(basin.id,by="GLU_name") %>% dplyr::select(region, landclass, GCAM_basin_ID, year, value, scenario)  %>%
     dplyr::rename("metric_id"="GCAM_basin_ID") %>% spread(year, value) %>% dplyr::select(-"1975")
   
-  # Get unique scenario names
-  scenario_names <- unique(det.LU$scenario)
+  add_broad_landclass <- function(df) {
+    df$broad_landclass <- with(df, ifelse(grepl("RFD", landclass, ignore.case = TRUE), "CroplandRfd",
+                                          ifelse(grepl("Forest", landclass, ignore.case = TRUE), "Forest",
+                                                 ifelse(grepl("Pasture", landclass, ignore.case = TRUE), "Pasture",
+                                                        ifelse(grepl("Grassland", landclass, ignore.case = TRUE), "Grassland",
+                                                               ifelse(grepl("Shrubland", landclass, ignore.case = TRUE), "Shrubland",
+                                                                      ifelse(grepl("Rock", landclass, ignore.case = TRUE), "RockIceDesert",
+                                                                             ifelse(grepl("Urban", landclass, ignore.case = TRUE), "Urbanland", 
+                                                                                    ifelse(grepl("IRR", landclass, ignore.case = TRUE), "CroplandIrr", 
+                                                                                           ifelse(grepl("Tundra", landclass, ignore.case = TRUE), "RockIceDesert", 
+                                                                                                  ifelse(grepl("Arable", landclass, ignore.case = TRUE), "CroplandRfd",NA)))))))))))
+    return(df) }
   
-  # Create path for specific scenario
-  demeter_root <- file.path(dipc_path, "gcamsdg", "demeter-2.0", "demeter", "GCAM_demeter_protection_scenario")
-  dir_demeter <- file.path(demeter_root, "outputs")
+  det.LU <- add_broad_landclass(det.LU)
+  det.LU = det.LU %>% 
+    group_by(broad_landclass, region, metric_id, scenario) %>%
+    summarise(across(where(is.numeric), sum, na.rm = TRUE)) %>% 
+    rename(landclass = broad_landclass)
+  
+  # # Create path for specific scenario
+  # demeter_root <- file.path(dipc_path, "gcamsdg", "demeter-2.0", "demeter", "GCAM_demeter_protection_scenario")
+  # dir_demeter <- file.path(demeter_root, "outputs")
   
   # Loop to create one file per scenario in "input/projected" demeter folder and configuration files
-  for (scenario_name in scenario_names) {
+  if (demeterRun) for (scen_name in scen_names) {
     
     # Filter the dataframe for the current scenario
-    filtered_df <- det.LU[det.LU$scenario == scenario_name, ]
+    filtered_df <- det.LU[det.LU$scenario == scen_name, ]
     
-    # Define the file paths for saving the filtered dataframe and the configuration file
-    file_path <- file.path(demeter_root, "inputs", "projected", paste0("Scenario_", scenario_name, ".csv"))
-    config_path <- file.path(demeter_root, "config_files", paste0("Scenario_", scenario_name, ".ini"))
+    # 2. Define Directory & File Paths Clearly (avoiding name collisions)
+    input_proj_dir <- file.path(demeter_path, "inputs/projected")
+    config_dir     <- file.path(demeter_path, "config_files")
+    
+    # Ensure destination directories exist
+    dir.create(input_proj_dir, recursive = TRUE, showWarnings = FALSE)
+    dir.create(config_dir, recursive = TRUE, showWarnings = FALSE)
+    
+    proj_csv_filename <- paste0("Scenario_", scen_name, ".csv")
+    config_filename   <- paste0("Scenario_", scen_name, ".ini")
+    
+    proj_csv_path <- file.path(input_proj_dir, proj_csv_filename)
+    config_file_path <- file.path(config_dir, config_filename)
     
     # Config file parameters
-    projected_file <- paste0("Scenario_", scenario_name, ".csv")
+    projected_file <- paste0("Scenario_", scen_name, ".csv")
+    
+    # Get number of regions (32 for GCAM and 66 for GCAM-EU)
+    region_numb <- length(unique(filtered_df$region))
+    message(sprintf("Detected %d region(s) in the dataset.", region_numb))
+    
+    # Assign region mapping and basemap based on the region count
+    if (region_numb == 32) {
+      region_mapping <- "gcam_regions_32.csv"
+      basemap        <- "baselayer_GCAM6_WGS84_5arcmin_2022_HighProt_Agg.zip"
+      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM_regID.csv", package = "gcamsdg")) %>% 
+        rename(country = "country_name") 
+    } else if (region_numb == 66) {
+      region_mapping <- "gcam_regions_66.csv"
+      basemap        <- "baselayer_GCAM6_WGS84_5arcmin_2022_HighProt_Agg_66regions.zip"
+      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM-EU_regID.csv", package = "gcamsdg")) %>% 
+        rename(country = "country_name") 
+    } else {
+      stop(sprintf("Unsupported number of regions: %d. Expected 32 (GCAM) or 66 (GCAM-Europe).", region_numb))
+    }
+    
+    # 1. Function returning both the adjusted dataframe and the updated start year
+    adjust_base_year <- function(df, base_year) {
+      start_year_config <- as.character(base_year)
+      
+      if (base_year == 2021 && "2021" %in% colnames(df)) {
+        colnames(df)[colnames(df) == "2021"] <- "2020"
+        start_year_config <- "2020"
+        message("Renamed column '2021' to '2020' for the Demeter run.")
+      }
+      
+      return(list(df = df, start_year = start_year_config))
+    }
+    
+    # 2. Run the function and extract outputs
+    adj_result  <- adjust_base_year(filtered_df, base_year)
+    filtered_df <- adj_result$df
+    start_year  <- adj_result$start_year
     
     # Create the content for the config file
-    config_file <- paste0(
+    config_content <- paste0(
       "[STRUCTURE]\n",
-      "run_dir =                       ", demeter_root, "\n",
+      "run_dir =                       ", demeter_path, "\n",
       "in_dir =                        inputs\n",
       "out_dir =                       outputs\n\n",
       "[INPUTS]\n",
@@ -96,23 +162,23 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
       "treatment_order_file =          gcam_regbasin_moirai_v3_type5_5arcmin_order_alloc.csv\n",
       "constraints_file =              gcam_regbasin_moirai_v3_type5_5arcmin_constraint_alloc.csv\n\n",
       "[[OBSERVED]]\n",
-      "observed_lu_file =              baselayer_GCAM6_WGS84_5arcmin_2022_HighProt.zip\n\n",
+      "observed_lu_file =              ", basemap, "\n\n",
       "[[PROJECTED]]\n",
       "projected_lu_file =             ", projected_file, "\n\n",
       "[[MAPPING]]\n",
-      "region_mapping_file =           gcam_regions_32.csv\n",
+      "region_mapping_file =           ", region_mapping, "\n",
       "basin_mapping_file =            gcam_basin_lookup.csv\n\n",
       "[PARAMS]\n",
       "# scenario name\n",
-      "scenario =                      ", scenario_name, "\n\n",
+      "scenario =                      ", scen_name, "\n\n",
       "# run description\n",
-      "run_desc =                      ", scenario_name, "\n\n",
+      "run_desc =                      ", scen_name, "\n\n",
       "# spatial base layer id field name\n",
       "observed_id_field =             fid\n\n",
       "# first year to process\n",
-      "start_year =                    2020\n\n",
+      "start_year =                    ", start_year, "\n\n",
       "# last year to process\n",
-      "end_year =                      2050\n\n",
+      "end_year =                      ", final_available_year, "\n\n",
       "# enter 1 to use non-kernel density constraints, 0 to ignore non-kernel density constraints\n",
       "use_constraints =               1\n\n",
       "# the spatial resolution of the observed spatial data layer in decimal degrees\n",
@@ -120,7 +186,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
       "# error tolerance in km2 for PFT area change not completed\n",
       "errortol =                      0.001\n\n",
       "# time step in years\n",
-      "timestep =                      30\n\n",
+      "timestep =                      5\n\n",
       "# factor to multiply the projected land allocation by\n",
       "proj_factor =                   1000\n\n",
       "# from 0 to 1; ideal fraction of LUC that will occur during intensification, the remainder will be expansion\n",
@@ -153,204 +219,215 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
       "save_netcdf_yr =                1\n"
     )
     
-    # Save the filtered dataframe to CSV as "projected" Demeter input 
-    write.csv(filtered_df, file = file_path, row.names = FALSE)
-    write(config_file, file = config_path)
+    # 4. Save CSV data and write config file
+    write.csv(filtered_df, file = proj_csv_path, row.names = FALSE)
+    write(config_content, file = config_file_path)
     
     # Import Python module and Run Demeter (approx. 50 min per scenario)
-    print(paste0("Importing and running Demeter for ", scenario_name))
-    sys <- reticulate::import("sys")
-    demeter <- reticulate::import("demeter")
-    config_name = paste0("Scenario_", scenario_name, ".ini")
-    config_file = file.path(demeter_root, "config_files", config_name)
-    demeter$run_model(config_file=config_file, write_outputs=TRUE)
+    print(paste0("Importing and running Demeter for ", scen_name))
+    # sys <- reticulate::import("sys")
+    # demeter <- reticulate::import("demeter")
+    
+    # config_name = paste0("Scenario_", scenario_name, ".ini")
+    # config_file = file.path(demeter_root, "config_files", config_name)
+    
+    demeter$run_model(config_file=config_file_path, write_outputs=TRUE)
     print(paste0("Demeter run for scenario ", scenario_name, " completed"))
     
   }
   print(paste0("Demeter runs completed for all scenarios of database ", prj_name))
   
   # Extract surfaces by land use type from the netCDF files
-  year <- c('2020','2050')
+  year <- seq.int(start_year, final_available_year, by = 5)
   output_year <- data.frame(year)
-  areas_land_types <- read.csv(system.file("extdata", "Coordinates.csv", package = "gcamsdg"))
+  
+  # areas_land_types <- read.csv(system.file("extdata", "Coordinates.csv", package = "gcamsdg"))
 
   # List and rename files 
-  folders <- list.dirs(dir_demeter, full.names = FALSE, recursive = FALSE)
+  folders <- list.dirs(file.path(demeter_path, "outputs"), full.names = FALSE, recursive = FALSE)
   
   # Filter folders using grep to match any of the scenario names as a substring
   scenario_folders <- folders[sapply(folders, function(folder) {
-    any(grepl(paste(scenario_names, collapse = "|"), folder))
+    any(grepl(paste(scen_names, collapse = "|"), folder))
   })]
 
   # Loop through each file
-  for (folder in scenario_folders) {
+  if (demeterRun) for (folder in scenario_folders) {
     # Full path of the original file
-    old_folder_path <- file.path(dir_demeter, folder)
+    old_folder_path <- file.path(demeter_path, "outputs", folder)
     # Use sub to extract the scenario name, everything before the first underscore
-    new_name <- sub("_2024.+", "", folder)
+    new_name <- sub("_20.+", "", folder)
     # Full path for the new file name
-    new_folder_path <- file.path(dir_demeter, new_name)
-    # Rename the file
-    file.rename(old_folder_path, new_folder_path)
+    new_folder_path <- file.path(demeter_path, "outputs", new_name)
+    # Check if target folder already exists
+    if (dir.exists(new_folder_path)) {
+      message(sprintf("Skipped: Destination directory '%s' already exists for '%s'.", new_name, folder))
+    } else {
+      # Perform the rename
+      success <- file.rename(old_folder_path, new_folder_path)
+      if (success) {
+        message(sprintf("Successfully renamed '%s' -> '%s'", folder, new_name))
+      } else {
+        warning(sprintf("Failed to rename '%s' (check if files inside are open).", folder))
+      }
+    }
   }
   
+  ############################################################################
   # Load & Process Ecoregions shp ---- 
   print("Loading and processing Ecoregion data")
-  ecoregions_shp <- sf::st_read(system.file("extdata", "Ecoregions_shp", "wwf_terr_ecos.shp", package = "gcamsdg"))
-  # Check the geometries
-  ecoregions_valid <- sf::st_is_valid(ecoregions_shp)
-  # Identify invalid geometries
-  invalid_ecoregions <- ecoregions_shp[!ecoregions_valid, ]
-  # Fix the geometries
-  ecoregions_shp = sf::st_make_valid(ecoregions_shp)
-  # Simplify ecoregions
-  ecoregions_id <- ecoregions_shp %>% 
-    dplyr::select(all_of(c("OBJECTID", "eco_code")))
-  length(unique(ecoregions_id$OBJECTID))
+  ecoregions_sf <- sf::st_read(system.file("extdata", "Ecoregions_shp", "wwf_terr_ecos.shp", package = "gcamsdg")) %>% 
+    st_make_valid() %>%
+      st_transform(4326) %>%        # IMPORTANT
+      dplyr::select(OBJECTID, eco_code)
   # Read file with the Ecoregion names from Chaudhary and Brookes (2018)
   ecoregions_ID <- read.csv(system.file("extdata", "Ecoregion_ID.csv", package = "gcamsdg"))
   # Create the final CSV that will receive the PSL results (one line per scenario)
   final_csv = read.csv(system.file("extdata", "PSL_template.csv", package = "gcamsdg"))
-  
   print("Starting to create the dataframes from NetCDF files")
-  # Create the NetCDF Files ----
-  for (scenario_name in scenario_names) {
-    for (j in 1:2) {
-      
-      # Initialize the receiving dataframe 
-      merge_df = read.csv(system.file("extdata", "lonlat_coord.csv", package = "gcamsdg"))
-      merge_df = merge_df[,2:3]
-      
-      # Create path components 
-      netcdffolder <- "spatial_landcover_netcdf"
-      nc_file <- paste0("_demeter_",scenario_name,"_",output_year[j,1],".nc")
-      NetCDFfiles_path <- file.path(dir_demeter,scenario_name,netcdffolder,nc_file)
-      print(NetCDFfiles_path)
-      # Read the nc file from Demeter outputs
-      ncin <- ncdf4::nc_open(NetCDFfiles_path)
 
-      # Set the list of variables
-      variables = names(ncin$var)
-
-      # Get longitude and latitude
-      lon <- ncdf4::ncvar_get(ncin,"longitude")
-      nlon <- dim(lon)
-      head(lon)
-      lat <- ncdf4::ncvar_get(ncin,"latitude")
-      nlat <- dim(lat)
-      head(lat)
-      lonlat <- as.matrix(expand.grid(lon, lat))
-      dim(lonlat)
-
-      # Function to create dataframes from the variables of the nc file
-      for (i in 1:length(variables)) {
-
-        # i = 5
-        landuse_df <- na.omit(data.frame(cbind(lonlat, as.vector(ncdf4::ncvar_get(ncin, ncin$var[[i]])))))
-        names(landuse_df) <- c("lon", "lat", paste(ncin$var[[i]]$longname)) # instead of landuse, the longname of the variable i
-        # assign(paste(ncin$var[[i]]$longname, "df", sep="_"), landuse_df)
-        merge_df = merge(merge_df, landuse_df)
-        print(ncin$var[[i]]$longname)
-        
-      }
+  ############################################################################
+  # LOOP: Create the NetCDF Files ----
+  for (scen_name in scen_names) {
+    
+    # # # DEBUG
+    # scen_name = "ClimPol"
+    
+    # Initialize the receiving dataframe 
+    coord_df = read.csv("data/lonlat_coord.csv")[,2:3]
+    
+    # Create path components 
+    netcdffolder <- "spatial_landcover_netcdf"
+    
+    # Initialize a list to store yearly data frames
+    yearly_dfs <- vector("list", length = nrow(output_year))
+    
+    for (j in seq_len(nrow(output_year))) {
       
-      # Now create a new column with the sum of the columns that finish by "irrigated" 
-      merge_df$crop_irr = rowSums(merge_df[, grepl("irrigated", names(merge_df))])
-      merge_df$crop_rfd = rowSums(merge_df[, grepl("rainfed|otherarableland", names(merge_df))])
+      # DEBUG
+      # j = 1
       
-      merge_df = merge_df %>% 
-        dplyr::select(!contains("irrigated")) %>% 
-        dplyr::select(!contains("rainfed")) %>% 
-        dplyr::select(!contains("otherarableland")) %>%
-        dplyr::select(!c(basin_id, region_id, water))
+      # Construct file path
+      nc_file <- paste0("_demeter_", scen_name, "_", output_year[j, 1], ".nc")
+      NetCDFfiles_path <- file.path(output_path, scen_name, netcdffolder, nc_file)
+      message("Reading: ", NetCDFfiles_path)
       
-      # assign(paste(ncin$var[[i]]$longname, "df", sep="_"), merge_df)
-      assign(paste("merge", j, "df", sep="_"), merge_df)
+      # Open NetCDF
+      ncin <- nc_open(NetCDFfiles_path)
+      
+      # Get lon/lat only if needed
+      lon <- ncvar_get(ncin, "longitude")
+      lat <- ncvar_get(ncin, "latitude")
+      lonlat <- expand.grid(lon = lon, lat = lat)
+      dim(ncvar_get(ncin, ncin$var[[1]]))
+      
+      # Extract all variables efficiently
+      var_list <- lapply(ncin$var, function(v) {
+        vals <- as.vector(ncvar_get(ncin, v))
+        df <- data.frame(vals)
+        names(df) <- v$longname
+        return(df)
+      })
+      
+      # Combine variables into one df (column bind)
+      vars_df <- bind_cols(lonlat, var_list)
+      
+      # Optional: remove unnecessary columns
+      vars_df <- vars_df %>% dplyr::select(-any_of(c("basin_id", "region_id", "water")))
+      
+      # Keep only the rows present in coord_df
+      merge_df <- vars_df %>%
+        semi_join(coord_df, by = c("lon", "lat"))
+      
+      merge_sf <- st_as_sf(
+        merge_df,
+        coords = c("lon", "lat"),
+        crs = 4326,
+        remove = FALSE
+      )
+      
+      merge_sf <- st_join(
+        merge_sf,
+        ecoregions_sf,
+        left = FALSE   # drop points outside ecoregions (e.g. ocean, Antarctica)
+      )
+      
+      eco_sum_df <- merge_sf %>%
+        st_drop_geometry() %>%
+        group_by(eco_code) %>%
+        summarise(
+          across(
+            where(is.numeric),
+            ~ sum(.x, na.rm = TRUE)
+          ),
+          .groups = "drop"
+        )
+      
+      eco_sum_df$year <- output_year[j, 1]
+      eco_sum_df$scenario <- scen_name
+      
+      yearly_dfs[[j]] <- eco_sum_df
       
     }
     
-    print(paste0("LUC dataframe for scenario ", scenario_name, " created from Demeter outputs"))
+    # TODO: This process lasts 20min hence could be done in python chunk through reticulate to speed it up significantly with xarray functions
     
-    # Merge 2020 and 2050 
-    merge_df = merge(merge_1_df, merge_2_df, by = c("lon", "lat"))
+    ############################################################################
+    # Combine all years into one big df
+    final_eco_df <- bind_rows(yearly_dfs) 
     
-    # Geography parameters 
-    areas_land_types <- merge_df %>% rename ("longitude"="lon") %>% rename ("latitude"="lat")
-    areas_land_types_shp <- areas_land_types
-    sp::coordinates(areas_land_types_shp)=~longitude+latitude
-    sp::proj4string(areas_land_types_shp)<- sp::CRS("+proj=longlat +datum=WGS84")
-    areas_land_types_shp = sf::st_as_sf(areas_land_types_shp)
-
-    # Unique geometries
-    unique(sf::st_geometry_type(areas_land_types_shp$geometry))
-
-    # Check the classes
-    class(areas_land_types_shp)
-    raster::crs(areas_land_types_shp)
-    areas_land_types_shp = sf::st_transform(areas_land_types_shp, crs=4326)
-
-    # Check the geometries
-    areas_land_types_valid <- sf::st_is_valid(areas_land_types_shp)
-
-    # Identify invalid geometries
-    invalid_areas_land_types <- areas_land_types_shp[!areas_land_types_valid, ]
-
-    # Join attributes by location
-    joined_shp_id = sf::st_join(areas_land_types_shp, ecoregions_id, join = sf::st_intersects) # way too long, need to simply both with index
-
-    # Aggregate per land use, dropping geometry
-    joined_shp_agg <- joined_shp_id %>%
-      sf::st_drop_geometry() %>%
-      group_by(OBJECTID) %>%
-      summarise(
-                forest.x = sum(forest.x),
-                pasture.x = sum(pasture.x),
-                crop_irr.x = sum(crop_irr.x),
-                crop_rfd.x = sum(crop_rfd.x),
-                forest.y = sum(forest.y),
-                pasture.y = sum(pasture.y),
-                crop_irr.y = sum(crop_irr.y),
-                crop_rfd.y = sum(crop_rfd.y),
-                ) %>% 
-      ungroup() %>% 
-      full_join(ecoregions_shp[,c(1,18)]) %>%
-      rename(ECOREGION_CODE = eco_code) %>%
-      mutate_at(vars(-ECOREGION_CODE), ~replace(., is.na(.), 0))
+    # Replace 2020 with 2021 in the 'year' column if base_year is 2021
+    if (base_year == 2021) {
+      final_eco_df <- final_eco_df %>%
+        mutate(year = if_else(year == 2020, 2021, year))
+      
+      message("Replaced year 2020 with 2021 in final_eco_df.")
+    }
     
-    # Incorporate the ecoregions names from Chaudhary and Brookes (2018) to the Results matrix obtained from QGIS with data on land use type area changes over time
-    # Conversion function from square km to square meters
     sqm <- function(x, na.rm = FALSE) (x*1000000)
     
-    joined_shp_extended <- joined_shp_agg %>% 
-      merge(ecoregions_ID,by="ECOREGION_CODE") %>%  
-      relocate(ECO_NAME, .after=ECOREGION_CODE) %>%  
-      group_by(ECOREGION_CODE,ECO_NAME) %>%
-      summarise(across(where(is.numeric), sum)) %>% 
-      dplyr::select(-OBJECTID) %>% 
-      mutate_if(is.numeric, sqm, na.rm = FALSE) %>% 
-      ungroup() %>% 
-      as.data.frame() %>% 
-      mutate(
-             forest.diff = forest.y - forest.x,
-             pasture.diff = pasture.y - pasture.x,
-             crop_irr.diff = crop_irr.y - crop_irr.x,
-             crop_rfd.diff = crop_rfd.y - crop_rfd.x,
-        )
+    final_df <- final_eco_df %>% 
+      rename(ECOREGION_CODE = eco_code) %>%
+      merge(ecoregions_ID, by = "ECOREGION_CODE") %>% 
+      dplyr::select(-c("lat", "lon", "Habitat.type", "OBJECTID")) %>% 
+      mutate(across(where(is.numeric) & !any_of("year"), ~ sqm(.x, na.rm = FALSE)))
     
+    landuse_cols <- c(
+      "shrubland", "grassland", "forest", "rockicedesert",
+      "urbanland", "croplandirr", "croplandrfd", "pasture"
+    )
+    
+    df_delta <- final_df %>%
+      group_by(ECOREGION_CODE) %>%
+      mutate(
+        across(
+          all_of(landuse_cols),
+          ~ .x - .x[year == base_year][1]
+        )
+      ) %>%
+      ungroup()
+    
+    message("All Demeter outputs combined into one dataframe aggregated per ecoregion. Difference relative to 2020 computed for each ecoregion and per year")
+    
+    
+    ############################################################################
     # Estimate the final PSL number with CF file 
     CF = read.csv(system.file("extdata", "CF.csv", package = "gcamsdg"))
     
-    final = merge(joined_shp_extended, CF, by = c("ECOREGION_CODE")) %>% 
+    final = merge(df_delta, CF, by = c("ECOREGION_CODE")) %>% 
       mutate(
              forest_PSL = forest.diff * Forest_CF,
              pasture_PSL = pasture.diff * Pasture_CF,
              crop_irr_PSL = crop_irr.diff * Irrigated_crop_CF,
              crop_rfd_PSL = crop_rfd.diff * Rainfed_crop_CF,
              ) %>% 
-      mutate(final_PSL = rowSums(across(ends_with("_PSL"))))
+      mutate(final_PSL = rowSums(across(ends_with("_PSL")))) %>% 
+      mutate(across(ends_with("_PSL"),
+                    ~ if_else(year < base_year, 0, .x)))
     
     # Aggregate across the ecoregions and compute final PSL across land uses
     final_agg = final %>% 
+      group_by(year) %>% 
       summarize(
                 forest_PSL = sum(forest_PSL),
                 pasture_PSL = sum(pasture_PSL),
@@ -358,23 +435,92 @@ get_sdg15_land_indicator <- function(prj, prj_name, saveOutput = T,
                 crop_rfd_PSL = sum(crop_rfd_PSL),
                 final_PSL = sum(final_PSL)
                 ) %>% 
-      mutate(scenario = scenario_name)
+      mutate(scenario = scen_name) %>% 
+      pivot_longer(!c("year", "scenario"), names_to = "Variable", values_to = "PSL") %>% 
+      pivot_wider(names_from = year, values_from = "PSL") %>% 
+      mutate(Model = "GCAM", .before=scenario) %>% 
+      mutate(Unit = "Number of species", .after=Variable) %>% 
+      mutate(Region = "World", .after=scenario) %>% 
+      rename(Scenario = scenario)
     
-    # Delete the first column X
-    final_agg = final_agg[,-1]
+    final_total <- final_format %>% 
+      filter(Variable == "final_PSL") %>%
+      mutate(Variable = "Terrestrial Biodiversity|Potential Species Loss")
     
-    # write.xlsx(final_agg,paste0(dipc_path,"results/PSL-results/",scenario_name,"_PSL_2020_2050.xlsx"), overwrite = TRUE, rowNames=TRUE, colNames=TRUE)
-    if (saveOutput) write.csv(final_agg, file.path(base_path, "gcamsdg", "output", "SDG15-Land", "results", "PSL-results", paste0(scenario_name, "_PSL_2020_2050.csv")), row.names = F)
+    ############################################################################
+    # (Optional) Steps of rasterizing ecoregions values and aggregating back to GCAM regions? For now just report NAs in region rows 
     
-    print(paste0("PSL dataframe for scenario ", scenario_name, " saved in results"))
+    
+    ############################################################################
+    
+    
+    # write.xlsx(final_agg,paste0(dipc_path,"results/PSL-results/",scenario_name,"_PSL_2020_2050.xlsx"), overwrite = TRUE, rowNames=TRUE, colNames=TRUE)      
+    if (saveOutput) write.csv(final,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_Full.csv"), row.names = F)       
+    if (saveOutput) write.csv(final_agg,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_LU.csv"), row.names = F)       
+    if (saveOutput) write.csv(final_total,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_Total.csv"), row.names = F)       
+    
+    print(paste0("PSL dataframe for scenario ", scen_name, " saved in results"))
     final_csv <- rbind(final_csv, final_agg)
 
   }
   
+  ############################################################################
+  # Final aggregation of scenario results, adding Regional rows filled with NAs
+  
+  final_total_all <- scen_names %>%
+    lapply(function(scn) {
+      file <- file.path(
+        "output/SDG15-Land/results/PSL-results",
+        paste0(scn, "_PSL_Total.csv")
+      )
+      
+      message("Reading: ", file)
+      read.csv(file, check.names = FALSE)
+    }) %>%
+    bind_rows()
+  
+  # final_full_all <- scen_names %>%
+  #   lapply(function(scn) {
+  #     file <- file.path(
+  #       "output/SDG15-Land/results/PSL-results",
+  #       paste0(scn, "_PSL_Full.csv")
+  #     )
+  #     
+  #     message("Reading: ", file)
+  #     read.csv(file, check.names = FALSE)
+  #   }) %>%
+  #   bind_rows() %>% 
+  #   # filter(year == "2015") %>% 
+  #   group_by(scenario, year) %>% 
+  #   summarize(shrubland = sum(shrubland),
+  #             forest = sum(forest),
+  #             pasture = sum(pasture)
+  #             
+  #   ) %>% 
+  #   ungroup()
+  
+  GCAM_region <- unique(ISO_gcam_mapping$GCAM_region)
+  year_cols <- grep("^[0-9]{4}$", names(final_total_all), value = TRUE)
+  cat_cols <- c("Model", "Scenario", "Variable", "Unit")
+  base_df <- unique(final_total_all[cat_cols])
+  expanded_df <- merge(
+    base_df,
+    data.frame(Region = GCAM_region),
+    by = NULL
+  )
+  expanded_df[year_cols] <- NA
+  expanded_df <- expanded_df[
+    , c(cat_cols[1:2], "Region", cat_cols[3:4], year_cols)
+  ]
+  final_total_all = final_total_all %>% 
+    bind_rows(expanded_df) %>% 
+    filter(Region != "Global")
+  
   # Write CSV
-  if (saveOutput) write.csv(final_csv, file = file.path('gcamsdg/output/SDG15-Land/results/PSL-prj-results/',paste0('PSL_',gsub("\\.dat$", "", prj_name, ".csv"))), row.names = F)
+  if (saveOutput) { write.csv(final_total_all, file = file.path("output/SDG15-Land/results/PSL-prj-results", paste0("PSL_", gsub("\\.dat$", "", prj_name), "_TOTAL.csv")),row.names = FALSE)}
+  
   print(paste0("PSL dataframe for all scenarios of the ", prj_name, " saved in results"))
-  return(invisible(final_csv))
+  return(invisible(final_total_all))
   
 }
 
