@@ -18,6 +18,41 @@ food_subsector <- readr::read_csv(file.path(rawDataFolder, "inst/extdata/", "foo
 )
 use_data(food_subsector, overwrite = T)
 
+basin_id <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/", "basin_to_country_mapping.csv"))
+use_data(basin_id, overwrite = T)
+
+region_mapping_32 <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/demeter/inputs/mapping", "region_mapping_32.csv"))
+use_data(region_mapping_32, overwrite = T)
+
+region_mapping_66 <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/demeter/inputs/mapping", "region_mapping_66.csv"))
+use_data(region_mapping_66, overwrite = T)
+
+gcam_basin_lookup <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/demeter/inputs/mapping", "gcam_basin_lookup.csv"))
+use_data(gcam_basin_lookup, overwrite = T)
+
+ISO_mapping_32 <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/", "iso_GCAM_regID_32.csv"))
+use_data(ISO_mapping_32, overwrite = T)
+
+ISO_mapping_66 <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/", "iso_GCAM_regID_66.csv"))
+use_data(ISO_mapping_66, overwrite = T)
+
+
+
+## -- geographic inputs (basemap, ecoregions)
+
+basemap_32
+
+
+basemap_66 
+
+
+ecoregions_sf <- sf::st_read(system.file("extdata", "Ecoregions_shp", "wwf_terr_ecos.shp"))
+use_data(ecoregions_sf, overwrite = T)
+
+
+
+
+
 ## -- queries
 queryFile <- file.path(rawDataFolder, "inst/extdata", "queries_all_sdg.xml")
 query_file <- rgcam::parse_batch_query(queryFile)

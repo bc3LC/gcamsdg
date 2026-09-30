@@ -10,6 +10,41 @@
 #' }
 "food_subsector"
 
+#' basin_id
+#'
+#' @source local
+#' @format .csv
+#' @description GCAM basin mapping
+#' @examples
+#' \dontrun{
+#' library(gcamsdg)
+#' gcamsdg::basin_id
+#' }
+"basin_id"
+
+
+# region_mapping_32
+# 
+# 
+# region_mapping_66
+# 
+# 
+# ISO_mapping_32
+# 
+# 
+# ISO_mapping_66
+# 
+# 
+# 
+# ## -- Demeter basemap
+# 
+# basemap_32
+# 
+# 
+# basemap_66 
+
+
+
 
 #' query_file
 #'

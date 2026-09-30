@@ -34,18 +34,12 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
   if (!dir.exists("output/SDG15-Land/results/PSL-prj-results")) dir.create("output/SDG15-Land/results/PSL-prj-results")
   
   # Set the base path for the GCAM folder
-  demeter_path = file.path(getwd(), "inst/extdata/demeter")
   demeter_path = paste0(base_path, "inst/extdata/demeter")
   tmp_files <- "output/SDG15-Land/results/tmp-files"
   dem_proj_dir <- file.path(tmp_files, "demeter_projected")
   dem_config_dir     <- file.path(tmp_files, "demeter_config")
   dem_output_dir <- file.path(tmp_files, "demeter_outputs")
   
-  # # Ensure destination directories exist
-  # dir.create(input_proj_dir, recursive = TRUE, showWarnings = FALSE)
-  # dir.create(config_dir, recursive = TRUE, showWarnings = FALSE)
-  
-
   # Set the name of the conda environment read by reticulate
   Sys.setenv(RETICULATE_PYTHON = file.path(conda_env, "python.exe"))
   require(reticulate, quietly = TRUE)
