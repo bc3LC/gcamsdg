@@ -14,37 +14,51 @@
 #' @return data frame with the final PSL by scenario
 #' @export
 get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput = T,
-                                      base_path = "C:/GCAM/Theo/gcam_sdg/",
-                                      conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"){
+                                     base_path = "C:/GCAM_working_group/gcamsdg/",
+                                     conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"){
 
   print('computing sdg15 - land indicator ...')
 
   # Create the directories if they do not exist:
-  if (!dir.exists("gcamsdg/output")) dir.create("gcamsdg/output")
-  if (!dir.exists("gcamsdg/output/SDG15-Land")) dir.create("gcamsdg/output/SDG15-Land")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/figures")) dir.create("gcamsdg/output/SDG15-Land/figures")
+  if (!dir.exists("output")) dir.create("output")
+  if (!dir.exists("output/SDG15-Land")) dir.create("output/SDG15-Land")
+  if (!dir.exists("output/SDG15-Land/figures")) dir.create("output/SDG15-Land/figures")
 
   # Create outputs folders
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results")) dir.create("gcamsdg/output/SDG15-Land/results/")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results/PSL-results")) dir.create("gcamsdg/output/SDG15-Land/results/PSL-results")
-  if (!dir.exists("gcamsdg/output/SDG15-Land/results/PSL-prj-results")) dir.create("gcamsdg/output/SDG15-Land/results/PSL-prj-results")
+  if (!dir.exists("output/SDG15-Land/results")) dir.create("output/SDG15-Land/results/")
+  if (!dir.exists("output/SDG15-Land/results/tmp-files")) dir.create("output/SDG15-Land/results/tmp-files")
+  if (!dir.exists("output/SDG15-Land/results/tmp-files/demeter_config")) dir.create("output/SDG15-Land/results/tmp-files/demeter_config")
+  if (!dir.exists("output/SDG15-Land/results/tmp-files/demeter_projected")) dir.create("output/SDG15-Land/results/tmp-files/demeter_projected")
+  if (!dir.exists("output/SDG15-Land/results/tmp-files/demeter_outputs")) dir.create("output/SDG15-Land/results/tmp-files/demeter_outputs")
+  if (!dir.exists("output/SDG15-Land/results/PSL-results")) dir.create("output/SDG15-Land/results/PSL-results")
+  if (!dir.exists("output/SDG15-Land/results/PSL-prj-results")) dir.create("output/SDG15-Land/results/PSL-prj-results")
   
   # Set the base path for the GCAM folder
-  demeter_path = paste0(base_path, "demeter")
+  demeter_path = file.path(getwd(), "inst/extdata/demeter")
+  demeter_path = paste0(base_path, "inst/extdata/demeter")
+  tmp_files <- "output/SDG15-Land/results/tmp-files"
+  dem_proj_dir <- file.path(tmp_files, "demeter_projected")
+  dem_config_dir     <- file.path(tmp_files, "demeter_config")
+  dem_output_dir <- file.path(tmp_files, "demeter_outputs")
+  
+  # # Ensure destination directories exist
+  # dir.create(input_proj_dir, recursive = TRUE, showWarnings = FALSE)
+  # dir.create(config_dir, recursive = TRUE, showWarnings = FALSE)
+  
 
   # Set the name of the conda environment read by reticulate
-  # Sys.setenv(RETICULATE_PYTHON = file.path(conda_env, "python.exe"))
-  # library(reticulate)
+  Sys.setenv(RETICULATE_PYTHON = file.path(conda_env, "python.exe"))
+  require(reticulate, quietly = TRUE)
   reticulate::use_condaenv(conda_env, required=TRUE)
   reticulate::py_config()
   sys <- reticulate::import("sys")
   demeter <- reticulate::import("demeter")
   
   # Create vector of all scenarios in the project
-  scen_names <- listScenarios(prj)
+  scen_names <- rgcam::listScenarios(prj)
   
   # Upload basin mapping
-  basin.id <- read.csv(system.file("extdata", "basin_to_country_mapping.csv", package = "gcamsdg"))
+  basin_id <- read.csv(system.file("extdata", "basin_to_country_mapping.csv", package = "gcamsdg"))
 
   print("Creating Demeter inputs from GCAM land allocation query")
   
@@ -54,11 +68,11 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     dplyr::mutate(landleaf = gsub("Hardwood_Forest", "Forest", landleaf)) %>%
     dplyr::mutate(landleaf = gsub("Softwood_Forest", "Forest", landleaf)) %>%
     dplyr::group_by(Units, scenario, region, landleaf, year) %>%
-    dplyr::summarize(value = sum(value)) %>% ungroup() %>%
+    dplyr::summarize(value = sum(value)) %>% dplyr::ungroup() %>%
     tidyr::separate(landleaf, into = c("landclass", "GLU_name", "irrtype", "hiORlo"), sep = "_") %>%
-    dplyr::mutate(landclass = case_when (!is.na(irrtype) ~ paste0(landclass,irrtype, hiORlo),TRUE ~ landclass)) %>%
-    merge(basin.id,by="GLU_name") %>% dplyr::select(region, landclass, GCAM_basin_ID, year, value, scenario)  %>%
-    dplyr::rename("metric_id"="GCAM_basin_ID") %>% spread(year, value) %>% dplyr::select(-"1975")
+    dplyr::mutate(landclass = dplyr::case_when (!is.na(irrtype) ~ paste0(landclass,irrtype, hiORlo),TRUE ~ landclass)) %>%
+    merge(basin_id,by="GLU_name") %>% dplyr::select(region, landclass, GCAM_basin_ID, year, value, scenario)  %>%
+    dplyr::rename("metric_id"="GCAM_basin_ID") %>% tidyr::spread(year, value) %>% dplyr::select(-"1975")
   
   add_broad_landclass <- function(df) {
     df$broad_landclass <- with(df, ifelse(grepl("RFD", landclass, ignore.case = TRUE), "CroplandRfd",
@@ -75,9 +89,9 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
   
   det.LU <- add_broad_landclass(det.LU)
   det.LU = det.LU %>% 
-    group_by(broad_landclass, region, metric_id, scenario) %>%
-    summarise(across(where(is.numeric), sum, na.rm = TRUE)) %>% 
-    rename(landclass = broad_landclass)
+    dplyr::group_by(broad_landclass, region, metric_id, scenario) %>%
+    dplyr::summarise(dplyr::across(where(is.numeric), sum, na.rm = TRUE)) %>% 
+    dplyr::rename(landclass = broad_landclass)
   
   # # Create path for specific scenario
   # demeter_root <- file.path(dipc_path, "gcamsdg", "demeter-2.0", "demeter", "GCAM_demeter_protection_scenario")
@@ -89,19 +103,11 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     # Filter the dataframe for the current scenario
     filtered_df <- det.LU[det.LU$scenario == scen_name, ]
     
-    # 2. Define Directory & File Paths Clearly (avoiding name collisions)
-    input_proj_dir <- file.path(demeter_path, "inputs/projected")
-    config_dir     <- file.path(demeter_path, "config_files")
-    
-    # Ensure destination directories exist
-    dir.create(input_proj_dir, recursive = TRUE, showWarnings = FALSE)
-    dir.create(config_dir, recursive = TRUE, showWarnings = FALSE)
-    
     proj_csv_filename <- paste0("Scenario_", scen_name, ".csv")
     config_filename   <- paste0("Scenario_", scen_name, ".ini")
     
-    proj_csv_path <- file.path(input_proj_dir, proj_csv_filename)
-    config_file_path <- file.path(config_dir, config_filename)
+    proj_csv_path <- file.path(dem_proj_dir, proj_csv_filename)
+    config_file_path <- file.path(dem_config_dir, config_filename)
     
     # Config file parameters
     projected_file <- paste0("Scenario_", scen_name, ".csv")
@@ -114,13 +120,13 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     if (region_numb == 32) {
       region_mapping <- "gcam_regions_32.csv"
       basemap        <- "baselayer_GCAM6_WGS84_5arcmin_2022_HighProt_Agg.zip"
-      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM_regID.csv", package = "gcamsdg")) %>% 
-        rename(country = "country_name") 
+      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM_regID_32.csv", package = "gcamsdg")) %>% 
+        dplyr::rename(country = "country_name") 
     } else if (region_numb == 66) {
       region_mapping <- "gcam_regions_66.csv"
       basemap        <- "baselayer_GCAM6_WGS84_5arcmin_2022_HighProt_Agg_66regions.zip"
-      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM-EU_regID.csv", package = "gcamsdg")) %>% 
-        rename(country = "country_name") 
+      ISO_gcam_mapping <- read.csv(system.file("extdata", "iso_GCAM_regID_66.csv", package = "gcamsdg")) %>% 
+        dplyr::rename(country = "country_name") 
     } else {
       stop(sprintf("Unsupported number of regions: %d. Expected 32 (GCAM) or 66 (GCAM-Europe).", region_numb))
     }
@@ -142,18 +148,22 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     adj_result  <- adjust_base_year(filtered_df, base_year)
     filtered_df <- adj_result$df
     start_year  <- adj_result$start_year
+
+    # 1. Force R to resolve absolute paths before writing the config
+    abs_run_dir  <- normalizePath(file.path(getwd(), "inst/extdata/demeter"), winslash = "/", mustWork = FALSE)
+    abs_proj_dir <- normalizePath(file.path(getwd(), "output/SDG15-Land/results/tmp-files/demeter_projected"), winslash = "/", mustWork = FALSE)
     
-    # Create the content for the config file
+    # 2. Write the config file
     config_content <- paste0(
       "[STRUCTURE]\n",
-      "run_dir =                       ", demeter_path, "\n",
-      "in_dir =                        inputs\n",
-      "out_dir =                       outputs\n\n",
+      "run_dir =                       ", abs_run_dir, "\n",  
+      "in_dir =                        inputs\n",            
+      "out_dir =                       outputs\n\n", 
       "[INPUTS]\n",
       "allocation_dir =                allocation\n",
       "observed_dir =                  observed\n",
       "constraints_dir =               constraints\n",
-      "projected_dir =                 projected\n\n",
+      "projected_dir =                 ", abs_proj_dir, "\n\n", 
       "[[ALLOCATION]]\n",
       "spatial_allocation_file =       gcam_regbasin_moirai_v3_type5_5arcmin_observed_alloc.csv\n",
       "gcam_allocation_file =          gcam_regbasin_moirai_v3_type5_5arcmin_projected_alloc.csv\n",
@@ -234,6 +244,34 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     demeter$run_model(config_file=config_file_path, write_outputs=TRUE)
     print(paste0("Demeter run for scenario ", scenario_name, " completed"))
     
+    # ---------------------------------------------------------
+    # 2. BULLETPROOF POST-RUN CLEANUP & MOVE
+    # ---------------------------------------------------------
+    demeter_internal_out <- file.path(abs_run_dir, "outputs")
+    target_true_out      <- normalizePath(file.path(getwd(), "output/SDG15-Land/results/tmp-files/demeter_outputs"), winslash = "/", mustWork = FALSE)
+    
+    # Demeter adds timestamps (e.g., ClimPol_2026-09-30_15h22m09s). Find it.
+    all_out_folders <- list.dirs(demeter_internal_out, recursive = FALSE)
+    scen_folder     <- all_out_folders[grep(scen_name, basename(all_out_folders))]
+    
+    if (length(scen_folder) > 0) {
+      # Take the most recent folder if there are multiple
+      scen_folder <- tail(scen_folder, 1)
+      
+      # Ensure your true output directory exists
+      dir.create(target_true_out, recursive = TRUE, showWarnings = FALSE)
+      
+      # Move the folder
+      file.copy(from = scen_folder, to = target_true_out, recursive = TRUE, overwrite = TRUE)
+      
+      # Delete the outputs folder from inst/extdata/demeter/
+      unlink(demeter_internal_out, recursive = TRUE)
+      
+      message("Success: Rescued Demeter outputs and moved them to ", target_true_out)
+    } else {
+      warning("Could not find Demeter output folder to move. Check if the run failed.")
+    }
+    
   }
   print(paste0("Demeter runs completed for all scenarios of database ", prj_name))
   
@@ -244,7 +282,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
   # areas_land_types <- read.csv(system.file("extdata", "Coordinates.csv", package = "gcamsdg"))
 
   # List and rename files 
-  folders <- list.dirs(file.path(demeter_path, "outputs"), full.names = FALSE, recursive = FALSE)
+  folders <- list.dirs(file.path(tmp_files, "demeter_outputs"), full.names = FALSE, recursive = FALSE)
   
   # Filter folders using grep to match any of the scenario names as a substring
   scenario_folders <- folders[sapply(folders, function(folder) {
