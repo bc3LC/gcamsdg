@@ -1,0 +1,806 @@
+ECOREGION_CODE,ECO_NAME,Shrubland_CF,Protected_shrubland_CF,Grassland_CF,Protected_grassland_CF,Tundra_CF,Forest_CF,Protected_forest_CF,Pasture_CF,Protected_pasture_CF,Irrigated_crop_CF,Rainfed_crop_CF,Rockicedesert_CF,Urban_CF
+AA0101,Admiralty Islands lowland rain forests,0,0,0,0,0,1.44E-08,0,2.77E-08,0,2.73E-08,2.17E-08,0,3.37E-08
+AA0102,Banda Sea Islands moist deciduous forests,0,0,0,0,0,1.29E-09,0,2.03E-09,0,1.97E-09,1.66E-09,0,2.36E-09
+AA0103,Biak-Numfoor rain forests,0,0,0,0,0,2.08E-09,0,3.12E-09,0,2.93E-09,2.47E-09,0,3.55E-09
+AA0104,Buru rain forests,0,0,0,0,0,1.25E-09,0,2.11E-09,0,2.04E-09,1.68E-09,0,2.49E-09
+AA0105,Central Polynesian tropical moist forests,0,0,0,0,0,7.04E-10,0,1.09E-09,0,1.06E-09,9.08E-10,0,1.25E-09
+AA0106,Halmahera rain forests,0,0,0,0,0,6.25E-10,0,9.66E-10,0,9.24E-10,7.77E-10,0,1.11E-09
+AA0107,Huon Peninsula montane rain forests,0,0,0,0,0,3.21E-09,0,6.00E-09,0,5.89E-09,4.74E-09,0,7.24E-09
+AA0108,Japen rain forests,0,0,0,0,0,3.18E-09,0,4.52E-09,0,4.26E-09,3.72E-09,0,4.99E-09
+AA0109,Lord Howe Island subtropical forests,0,0,0,0,0,4.31E-08,0,8.43E-08,0,8.30E-08,6.59E-08,0,1.03E-07
+AA0110,Louisiade Archipelago rain forests,0,0,0,0,0,6.64E-09,0,1.10E-08,0,1.07E-08,8.97E-09,0,1.29E-08
+AA0111,New Britain-New Ireland lowland rain forests,0,0,0,0,0,1.34E-09,0,2.40E-09,0,2.35E-09,1.91E-09,0,2.88E-09
+AA0112,New Britain-New Ireland montane rain forests,0,0,0,0,0,3.41E-09,0,6.20E-09,0,6.09E-09,4.93E-09,0,7.45E-09
+AA0113,New Caledonia rain forests,0,0,0,0,0,1.16E-09,0,2.02E-09,0,1.96E-09,1.62E-09,0,2.37E-09
+AA0114,Norfolk Island subtropical forests,0,0,0,0,0,8.24E-09,0,1.61E-08,0,1.59E-08,1.26E-08,0,1.97E-08
+AA0115,Northern New Guinea lowland rain and freshwater swamp forests,0,0,0,0,0,3.92E-10,0,6.70E-10,0,6.54E-10,5.40E-10,0,7.91E-10
+AA0116,Northern New Guinea montane rain forests,0,0,0,0,0,1.46E-09,0,2.54E-09,0,2.48E-09,2.03E-09,0,3.02E-09
+AA0117,Queensland tropical rain forests,0,0,0,0,0,4.64E-09,0,8.89E-09,0,8.75E-09,6.96E-09,0,1.09E-08
+AA0118,Seram rain forests,0,0,0,0,0,8.76E-10,0,1.36E-09,0,1.30E-09,1.09E-09,0,1.56E-09
+AA0119,Solomon Islands rain forests,0,0,0,0,0,2.55E-09,0,4.51E-09,0,4.41E-09,3.60E-09,0,5.38E-09
+AA0120,Southeastern Papuan rain forests,0,0,0,0,0,9.68E-10,0,1.58E-09,0,1.54E-09,1.29E-09,0,1.85E-09
+AA0121,Southern New Guinea freshwater swamp forests,0,0,0,0,0,2.34E-10,0,4.14E-10,0,4.04E-10,3.29E-10,0,4.94E-10
+AA0122,Southern New Guinea lowland rain forests,0,0,0,0,0,3.59E-10,0,6.31E-10,0,6.17E-10,5.04E-10,0,7.52E-10
+AA0123,Sulawesi lowland rain forests,0,0,0,0,0,4.73E-10,0,6.59E-10,0,6.29E-10,5.45E-10,0,7.39E-10
+AA0124,Sulawesi montane rain forests,0,0,0,0,0,4.72E-10,0,6.04E-10,0,5.73E-10,5.10E-10,0,6.61E-10
+AA0125,Trobriand Islands rain forests,0,0,0,0,0,2.10E-09,0,3.51E-09,0,3.38E-09,2.80E-09,0,4.10E-09
+AA0126,Vanuatu rain forests,0,0,0,0,0,1.34E-09,0,2.42E-09,0,2.36E-09,1.91E-09,0,2.90E-09
+AA0127,Vogelkop montane rain forests,0,0,0,0,0,2.55E-09,0,4.64E-09,0,4.56E-09,3.71E-09,0,5.57E-09
+AA0128,Vogelkop-Aru lowland rain forests,0,0,0,0,0,5.85E-10,0,9.79E-10,0,9.58E-10,7.98E-10,0,1.15E-09
+AA0201,Lesser Sundas deciduous forests,0,0,0,0,0,5.86E-10,0,8.98E-10,0,8.58E-10,7.20E-10,0,1.03E-09
+AA0202,New Caledonia dry forests,0,0,0,0,0,7.19E-10,0,1.29E-09,0,1.25E-09,1.03E-09,0,1.52E-09
+AA0203,Sumba deciduous forests,0,0,0,0,0,7.38E-10,0,1.17E-09,0,1.12E-09,9.29E-10,0,1.36E-09
+AA0204,Timor and Wetar deciduous forests,0,0,0,0,0,5.86E-10,0,8.30E-10,0,7.80E-10,6.62E-10,0,9.39E-10
+AA0401,Chatham Island temperate forests,0,0,0,0,0,8.76E-09,0,1.49E-08,0,1.45E-08,1.19E-08,0,1.77E-08
+AA0402,Eastern Australian temperate forests,0,0,0,0,0,2.66E-10,0,4.02E-10,0,3.94E-10,3.34E-10,0,4.69E-10
+AA0403,Fiordland temperate forests,0,0,0,0,0,9.25E-10,0,1.66E-09,0,1.63E-09,1.32E-09,0,1.99E-09
+AA0404,Nelson Coast temperate forests,0,0,0,0,0,9.38E-10,0,1.77E-09,0,1.74E-09,1.40E-09,0,2.15E-09
+AA0405,Northland temperate forests,0,0,0,0,0,2.09E-10,0,3.59E-10,0,3.52E-10,2.88E-10,0,4.28E-10
+AA0406,Northland temperate kauri forests,0,0,0,0,0,4.52E-10,0,7.72E-10,0,7.61E-10,6.26E-10,0,9.21E-10
+AA0407,Rakiura Island temperate forests,0,0,0,0,0,4.19E-09,0,7.98E-09,0,7.85E-09,6.27E-09,0,9.69E-09
+AA0408,Richmond temperate forests,0,0,0,0,0,9.19E-10,0,1.74E-09,0,1.72E-09,1.37E-09,0,2.12E-09
+AA0409,Southeast Australia temperate forests,0,0,0,0,0,1.31E-10,0,2.03E-10,0,1.99E-10,1.67E-10,0,2.38E-10
+AA0410,Southland temperate forests,0,0,0,0,0,7.31E-10,0,1.38E-09,0,1.36E-09,1.09E-09,0,1.68E-09
+AA0411,Tasmanian Central Highland forests,0,0,0,0,0,5.17E-10,0,9.15E-10,0,8.97E-10,7.28E-10,0,1.10E-09
+AA0412,Tasmanian temperate forests,0,0,0,0,0,4.09E-10,0,7.21E-10,0,7.07E-10,5.74E-10,0,8.64E-10
+AA0413,Tasmanian temperate rain forests,0,0,0,0,0,3.40E-10,0,5.85E-10,0,5.73E-10,4.68E-10,0,6.98E-10
+AA0414,Westland temperate forests,0,0,0,0,0,1.41E-09,0,2.71E-09,0,2.67E-09,2.13E-09,0,3.30E-09
+AA0701,Arnhem Land tropical savanna,0,0,0,0,0,9.25E-11,0,1.26E-10,0,1.25E-10,1.13E-10,0,1.34E-10
+AA0702,Brigalow tropical savanna,0,0,0,0,0,3.61E-11,0,4.69E-11,0,4.66E-11,4.27E-11,0,4.97E-11
+AA0703,Cape York Peninsula tropical savanna,0,0,0,0,0,1.37E-10,0,1.93E-10,0,1.91E-10,1.72E-10,0,2.07E-10
+AA0704,Carpentaria tropical savanna,0,0,0,0,0,2.33E-11,0,3.18E-11,0,3.16E-11,2.85E-11,0,3.40E-11
+AA0705,Einasleigh upland savanna,0,0,0,0,0,7.32E-11,0,9.88E-11,0,9.79E-11,8.87E-11,0,1.05E-10
+AA0706,Kimberly tropical savanna,0,0,0,0,0,3.91E-11,0,5.08E-11,0,5.04E-11,4.63E-11,0,5.37E-11
+AA0707,Mitchell grass downs,0,0,0,0,0,1.60E-11,0,2.03E-11,0,2.01E-11,1.85E-11,0,2.14E-11
+AA0708,Trans Fly savanna and grasslands,0,0,0,0,0,8.71E-10,0,1.61E-09,0,1.57E-09,1.27E-09,0,1.94E-09
+AA0709,Victoria Plains tropical savanna,0,0,0,0,0,2.33E-11,0,3.36E-11,0,3.33E-11,2.96E-11,0,3.63E-11
+AA0801,Cantebury-Otago tussock grasslands,0,0,0,0,0,2.51E-10,0,4.42E-10,0,4.33E-10,3.52E-10,0,5.28E-10
+AA0802,Eastern Australia mulga shrublands,0,0,0,0,0,1.52E-11,0,1.99E-11,0,1.96E-11,1.79E-11,0,2.10E-11
+AA0803,Southeast Australia temperate savanna,0,0,0,0,0,2.21E-11,0,2.66E-11,0,2.63E-11,2.46E-11,0,2.77E-11
+AA1001,Australian Alps montane grasslands,0,0,0,0,0,6.53E-10,0,9.90E-10,0,9.82E-10,8.63E-10,0,1.08E-09
+AA1002,Central Range sub-alpine grasslands,0,0,0,0,0,1.94E-09,0,3.06E-09,0,3.01E-09,2.55E-09,0,3.55E-09
+AA1003,Southland montane grasslands,0,0,0,0,0,3.29E-10,0,5.70E-10,0,5.58E-10,4.55E-10,0,6.79E-10
+AA1101,Antipodes Subantarctic Islands tundra,0,0,0,0,0,3.20E-09,0,5.57E-09,0,5.48E-09,4.49E-09,0,6.64E-09
+AA1201,Coolgardie woodlands,0,0,0,0,0,2.60E-11,0,3.85E-11,0,3.82E-11,3.37E-11,0,4.18E-11
+AA1202,Esperance mallee,0,0,0,0,0,6.83E-10,0,1.08E-09,0,1.07E-09,9.32E-10,0,1.19E-09
+AA1203,Eyre and York mallee,0,0,0,0,0,9.43E-11,0,1.45E-10,0,1.44E-10,1.26E-10,0,1.58E-10
+AA1204,Jarrah-Karri forest and shrublands,0,0,0,0,0,5.83E-09,0,9.26E-09,0,9.18E-09,7.97E-09,0,1.01E-08
+AA1205,Kwongan heathlands (Swan Coastal Plain Scrub and Woodlands),0,0,0,0,0,4.13E-09,0,6.61E-09,0,6.55E-09,5.68E-09,0,7.25E-09
+AA1206,Mount Lofty woodlands,0,0,0,0,0,2.53E-10,0,3.82E-10,0,3.79E-10,3.33E-10,0,4.15E-10
+AA1207,Murray-Darling woodlands and mallee,0,0,0,0,0,3.58E-11,0,4.57E-11,0,4.52E-11,4.16E-11,0,4.82E-11
+AA1208,Naracoorte woodlands,0,0,0,0,0,1.63E-10,0,2.47E-10,0,2.44E-10,2.15E-10,0,2.68E-10
+AA1209,Southwest Australia savanna,0,0,0,0,0,3.04E-10,0,4.81E-10,0,4.77E-10,4.14E-10,0,5.27E-10
+AA1210,Southwest Australia woodlands,0,0,0,0,0,1.25E-09,0,1.96E-09,0,1.94E-09,1.69E-09,0,2.14E-09
+AA1301,Carnarvon xeric shrublands,0,0,0,0,0,2.57E-11,0,3.59E-11,0,3.57E-11,3.22E-11,0,3.85E-11
+AA1302,Central Ranges xeric scrub,0,0,0,0,0,1.65E-11,0,2.19E-11,0,2.17E-11,1.98E-11,0,2.33E-11
+AA1303,Gibson desert,0,0,0,0,0,9.32E-12,0,1.23E-11,0,1.22E-11,1.11E-11,0,1.31E-11
+AA1304,Great Sandy-Tanami desert,0,0,0,0,0,6.30E-12,0,7.23E-12,0,7.15E-12,6.80E-12,0,7.46E-12
+AA1305,Great Victoria desert,0,0,0,0,0,7.00E-12,0,8.25E-12,0,8.16E-12,7.68E-12,0,8.56E-12
+AA1306,Nullarbor Plains xeric shrublands,0,0,0,0,0,5.99E-12,0,7.50E-12,0,7.42E-12,6.87E-12,0,7.88E-12
+AA1307,Pilbara shrublands,0,0,0,0,0,1.66E-11,0,2.16E-11,0,2.14E-11,1.97E-11,0,2.29E-11
+AA1308,Simpson desert,0,0,0,0,0,8.86E-12,0,1.04E-11,0,1.03E-11,9.70E-12,0,1.08E-11
+AA1309,Tirari-Sturt stony desert,0,0,0,0,0,1.13E-11,0,1.38E-11,0,1.36E-11,1.27E-11,0,1.44E-11
+AA1310,Western Australian Mulga shrublands,0,0,0,0,0,8.11E-12,0,1.03E-11,0,1.02E-11,9.39E-12,0,1.08E-11
+AA1401,New Guinea mangroves,0,0,0,0,0,1.28E-10,0,2.12E-10,0,2.04E-10,1.69E-10,0,2.48E-10
+AT0101,Albertine Rift montane forests,0,0,0,0,0,6.50E-10,0,8.80E-10,0,8.48E-10,7.49E-10,0,9.83E-10
+AT0102,Atlantic Equatorial coastal forests,0,0,0,0,0,1.47E-10,0,2.38E-10,0,2.32E-10,1.98E-10,0,2.75E-10
+AT0103,Cameroonian Highlands forests,0,0,0,0,0,8.93E-10,0,1.16E-09,0,1.12E-09,1.08E-09,0,1.20E-09
+AT0104,Central Congolian lowland forests,0,0,0,0,0,4.09E-11,0,6.38E-11,0,6.12E-11,5.20E-11,0,7.35E-11
+AT0105,Comoros forests,0,0,0,0,0,1.15E-08,0,1.96E-08,0,1.90E-08,1.55E-08,0,2.32E-08
+AT0106,Cross-Niger transition forests,0,0,0,0,0,3.48E-10,0,6.31E-10,0,6.15E-10,4.95E-10,0,7.63E-10
+AT0107,Cross-Sanaga-Bioko coastal forests,0,0,0,0,0,4.57E-10,0,7.22E-10,0,7.00E-10,6.11E-10,0,8.16E-10
+AT0108,East African montane forests,0,0,0,0,0,5.61E-10,0,9.44E-10,0,9.15E-10,7.49E-10,0,1.13E-09
+AT0109,Eastern Arc forests,0,0,0,0,0,2.36E-09,0,3.34E-09,0,3.15E-09,2.72E-09,0,3.77E-09
+AT0110,Eastern Congolian swamp forests,0,0,0,0,0,7.74E-11,0,1.39E-10,0,1.34E-10,1.11E-10,0,1.63E-10
+AT0111,Eastern Guinean forests,0,0,0,0,0,1.90E-10,0,2.55E-10,0,2.44E-10,2.19E-10,0,2.80E-10
+AT0112,Ethiopian montane forests,0,0,0,0,0,1.55E-10,0,2.54E-10,0,2.44E-10,2.00E-10,0,3.01E-10
+AT0113,Granitic Seychelles forests,0,0,0,0,0,2.78E-08,0,5.03E-08,0,4.83E-08,4.06E-08,0,5.81E-08
+AT0114,Guinean montane forests,0,0,0,0,0,3.09E-10,0,4.37E-10,0,4.08E-10,3.64E-10,0,4.77E-10
+AT0115,Knysna-Amatole montane forests,0,0,0,0,0,2.26E-09,0,4.23E-09,0,4.13E-09,3.28E-09,0,5.19E-09
+AT0116,KwaZulu-Cape coastal forest mosaic,0,0,0,0,0,7.79E-10,0,1.43E-09,0,1.39E-09,1.11E-09,0,1.75E-09
+AT0117,Madagascar lowland forests,0,0,0,0,0,1.28E-09,0,1.99E-09,0,1.96E-09,1.70E-09,0,2.28E-09
+AT0118,Madagascar subhumid forests,0,0,0,0,0,5.09E-10,0,7.68E-10,0,7.54E-10,6.64E-10,0,8.63E-10
+AT0119,Maputaland coastal forest mosaic,0,0,0,0,0,5.55E-10,0,1.06E-09,0,1.03E-09,8.17E-10,0,1.30E-09
+AT0120,Mascarene forests,0,0,0,0,0,4.28E-09,0,6.79E-09,0,6.55E-09,5.45E-09,0,7.92E-09
+AT0121,Mount Cameroon and Bioko montane forests,0,0,0,0,0,2.09E-08,0,3.83E-08,0,3.75E-08,3.02E-08,0,4.63E-08
+AT0122,Niger Delta swamp forests,0,0,0,0,0,3.38E-10,0,6.22E-10,0,6.06E-10,4.87E-10,0,7.55E-10
+AT0123,Nigerian lowland forests,0,0,0,0,0,1.87E-10,0,3.18E-10,0,3.07E-10,2.53E-10,0,3.77E-10
+AT0124,Northeastern Congolian lowland forests,0,0,0,0,0,5.97E-11,0,8.05E-11,0,7.68E-11,6.88E-11,0,8.83E-11
+AT0125,Northern Zanzibar-Inhambane coastal forest mosaic,0,0,0,0,0,2.58E-10,0,3.31E-10,0,3.08E-10,2.70E-10,0,3.65E-10
+AT0126,Northwestern Congolian lowland forests,0,0,0,0,0,6.45E-11,0,9.15E-11,0,8.74E-11,7.69E-11,0,1.02E-10
+AT0127,"Sao Tome, Principe and Annobon moist lowland forests",0,0,0,0,0,1.15E-07,0,2.18E-07,0,2.14E-07,1.71E-07,0,2.64E-07
+AT0128,Southern Zanzibar-Inhambane coastal forest mosaic,0,0,0,0,0,7.04E-11,0,1.13E-10,0,1.08E-10,8.81E-11,0,1.34E-10
+AT0129,Western Congolian swamp forests,0,0,0,0,0,6.35E-11,0,1.04E-10,0,1.01E-10,8.36E-11,0,1.22E-10
+AT0130,Western Guinean lowland forests,0,0,0,0,0,1.98E-10,0,2.55E-10,0,2.44E-10,2.21E-10,0,2.77E-10
+AT0201,Cape Verde Islands dry forests,0,0,0,0,0,7.78E-09,0,1.51E-08,0,1.49E-08,1.19E-08,0,1.85E-08
+AT0202,Madagascar dry deciduous forests,0,0,0,0,0,5.68E-10,0,8.26E-10,0,8.06E-10,7.09E-10,0,9.26E-10
+AT0203,Zambezian Cryptosepalum dry forests,0,0,0,0,0,1.06E-10,0,1.66E-10,0,1.58E-10,1.30E-10,0,1.95E-10
+AT0701,Angolan Miombo woodlands,0,0,0,0,0,2.68E-11,0,3.13E-11,0,3.09E-11,2.91E-11,0,3.24E-11
+AT0702,Angolan Mopane woodlands,0,0,0,0,0,3.17E-11,0,4.32E-11,0,4.26E-11,3.84E-11,0,4.61E-11
+AT0703,Ascension scrub and grasslands,0,0,0,0,0,2.93E-08,0,5.73E-08,0,5.64E-08,4.48E-08,0,7.00E-08
+AT0704,Central Zambezian Miombo woodlands,0,0,0,0,0,3.23E-11,0,3.66E-11,0,3.62E-11,3.43E-11,0,3.77E-11
+AT0705,East Sudanian savanna,0,0,0,0,0,1.48E-11,0,1.61E-11,0,1.57E-11,1.50E-11,0,1.64E-11
+AT0706,Eastern Miombo woodlands,0,0,0,0,0,4.51E-11,0,5.32E-11,0,5.19E-11,4.80E-11,0,5.55E-11
+AT0707,Guinean forest-savanna mosaic,0,0,0,0,0,3.81E-11,0,4.56E-11,0,4.50E-11,4.24E-11,0,4.73E-11
+AT0708,Itigi-Sumbu thicket,0,0,0,0,0,3.06E-10,0,4.81E-10,0,4.76E-10,4.14E-10,0,5.26E-10
+AT0709,Kalahari Acacia-Baikiaea woodlands,0,0,0,0,0,1.90E-11,0,2.49E-11,0,2.46E-11,2.23E-11,0,2.65E-11
+AT0710,Mandara Plateau mosaic,0,0,0,0,0,7.90E-11,0,1.17E-10,0,1.15E-10,1.01E-10,0,1.27E-10
+AT0711,Northern Acacia-Commiphora bushlands and thickets,0,0,0,0,0,6.11E-11,0,6.62E-11,0,6.47E-11,6.17E-11,0,6.76E-11
+AT0712,Northern Congolian forest-savanna mosaic,0,0,0,0,0,2.33E-11,0,2.60E-11,0,2.57E-11,2.46E-11,0,2.66E-11
+AT0713,Sahelian Acacia savanna,0,0,0,0,0,7.47E-12,0,7.75E-12,0,7.62E-12,7.43E-12,0,7.82E-12
+AT0714,Serengeti volcanic grasslands,0,0,0,0,0,1.93E-10,0,2.59E-10,0,2.54E-10,2.28E-10,0,2.76E-10
+AT0715,Somali Acacia-Commiphora bushlands and thickets,0,0,0,0,0,2.42E-11,0,2.76E-11,0,2.73E-11,2.60E-11,0,2.84E-11
+AT0716,Southern Acacia-Commiphora bushlands and thickets,0,0,0,0,0,6.38E-11,0,7.69E-11,0,7.54E-11,7.01E-11,0,8.01E-11
+AT0717,Southern Africa bushveld,0,0,0,0,0,3.49E-11,0,4.43E-11,0,4.35E-11,3.97E-11,0,4.68E-11
+AT0718,Southern Congolian forest-savanna mosaic,0,0,0,0,0,1.90E-11,0,2.18E-11,0,2.15E-11,2.04E-11,0,2.25E-11
+AT0719,Southern Miombo woodlands,0,0,0,0,0,3.55E-11,0,4.32E-11,0,4.24E-11,3.91E-11,0,4.53E-11
+AT0721,Victoria Basin forest-savanna mosaic,0,0,0,0,0,1.17E-10,0,1.44E-10,0,1.42E-10,1.32E-10,0,1.50E-10
+AT0722,West Sudanian savanna,0,0,0,0,0,1.85E-11,0,2.03E-11,0,1.99E-11,1.91E-11,0,2.07E-11
+AT0723,Western Congolian forest-savanna mosaic,0,0,0,0,0,5.32E-11,0,6.79E-11,0,6.67E-11,6.11E-11,0,7.15E-11
+AT0724,Western Zambezian grasslands,0,0,0,0,0,6.61E-11,0,9.66E-11,0,9.56E-11,8.46E-11,0,1.05E-10
+AT0725,Zambezian and Mopane woodlands,0,0,0,0,0,3.17E-11,0,3.97E-11,0,3.91E-11,3.59E-11,0,4.18E-11
+AT0726,Zambezian Baikiaea woodlands,0,0,0,0,0,2.32E-11,0,3.03E-11,0,3.00E-11,2.73E-11,0,3.21E-11
+AT0801,Al Hajar montane woodlands,0,0,0,0,0,7.69E-11,0,1.18E-10,0,1.16E-10,1.02E-10,0,1.28E-10
+AT0802,Amsterdam and Saint-Paul Islands temperate grasslands,0,0,0,0,0,3.42E-09,0,6.69E-09,0,6.58E-09,5.23E-09,0,8.16E-09
+AT0803,Tristan Da Cunha-Gough Islands shrub and grasslands,0,0,0,0,0,1.30E-07,0,2.49E-07,0,2.45E-07,1.96E-07,0,3.03E-07
+AT0901,East African halophytics,0,0,0,0,0,1.06E-10,0,1.49E-10,0,1.46E-10,1.30E-10,0,1.61E-10
+AT0902,Etosha Pan halophytics,0,0,0,0,0,2.81E-11,0,4.02E-11,0,3.96E-11,3.53E-11,0,4.34E-11
+AT0903,Inner Niger Delta flooded savanna,0,0,0,0,0,1.85E-11,0,2.22E-11,0,2.17E-11,2.00E-11,0,2.32E-11
+AT0904,Lake Chad flooded savanna,0,0,0,0,0,5.22E-11,0,7.15E-11,0,7.04E-11,6.31E-11,0,7.65E-11
+AT0905,Saharan flooded grasslands,0,0,0,0,0,2.37E-11,0,2.81E-11,0,2.76E-11,2.60E-11,0,2.91E-11
+AT0906,Zambezian coastal flooded savanna,0,0,0,0,0,1.77E-10,0,2.72E-10,0,2.69E-10,2.35E-10,0,2.97E-10
+AT0907,Zambezian flooded grasslands,0,0,0,0,0,5.73E-11,0,6.93E-11,0,6.80E-11,6.26E-11,0,7.28E-11
+AT0908,Zambezian halophytics,0,0,0,0,0,1.33E-11,0,1.66E-11,0,1.62E-11,1.50E-11,0,1.77E-11
+AT1001,Angolan montane forest-grassland mosaic,0,0,0,0,0,2.62E-10,0,3.73E-10,0,3.69E-10,3.28E-10,0,4.02E-10
+AT1002,Angolan scarp savanna and woodlands,0,0,0,0,0,7.45E-11,0,8.71E-11,0,8.58E-11,8.07E-11,0,9.02E-11
+AT1003,Drakensberg alti-montane grasslands and woodlands,0,0,0,0,0,6.75E-10,0,1.05E-09,0,1.04E-09,9.04E-10,0,1.14E-09
+AT1004,"Drakensberg montane grasslands, woodlands and forests",0,0,0,0,0,2.25E-10,0,3.17E-10,0,3.13E-10,2.79E-10,0,3.41E-10
+AT1005,East African montane moorlands,0,0,0,0,0,2.06E-09,0,2.69E-09,0,2.67E-09,2.44E-09,0,2.86E-09
+AT1006,Eastern Zimbabwe montane forest-grassland mosaic,0,0,0,0,0,1.90E-09,0,2.92E-09,0,2.89E-09,2.53E-09,0,3.18E-09
+AT1007,Ethiopian montane grasslands and woodlands,0,0,0,0,0,1.34E-10,0,1.74E-10,0,1.72E-10,1.57E-10,0,1.85E-10
+AT1008,Ethiopian montane moorlands,0,0,0,0,0,5.57E-10,0,6.92E-10,0,6.85E-10,6.35E-10,0,7.27E-10
+AT1009,Highveld grasslands,0,0,0,0,0,9.76E-11,0,1.20E-10,0,1.18E-10,1.08E-10,0,1.26E-10
+AT1010,Jos Plateau forest-grassland mosaic,0,0,0,0,0,3.09E-10,0,4.21E-10,0,4.13E-10,3.71E-10,0,4.49E-10
+AT1011,Madagascar ericoid thickets,0,0,0,0,0,9.71E-09,0,1.83E-08,0,1.80E-08,1.45E-08,0,2.20E-08
+AT1012,Maputaland-Pondoland bushland and thickets,0,0,0,0,0,9.31E-10,0,1.44E-09,0,1.43E-09,1.25E-09,0,1.58E-09
+AT1013,Rwenzori-Virunga montane moorlands,0,0,0,0,0,2.04E-09,0,2.75E-09,0,2.73E-09,2.47E-09,0,2.94E-09
+AT1014,South Malawi montane forest-grassland mosaic,0,0,0,0,0,8.91E-10,0,1.17E-09,0,1.15E-09,1.05E-09,0,1.24E-09
+AT1015,Southern Rift montane forest-grassland mosaic,0,0,0,0,0,5.96E-10,0,8.61E-10,0,8.51E-10,7.55E-10,0,9.30E-10
+AT1201,Albany thickets,0,0,0,0,0,7.20E-10,0,1.12E-09,0,1.11E-09,9.65E-10,0,1.22E-09
+AT1202,Lowland fynbos and renosterveld,0,0,0,0,0,7.69E-09,0,1.22E-08,0,1.21E-08,1.05E-08,0,1.33E-08
+AT1203,Montane fynbos and renosterveld,0,0,0,0,0,1.08E-08,0,1.72E-08,0,1.71E-08,1.48E-08,0,1.89E-08
+AT1302,Arabian Peninsula coastal fog desert,0,0,0,0,0,4.63E-11,0,7.28E-11,0,7.21E-11,6.31E-11,0,7.94E-11
+AT1303,East Saharan montane xeric woodlands,0,0,0,0,0,2.00E-11,0,2.63E-11,0,2.60E-11,2.38E-11,0,2.79E-11
+AT1304,Eritrean coastal desert,0,0,0,0,0,4.14E-11,0,6.26E-11,0,6.21E-11,5.45E-11,0,6.81E-11
+AT1305,Ethiopian xeric grasslands and shrublands,0,0,0,0,0,2.62E-11,0,3.25E-11,0,3.22E-11,3.00E-11,0,3.41E-11
+AT1306,Gulf of Oman desert and semi-desert,0,0,0,0,0,2.18E-11,0,3.22E-11,0,3.19E-11,2.83E-11,0,3.47E-11
+AT1307,Hobyo grasslands and shrublands,0,0,0,0,0,1.05E-10,0,1.40E-10,0,1.39E-10,1.27E-10,0,1.49E-10
+AT1308,Ile Europa and Bassas da India xeric scrub,0,0,0,0,0,4.37E-08,0,8.53E-08,0,8.40E-08,6.67E-08,0,1.04E-07
+AT1309,Kalahari xeric savanna,0,0,0,0,0,1.19E-11,0,1.36E-11,0,1.33E-11,1.25E-11,0,1.40E-11
+AT1310,Kaokoveld desert,0,0,0,0,0,1.01E-10,0,1.56E-10,0,1.54E-10,1.35E-10,0,1.70E-10
+AT1311,Madagascar spiny thickets,0,0,0,0,0,6.57E-10,0,1.05E-09,0,1.02E-09,8.63E-10,0,1.21E-09
+AT1312,Madagascar succulent woodlands,0,0,0,0,0,4.16E-10,0,6.35E-10,0,6.16E-10,5.24E-10,0,7.26E-10
+AT1313,Masai xeric grasslands and shrublands,0,0,0,0,0,3.18E-11,0,4.00E-11,0,3.97E-11,3.66E-11,0,4.22E-11
+AT1314,Nama Karoo,0,0,0,0,0,6.48E-11,0,8.63E-11,0,8.54E-11,7.75E-11,0,9.19E-11
+AT1315,Namib desert,0,0,0,0,0,9.12E-11,0,1.41E-10,0,1.40E-10,1.22E-10,0,1.54E-10
+AT1316,Namibian savanna woodlands,0,0,0,0,0,6.42E-11,0,9.20E-11,0,9.11E-11,8.12E-11,0,9.92E-11
+AT1318,Socotra Island xeric shrublands,0,0,0,0,0,3.18E-09,0,5.86E-09,0,5.75E-09,4.66E-09,0,7.04E-09
+AT1319,Somali montane xeric woodlands,0,0,0,0,0,7.24E-11,0,9.79E-11,0,9.71E-11,8.80E-11,0,1.04E-10
+AT1320,Southwestern Arabian foothills savanna,0,0,0,0,0,2.05E-11,0,2.79E-11,0,2.75E-11,2.50E-11,0,2.96E-11
+AT1321,Southwestern Arabian montane woodlands,0,0,0,0,0,1.23E-10,0,1.82E-10,0,1.79E-10,1.57E-10,0,1.97E-10
+AT1322,Succulent Karoo,0,0,0,0,0,5.59E-10,0,8.66E-10,0,8.59E-10,7.50E-10,0,9.46E-10
+AT1401,Central African mangroves,0,0,0,0,0,6.87E-11,0,9.34E-11,0,8.27E-11,7.21E-11,0,1.15E-10
+AT1402,East African mangroves,0,0,0,0,0,1.03E-10,0,1.46E-10,0,1.27E-10,1.09E-10,0,1.88E-10
+AT1403,Guinean mangroves,0,0,0,0,0,4.65E-11,0,6.87E-11,0,6.21E-11,5.27E-11,0,8.25E-11
+AT1404,Madagascar mangroves,0,0,0,0,0,6.93E-10,0,1.19E-09,0,1.14E-09,9.46E-10,0,1.41E-09
+AT1405,Southern Africa mangroves,0,0,0,0,0,1.30E-09,0,2.57E-09,0,2.50E-09,1.97E-09,0,3.21E-09
+IM0101,Andaman Islands rain forests,0,0,0,0,0,2.27E-09,0,3.93E-09,0,3.84E-09,3.14E-09,0,4.67E-09
+IM0102,Borneo lowland rain forests,0,0,0,0,0,2.35E-10,0,3.63E-10,0,3.54E-10,3.01E-10,0,4.19E-10
+IM0103,Borneo montane rain forests,0,0,0,0,0,3.52E-10,0,5.34E-10,0,5.22E-10,4.46E-10,0,6.14E-10
+IM0104,Borneo peat swamp forests,0,0,0,0,0,2.75E-10,0,4.76E-10,0,4.65E-10,3.82E-10,0,5.65E-10
+IM0105,Brahmaputra Valley semi-evergreen forests,0,0,0,0,0,3.73E-10,0,5.88E-10,0,5.54E-10,4.55E-10,0,6.89E-10
+IM0106,Cardamom Mountains rain forests,0,0,0,0,0,2.44E-10,0,4.01E-10,0,3.78E-10,3.09E-10,0,4.71E-10
+IM0107,Chao Phraya freshwater swamp forests,0,0,0,0,0,1.22E-10,0,2.16E-10,0,2.05E-10,1.65E-10,0,2.59E-10
+IM0108,Chao Phraya lowland moist deciduous forests,0,0,0,0,0,3.16E-10,0,5.63E-10,0,5.38E-10,4.32E-10,0,6.74E-10
+IM0109,Chin Hills-Arakan Yoma montane forests,0,0,0,0,0,2.27E-10,0,4.07E-10,0,3.94E-10,3.16E-10,0,4.93E-10
+IM0110,Christmas and Cocos Islands tropical forests,0,0,0,0,0,3.09E-08,0,5.50E-08,0,5.41E-08,4.42E-08,0,6.57E-08
+IM0111,Eastern highlands moist deciduous forests,0,0,0,0,0,3.08E-11,0,4.25E-11,0,3.61E-11,2.90E-11,0,4.82E-11
+IM0112,Eastern Java-Bali montane rain forests,0,0,0,0,0,8.02E-10,0,1.37E-09,0,1.33E-09,1.09E-09,0,1.62E-09
+IM0113,Eastern Java-Bali rain forests,0,0,0,0,0,4.98E-10,0,8.52E-10,0,8.25E-10,6.74E-10,0,1.01E-09
+IM0114,Greater Negros-Panay rain forests,0,0,0,0,0,2.01E-09,0,3.54E-09,0,3.43E-09,2.79E-09,0,4.21E-09
+IM0115,Himalayan subtropical broadleaf forests,0,0,0,0,0,3.10E-10,0,5.15E-10,0,4.68E-10,3.76E-10,0,6.09E-10
+IM0116,Irrawaddy freshwater swamp forests,0,0,0,0,0,2.09E-10,0,4.05E-10,0,3.94E-10,3.11E-10,0,4.97E-10
+IM0117,Irrawaddy moist deciduous forests,0,0,0,0,0,7.01E-11,0,1.09E-10,0,1.01E-10,8.31E-11,0,1.26E-10
+IM0118,Jian Nan subtropical evergreen forests,0,0,0,0,0,4.93E-11,0,6.02E-11,0,5.69E-11,5.14E-11,0,6.52E-11
+IM0119,Kayah-Karen montane rain forests,0,0,0,0,0,1.45E-10,0,2.19E-10,0,2.08E-10,1.75E-10,0,2.53E-10
+IM0120,Lower Gangetic Plains moist deciduous forests,0,0,0,0,0,5.54E-11,0,8.85E-11,0,8.23E-11,6.65E-11,0,1.04E-10
+IM0121,Luang Prabang montane rain forests,0,0,0,0,0,1.75E-10,0,2.90E-10,0,2.78E-10,2.27E-10,0,3.44E-10
+IM0122,Luzon montane rain forests,0,0,0,0,0,3.04E-09,0,5.64E-09,0,5.50E-09,4.41E-09,0,6.80E-09
+IM0123,Luzon rain forests,0,0,0,0,0,1.20E-09,0,2.09E-09,0,2.03E-09,1.66E-09,0,2.48E-09
+IM0124,Malabar Coast moist forests,0,0,0,0,0,2.73E-10,0,4.21E-10,0,3.59E-10,2.85E-10,0,4.82E-10
+IM0125,Maldives-Lakshadweep-Chagos Archipelago tropical moist forests,0,0,0,0,0,1.84E-08,0,3.60E-08,0,3.55E-08,2.82E-08,0,4.40E-08
+IM0126,Meghalaya subtropical forests,0,0,0,0,0,3.69E-10,0,5.29E-10,0,5.12E-10,4.41E-10,0,6.04E-10
+IM0127,Mentawai Islands rain forests,0,0,0,0,0,2.74E-09,0,4.26E-09,0,4.07E-09,3.39E-09,0,4.93E-09
+IM0128,Mindanao montane rain forests,0,0,0,0,0,2.30E-09,0,3.97E-09,0,3.88E-09,3.18E-09,0,4.72E-09
+IM0129,Mindanao-Eastern Visayas rain forests,0,0,0,0,0,9.28E-10,0,1.60E-09,0,1.56E-09,1.28E-09,0,1.90E-09
+IM0130,Mindoro rain forests,0,0,0,0,0,4.79E-09,0,8.64E-09,0,8.38E-09,6.74E-09,0,1.04E-08
+IM0131,Mizoram-Manipur-Kachin rain forests,0,0,0,0,0,1.41E-10,0,2.04E-10,0,1.95E-10,1.66E-10,0,2.33E-10
+IM0132,Myanmar coastal rain forests,0,0,0,0,0,1.32E-10,0,2.21E-10,0,2.11E-10,1.73E-10,0,2.61E-10
+IM0133,Nicobar Islands rain forests,0,0,0,0,0,6.65E-09,0,1.14E-08,0,1.10E-08,8.96E-09,0,1.35E-08
+IM0134,North Western Ghats moist deciduous forests,0,0,0,0,0,1.10E-09,0,2.06E-09,0,2.01E-09,1.61E-09,0,2.50E-09
+IM0135,North Western Ghats montane rain forests,0,0,0,0,0,2.14E-09,0,3.81E-09,0,3.72E-09,3.01E-09,0,4.60E-09
+IM0136,Northern Annamites rain forests,0,0,0,0,0,3.51E-10,0,5.05E-10,0,4.76E-10,4.05E-10,0,5.75E-10
+IM0137,Northern Indochina subtropical forests,0,0,0,0,0,1.37E-10,0,1.76E-10,0,1.68E-10,1.50E-10,0,1.93E-10
+IM0138,Northern Khorat Plateau moist deciduous forests,0,0,0,0,0,2.50E-10,0,4.76E-10,0,4.63E-10,3.68E-10,0,5.82E-10
+IM0139,Northern Thailand-Laos moist deciduous forests,0,0,0,0,0,1.61E-10,0,2.76E-10,0,2.63E-10,2.13E-10,0,3.29E-10
+IM0140,Northern Triangle subtropical forests,0,0,0,0,0,2.47E-10,0,3.80E-10,0,3.65E-10,3.06E-10,0,4.42E-10
+IM0141,Northern Vietnam lowland rain forests,0,0,0,0,0,4.61E-10,0,7.78E-10,0,7.40E-10,5.99E-10,0,9.24E-10
+IM0142,Orissa semi-evergreen forests,0,0,0,0,0,1.73E-10,0,3.32E-10,0,3.23E-10,2.55E-10,0,4.07E-10
+IM0143,Palawan rain forests,0,0,0,0,0,3.53E-09,0,6.33E-09,0,6.14E-09,4.95E-09,0,7.57E-09
+IM0144,Peninsular Malaysian montane rain forests,0,0,0,0,0,1.36E-09,0,2.39E-09,0,2.33E-09,1.89E-09,0,2.88E-09
+IM0145,Peninsular Malaysian peat swamp forests,0,0,0,0,0,1.81E-09,0,3.48E-09,0,3.40E-09,2.70E-09,0,4.26E-09
+IM0146,Peninsular Malaysian rain forests,0,0,0,0,0,5.33E-10,0,8.76E-10,0,8.49E-10,7.03E-10,0,1.03E-09
+IM0147,Red River freshwater swamp forests,0,0,0,0,0,2.68E-10,0,4.86E-10,0,4.67E-10,3.73E-10,0,5.87E-10
+IM0148,South China Sea Islands,0,0,0,0,0,8.10E-07,0,1.58E-06,0,1.56E-06,1.24E-06,0,1.93E-06
+IM0149,South China-Vietnam subtropical evergreen forests,0,0,0,0,0,1.50E-10,0,2.27E-10,0,2.19E-10,1.86E-10,0,2.63E-10
+IM0150,South Western Ghats moist deciduous forests,0,0,0,0,0,2.41E-09,0,4.34E-09,0,4.22E-09,3.39E-09,0,5.25E-09
+IM0151,South Western Ghats montane rain forests,0,0,0,0,0,4.04E-09,0,6.86E-09,0,6.68E-09,5.49E-09,0,8.18E-09
+IM0152,Southern Annamites montane rain forests,0,0,0,0,0,5.87E-10,0,8.08E-10,0,7.77E-10,6.81E-10,0,9.07E-10
+IM0153,Southwest Borneo freshwater swamp forests,0,0,0,0,0,2.87E-10,0,4.98E-10,0,4.87E-10,3.98E-10,0,5.92E-10
+IM0154,Sri Lanka lowland rain forests,0,0,0,0,0,6.34E-09,0,9.66E-09,0,8.87E-09,7.23E-09,0,1.11E-08
+IM0155,Sri Lanka montane rain forests,0,0,0,0,0,2.57E-08,0,3.96E-08,0,3.82E-08,3.21E-08,0,4.58E-08
+IM0156,Sulu Archipelago rain forests,0,0,0,0,0,1.12E-08,0,2.11E-08,0,2.06E-08,1.65E-08,0,2.55E-08
+IM0157,Sumatran freshwater swamp forests,0,0,0,0,0,6.09E-10,0,1.12E-09,0,1.10E-09,8.87E-10,0,1.36E-09
+IM0158,Sumatran lowland rain forests,0,0,0,0,0,2.68E-10,0,4.42E-10,0,4.30E-10,3.57E-10,0,5.19E-10
+IM0159,Sumatran montane rain forests,0,0,0,0,0,5.50E-10,0,8.42E-10,0,8.15E-10,6.91E-10,0,9.69E-10
+IM0160,Sumatran peat swamp forests,0,0,0,0,0,1.90E-10,0,3.18E-10,0,3.10E-10,2.55E-10,0,3.76E-10
+IM0161,Sundaland heath forests,0,0,0,0,0,1.82E-10,0,3.00E-10,0,2.92E-10,2.43E-10,0,3.52E-10
+IM0162,Sundarbans freshwater swamp forests,0,0,0,0,0,1.45E-10,0,2.75E-10,0,2.65E-10,2.09E-10,0,3.35E-10
+IM0163,Tenasserim-South Thailand semi-evergreen rain forests,0,0,0,0,0,2.07E-10,0,3.08E-10,0,2.95E-10,2.51E-10,0,3.54E-10
+IM0164,Tonle Sap freshwater swamp forests,0,0,0,0,0,1.16E-10,0,2.10E-10,0,2.01E-10,1.60E-10,0,2.54E-10
+IM0165,Tonle Sap-Mekong peat swamp forests,0,0,0,0,0,8.66E-11,0,1.52E-10,0,1.45E-10,1.16E-10,0,1.83E-10
+IM0166,Upper Gangetic Plains moist deciduous forests,0,0,0,0,0,4.13E-11,0,6.11E-11,0,5.44E-11,4.38E-11,0,7.06E-11
+IM0167,Western Java montane rain forests,0,0,0,0,0,1.09E-09,0,1.58E-09,0,1.51E-09,1.30E-09,0,1.79E-09
+IM0168,Western Java rain forests,0,0,0,0,0,7.66E-10,0,1.32E-09,0,1.28E-09,1.04E-09,0,1.56E-09
+IM0169,Hainan Island monsoon rain forests,0,0,0,0,0,8.59E-10,0,1.27E-09,0,1.22E-09,1.04E-09,0,1.46E-09
+IM0170,Nansei Islands subtropical evergreen forests,0,0,0,0,0,5.37E-09,0,8.66E-09,0,8.49E-09,7.10E-09,0,1.01E-08
+IM0171,South Taiwan monsoon rain forests,0,0,0,0,0,1.98E-08,0,3.84E-08,0,3.77E-08,3.00E-08,0,4.68E-08
+IM0172,Taiwan subtropical evergreen forests,0,0,0,0,0,2.07E-09,0,3.69E-09,0,3.60E-09,2.92E-09,0,4.43E-09
+IM0201,Central Deccan Plateau dry deciduous forests,0,0,0,0,0,3.45E-11,0,5.41E-11,0,4.94E-11,4.00E-11,0,6.28E-11
+IM0202,Central Indochina dry forests,0,0,0,0,0,5.99E-11,0,8.71E-11,0,8.02E-11,6.77E-11,0,9.85E-11
+IM0203,Chhota-Nagpur dry deciduous forests,0,0,0,0,0,4.44E-11,0,6.60E-11,0,5.87E-11,4.72E-11,0,7.61E-11
+IM0204,East Deccan dry-evergreen forests,0,0,0,0,0,1.23E-10,0,2.33E-10,0,2.26E-10,1.78E-10,0,2.85E-10
+IM0205,Irrawaddy dry forests,0,0,0,0,0,1.08E-10,0,1.93E-10,0,1.84E-10,1.48E-10,0,2.32E-10
+IM0206,Khathiar-Gir dry deciduous forests,0,0,0,0,0,2.46E-11,0,3.70E-11,0,3.36E-11,2.73E-11,0,4.30E-11
+IM0207,Narmada Valley dry deciduous forests,0,0,0,0,0,3.75E-11,0,5.44E-11,0,4.83E-11,3.95E-11,0,6.19E-11
+IM0208,Northern dry deciduous forests,0,0,0,0,0,5.19E-11,0,8.86E-11,0,8.33E-11,6.66E-11,0,1.05E-10
+IM0209,South Deccan Plateau dry deciduous forests,0,0,0,0,0,1.18E-10,0,1.95E-10,0,1.80E-10,1.44E-10,0,2.30E-10
+IM0210,Southeastern Indochina dry evergreen forests,0,0,0,0,0,1.62E-10,0,2.45E-10,0,2.27E-10,1.90E-10,0,2.80E-10
+IM0211,Southern Vietnam lowland dry forests,0,0,0,0,0,2.47E-10,0,3.83E-10,0,3.56E-10,2.94E-10,0,4.38E-10
+IM0212,Sri Lanka dry-zone dry evergreen forests,0,0,0,0,0,4.93E-10,0,8.64E-10,0,8.23E-10,6.59E-10,0,1.03E-09
+IM0301,Himalayan subtropical pine forests,0,0,0,0,0,1.54E-10,0,2.15E-10,0,2.04E-10,1.75E-10,0,2.44E-10
+IM0302,Luzon tropical pine forests,0,0,0,0,0,3.81E-09,0,6.75E-09,0,6.53E-09,5.28E-09,0,8.05E-09
+IM0303,Northeast India-Myanmar pine forests,0,0,0,0,0,2.89E-10,0,5.09E-10,0,4.92E-10,3.96E-10,0,6.13E-10
+IM0304,Sumatran tropical pine forests,0,0,0,0,0,2.11E-09,0,4.01E-09,0,3.93E-09,3.15E-09,0,4.85E-09
+IM0401,Eastern Himalayan broadleaf forests,0,0,0,0,0,3.87E-10,0,6.09E-10,0,5.92E-10,4.96E-10,0,7.14E-10
+IM0402,Northern Triangle temperate forests,0,0,0,0,0,1.12E-09,0,2.03E-09,0,1.99E-09,1.60E-09,0,2.46E-09
+IM0403,Western Himalayan broadleaf forests,0,0,0,0,0,1.68E-10,0,2.63E-10,0,2.53E-10,2.09E-10,0,3.10E-10
+IM0501,Eastern Himalayan subalpine conifer forests,0,0,0,0,0,4.42E-10,0,7.47E-10,0,7.27E-10,5.95E-10,0,8.91E-10
+IM0502,Western Himalayan subalpine conifer forests,0,0,0,0,0,1.83E-10,0,2.96E-10,0,2.81E-10,2.28E-10,0,3.51E-10
+IM0701,Terai-Duar savanna and grasslands,0,0,0,0,0,3.23E-10,0,4.50E-10,0,4.44E-10,3.96E-10,0,4.83E-10
+IM0901,Rann of Kutch seasonal salt marsh,0,0,0,0,0,1.40E-11,0,1.98E-11,0,1.94E-11,1.71E-11,0,2.13E-11
+IM1001,Kinabalu montane alpine meadows,0,0,0,0,0,6.49E-09,0,1.12E-08,0,1.11E-08,9.08E-09,0,1.34E-08
+IM1301,Deccan thorn scrub forests,0,0,0,0,0,2.70E-11,0,3.56E-11,0,3.45E-11,3.09E-11,0,3.77E-11
+IM1302,Indus Valley desert,0,0,0,0,0,1.65E-11,0,2.30E-11,0,2.26E-11,2.00E-11,0,2.47E-11
+IM1303,Northwestern thorn scrub forests,0,0,0,0,0,1.16E-11,0,1.34E-11,0,1.31E-11,1.22E-11,0,1.39E-11
+IM1304,Thar desert,0,0,0,0,0,5.74E-12,0,6.55E-12,0,6.19E-12,5.61E-12,0,6.82E-12
+IM1401,Goadavari-Krishna mangroves,0,0,0,0,0,8.93E-11,0,1.60E-10,0,1.47E-10,1.16E-10,0,1.92E-10
+IM1402,Indochina mangroves,0,0,0,0,0,6.81E-11,0,1.06E-10,0,1.00E-10,8.36E-11,0,1.23E-10
+IM1403,Indus River Delta-Arabian Sea mangroves,0,0,0,0,0,3.00E-11,0,4.87E-11,0,4.60E-11,3.74E-11,0,5.75E-11
+IM1404,Myanmar Coast mangroves,0,0,0,0,0,5.85E-11,0,9.03E-11,0,8.36E-11,6.89E-11,0,1.04E-10
+IM1405,Sunda Shelf mangroves,0,0,0,0,0,1.10E-10,0,1.61E-10,0,1.52E-10,1.30E-10,0,1.83E-10
+IM1406,Sundarbans mangroves,0,0,0,0,0,5.67E-11,0,9.84E-11,0,9.20E-11,7.27E-11,0,1.18E-10
+NA0201,Sonoran-Sinaloan transition subtropical dry forest,0,0,0,0,0,8.72E-11,0,1.37E-10,0,1.34E-10,1.13E-10,0,1.60E-10
+NA0302,Sierra Madre Occidental pine-oak forests,0,0,0,0,0,1.63E-10,0,2.74E-10,0,2.69E-10,2.23E-10,0,3.25E-10
+NA0303,Sierra Madre Oriental pine-oak forests,0,0,0,0,0,4.40E-10,0,7.38E-10,0,7.24E-10,6.00E-10,0,8.75E-10
+NA0401,Allegheny Highlands forests,0,0,0,0,0,2.66E-11,0,4.31E-11,0,4.20E-11,3.47E-11,0,5.10E-11
+NA0402,Appalachian mixed mesophytic forests,0,0,0,0,0,3.95E-11,0,4.91E-11,0,4.80E-11,4.35E-11,0,5.38E-11
+NA0403,Appalachian-Blue Ridge forests,0,0,0,0,0,9.86E-11,0,1.10E-10,0,1.08E-10,1.03E-10,0,1.15E-10
+NA0404,Central U.S. hardwood forests,0,0,0,0,0,2.69E-11,0,3.35E-11,0,3.24E-11,2.90E-11,0,3.70E-11
+NA0405,East Central Texas forests,0,0,0,0,0,6.94E-11,0,9.55E-11,0,9.34E-11,8.14E-11,0,1.09E-10
+NA0406,Eastern forest-boreal transition,0,0,0,0,0,6.07E-12,0,8.41E-12,0,8.11E-12,6.99E-12,0,9.59E-12
+NA0407,Eastern Great Lakes lowland forests,0,0,0,0,0,1.65E-11,0,2.60E-11,0,2.53E-11,2.11E-11,0,3.06E-11
+NA0408,Gulf of St. Lawrence lowland forests,0,0,0,0,0,2.21E-11,0,3.95E-11,0,3.87E-11,3.12E-11,0,4.78E-11
+NA0409,Mississippi lowland forests,0,0,0,0,0,3.63E-11,0,4.81E-11,0,4.61E-11,4.04E-11,0,5.39E-11
+NA0410,New England-Acadian forests,0,0,0,0,0,1.04E-11,0,1.46E-11,0,1.41E-11,1.21E-11,0,1.66E-11
+NA0411,Northeastern coastal forests,0,0,0,0,0,3.11E-11,0,4.50E-11,0,4.36E-11,3.72E-11,0,5.20E-11
+NA0412,Ozark Mountain forests,0,0,0,0,0,9.91E-11,0,1.21E-10,0,1.19E-10,1.09E-10,0,1.32E-10
+NA0413,Southeastern mixed forests,0,0,0,0,0,3.14E-11,0,3.93E-11,0,3.79E-11,3.41E-11,0,4.31E-11
+NA0414,Southern Great Lakes forests,0,0,0,0,0,1.97E-11,0,2.79E-11,0,2.70E-11,2.32E-11,0,3.19E-11
+NA0415,Upper Midwest forest-savanna transition,0,0,0,0,0,1.48E-11,0,2.18E-11,0,2.10E-11,1.77E-11,0,2.54E-11
+NA0416,Western Great Lakes forests,0,0,0,0,0,9.41E-12,0,1.33E-11,0,1.29E-11,1.10E-11,0,1.53E-11
+NA0417,Willamette Valley forests,0,0,0,0,0,2.19E-10,0,3.50E-10,0,3.44E-10,2.86E-10,0,4.16E-10
+NA0501,Alberta Mountain forests,0,0,0,0,0,2.72E-11,0,5.10E-11,0,5.00E-11,3.99E-11,0,6.23E-11
+NA0502,Alberta-British Columbia foothills forests,0,0,0,0,0,1.16E-11,0,2.05E-11,0,2.01E-11,1.62E-11,0,2.49E-11
+NA0503,Arizona Mountains forests,0,0,0,0,0,5.79E-11,0,9.06E-11,0,8.87E-11,7.44E-11,0,1.06E-10
+NA0504,Atlantic coastal pine barrens,0,0,0,0,0,8.17E-11,0,1.36E-10,0,1.32E-10,1.09E-10,0,1.62E-10
+NA0505,Blue Mountains forests,0,0,0,0,0,4.08E-11,0,6.85E-11,0,6.71E-11,5.50E-11,0,8.22E-11
+NA0506,British Columbia mainland coastal forests,0,0,0,0,0,2.17E-11,0,3.59E-11,0,3.52E-11,2.90E-11,0,4.28E-11
+NA0507,Cascade Mountains leeward forests,0,0,0,0,0,4.97E-11,0,9.20E-11,0,9.04E-11,7.24E-11,0,1.12E-10
+NA0508,Central and Southern Cascades forests,0,0,0,0,0,1.00E-10,0,1.47E-10,0,1.45E-10,1.25E-10,0,1.70E-10
+NA0509,Central British Columbia Mountain forests,0,0,0,0,0,2.11E-11,0,3.95E-11,0,3.88E-11,3.09E-11,0,4.83E-11
+NA0510,Central Pacific coastal forests,0,0,0,0,0,6.98E-11,0,9.39E-11,0,9.25E-11,8.14E-11,0,1.06E-10
+NA0511,Colorado Rockies forests,0,0,0,0,0,3.15E-11,0,5.08E-11,0,4.94E-11,4.09E-11,0,6.02E-11
+NA0512,Eastern Cascades forests,0,0,0,0,0,5.58E-11,0,9.22E-11,0,9.03E-11,7.45E-11,0,1.10E-10
+NA0513,Florida sand pine scrub,0,0,0,0,0,2.57E-10,0,4.57E-10,0,4.46E-10,3.60E-10,0,5.52E-10
+NA0514,Fraser Plateau and Basin complex,0,0,0,0,0,1.43E-11,0,2.53E-11,0,2.48E-11,2.00E-11,0,3.06E-11
+NA0515,Great Basin montane forests,0,0,0,0,0,2.75E-10,0,5.08E-10,0,4.99E-10,4.00E-10,0,6.19E-10
+NA0516,Klamath-Siskiyou forests,0,0,0,0,0,1.34E-10,0,1.95E-10,0,1.92E-10,1.65E-10,0,2.25E-10
+NA0517,Middle Atlantic coastal forests,0,0,0,0,0,4.77E-11,0,5.75E-11,0,5.53E-11,5.02E-11,0,6.24E-11
+NA0518,North Central Rockies forests,0,0,0,0,0,1.65E-11,0,2.68E-11,0,2.63E-11,2.17E-11,0,3.19E-11
+NA0519,Northern California coastal forests,0,0,0,0,0,2.32E-10,0,3.84E-10,0,3.78E-10,3.13E-10,0,4.56E-10
+NA0520,Northern Pacific coastal forests,0,0,0,0,0,2.09E-11,0,3.58E-11,0,3.53E-11,2.88E-11,0,4.31E-11
+NA0521,Northern transitional alpine forests,0,0,0,0,0,5.09E-11,0,9.91E-11,0,9.74E-11,7.71E-11,0,1.22E-10
+NA0522,Okanagan dry forests,0,0,0,0,0,4.40E-11,0,8.25E-11,0,8.09E-11,6.46E-11,0,1.01E-10
+NA0523,Piney Woods forests,0,0,0,0,0,2.72E-11,0,3.93E-11,0,3.80E-11,3.26E-11,0,4.50E-11
+NA0524,Puget lowland forests,0,0,0,0,0,1.23E-10,0,2.09E-10,0,2.05E-10,1.68E-10,0,2.50E-10
+NA0525,Queen Charlotte Islands,0,0,0,0,0,7.16E-11,0,1.36E-10,0,1.34E-10,1.07E-10,0,1.65E-10
+NA0526,Sierra Juarez and San Pedro Martir pine-oak forests,0,0,0,0,0,5.33E-10,0,9.22E-10,0,9.06E-10,7.38E-10,0,1.10E-09
+NA0527,Sierra Nevada forests,0,0,0,0,0,1.62E-10,0,2.36E-10,0,2.32E-10,2.01E-10,0,2.71E-10
+NA0528,South Central Rockies forests,0,0,0,0,0,2.60E-11,0,4.47E-11,0,4.37E-11,3.56E-11,0,5.38E-11
+NA0529,Southeastern conifer forests,0,0,0,0,0,6.16E-11,0,7.54E-11,0,7.32E-11,6.67E-11,0,8.17E-11
+NA0530,Wasatch and Uinta montane forests,0,0,0,0,0,5.50E-11,0,9.77E-11,0,9.57E-11,7.74E-11,0,1.18E-10
+NA0601,Alaska Peninsula montane taiga,0,0,0,0,0,7.78E-12,0,1.18E-11,0,1.15E-11,9.67E-12,0,1.38E-11
+NA0602,Central Canadian Shield forests,0,0,0,0,0,3.31E-12,0,4.39E-12,0,4.24E-12,3.71E-12,0,4.94E-12
+NA0603,Cook Inlet taiga,0,0,0,0,0,1.26E-11,0,2.29E-11,0,2.25E-11,1.81E-11,0,2.78E-11
+NA0604,Copper Plateau taiga,0,0,0,0,0,1.11E-11,0,2.01E-11,0,1.97E-11,1.59E-11,0,2.44E-11
+NA0605,Eastern Canadian forests,0,0,0,0,0,2.88E-12,0,3.79E-12,0,3.64E-12,3.19E-12,0,4.25E-12
+NA0606,Eastern Canadian Shield taiga,0,0,0,0,0,1.50E-12,0,1.99E-12,0,1.95E-12,1.71E-12,0,2.25E-12
+NA0607,Interior Alaska-Yukon lowland taiga,0,0,0,0,0,2.65E-12,0,3.29E-12,0,3.21E-12,2.89E-12,0,3.65E-12
+NA0608,Mid-Continental Canadian forests,0,0,0,0,0,3.26E-12,0,3.86E-12,0,3.70E-12,3.34E-12,0,4.25E-12
+NA0609,Midwestern Canadian Shield forests,0,0,0,0,0,2.63E-12,0,3.21E-12,0,3.09E-12,2.78E-12,0,3.54E-12
+NA0610,Muskwa-Slave Lake forests,0,0,0,0,0,3.27E-12,0,4.28E-12,0,4.15E-12,3.66E-12,0,4.82E-12
+NA0611,Newfoundland Highland forests,0,0,0,0,0,1.24E-11,0,2.30E-11,0,2.25E-11,1.81E-11,0,2.78E-11
+NA0612,Northern Canadian Shield taiga,0,0,0,0,0,2.77E-12,0,3.24E-12,0,3.16E-12,2.90E-12,0,3.52E-12
+NA0613,Northern Cordillera forests,0,0,0,0,0,3.30E-12,0,4.42E-12,0,4.31E-12,3.77E-12,0,5.02E-12
+NA0614,Northwest Territories taiga,0,0,0,0,0,1.94E-12,0,2.56E-12,0,2.50E-12,2.20E-12,0,2.89E-12
+NA0615,South Avalon-Burin oceanic barrens,0,0,0,0,0,5.44E-11,0,1.03E-10,0,1.02E-10,8.12E-11,0,1.26E-10
+NA0616,Southern Hudson Bay taiga,0,0,0,0,0,2.66E-12,0,3.82E-12,0,3.74E-12,3.21E-12,0,4.41E-12
+NA0617,Yukon Interior dry forests,0,0,0,0,0,6.40E-12,0,1.06E-11,0,1.04E-11,8.55E-12,0,1.26E-11
+NA0701,Western Gulf coastal grasslands,0,0,0,0,0,1.06E-10,0,1.34E-10,0,1.33E-10,1.23E-10,0,1.41E-10
+NA0801,California Central Valley grasslands,0,0,0,0,0,6.87E-10,0,1.05E-09,0,1.05E-09,9.16E-10,0,1.15E-09
+NA0802,Canadian Aspen forests and parklands,0,0,0,0,0,7.97E-12,0,1.04E-11,0,1.03E-11,9.42E-12,0,1.10E-11
+NA0803,Central and Southern mixed grasslands,0,0,0,0,0,5.92E-11,0,6.80E-11,0,6.73E-11,6.37E-11,0,7.03E-11
+NA0804,Central forest-grasslands transition,0,0,0,0,0,3.66E-11,0,4.27E-11,0,4.23E-11,4.00E-11,0,4.43E-11
+NA0805,Central tall grasslands,0,0,0,0,0,2.64E-11,0,3.39E-11,0,3.35E-11,3.07E-11,0,3.58E-11
+NA0806,Edwards Plateau savanna,0,0,0,0,0,2.95E-10,0,3.32E-10,0,3.30E-10,3.18E-10,0,3.41E-10
+NA0807,Flint Hills tall grasslands,0,0,0,0,0,1.06E-10,0,1.47E-10,0,1.46E-10,1.30E-10,0,1.58E-10
+NA0808,Montana Valley and Foothill grasslands,0,0,0,0,0,5.24E-11,0,7.80E-11,0,7.74E-11,6.83E-11,0,8.47E-11
+NA0809,Nebraska Sand Hills mixed grasslands,0,0,0,0,0,6.42E-11,0,8.35E-11,0,8.26E-11,7.53E-11,0,8.86E-11
+NA0810,Northern mixed grasslands,0,0,0,0,0,2.61E-11,0,3.36E-11,0,3.33E-11,3.05E-11,0,3.55E-11
+NA0811,Northern short grasslands,0,0,0,0,0,2.22E-11,0,2.50E-11,0,2.48E-11,2.37E-11,0,2.58E-11
+NA0812,Northern tall grasslands,0,0,0,0,0,2.82E-11,0,4.02E-11,0,3.98E-11,3.55E-11,0,4.33E-11
+NA0813,Palouse grasslands,0,0,0,0,0,8.65E-11,0,1.32E-10,0,1.31E-10,1.15E-10,0,1.44E-10
+NA0814,Texas blackland prairies,0,0,0,0,0,6.74E-10,0,7.06E-10,0,7.04E-10,6.92E-10,0,7.14E-10
+NA0815,Western short grasslands,0,0,0,0,0,3.32E-11,0,3.90E-11,0,3.88E-11,3.66E-11,0,4.05E-11
+NA1101,Alaska-St. Elias Range tundra,0,0,0,0,0,4.05E-12,0,5.82E-12,0,5.69E-12,4.88E-12,0,6.73E-12
+NA1102,Aleutian Islands tundra,0,0,0,0,0,1.23E-10,0,1.82E-10,0,1.78E-10,1.53E-10,0,2.08E-10
+NA1103,Arctic coastal tundra,0,0,0,0,0,3.71E-12,0,5.32E-12,0,5.21E-12,4.48E-12,0,6.14E-12
+NA1104,Arctic foothills tundra,0,0,0,0,0,3.80E-12,0,4.98E-12,0,4.83E-12,4.26E-12,0,5.62E-12
+NA1105,Baffin coastal tundra,0,0,0,0,0,5.15E-12,0,9.29E-12,0,9.08E-12,7.30E-12,0,1.13E-11
+NA1106,Beringia lowland tundra,0,0,0,0,0,7.21E-12,0,8.60E-12,0,8.28E-12,7.51E-12,0,9.40E-12
+NA1107,Beringia upland tundra,0,0,0,0,0,9.81E-12,0,1.17E-11,0,1.13E-11,1.02E-11,0,1.28E-11
+NA1108,Brooks-British Range tundra,0,0,0,0,0,2.59E-12,0,3.57E-12,0,3.45E-12,2.99E-12,0,4.07E-12
+NA1109,Davis Highlands tundra,0,0,0,0,0,1.64E-12,0,2.32E-12,0,2.25E-12,1.94E-12,0,2.65E-12
+NA1110,High Arctic tundra,0,0,0,0,0,7.40E-13,0,8.74E-13,0,8.59E-13,7.95E-13,0,9.41E-13
+NA1111,Interior Yukon-Alaska alpine tundra,0,0,0,0,0,2.79E-12,0,3.74E-12,0,3.64E-12,3.19E-12,0,4.23E-12
+NA1112,Kalaallit Nunaat high arctic tundra,0,0,0,0,0,7.41E-13,0,9.26E-13,0,9.26E-13,8.45E-13,0,1.02E-12
+NA1113,Kalaallit Nunaat low arctic tundra,0,0,0,0,0,9.60E-13,0,1.80E-12,0,1.77E-12,1.42E-12,0,2.20E-12
+NA1114,Low Arctic tundra,0,0,0,0,0,1.01E-12,0,1.18E-12,0,1.15E-12,1.06E-12,0,1.29E-12
+NA1115,Middle Arctic tundra,0,0,0,0,0,7.78E-13,0,8.69E-13,0,8.48E-13,7.97E-13,0,9.20E-13
+NA1116,Ogilvie-MacKenzie alpine tundra,0,0,0,0,0,3.05E-12,0,4.04E-12,0,3.96E-12,3.49E-12,0,4.58E-12
+NA1117,Pacific Coastal Mountain icefields and tundra,0,0,0,0,0,7.68E-12,0,1.04E-11,0,1.02E-11,8.94E-12,0,1.18E-11
+NA1118,Torngat Mountain tundra,0,0,0,0,0,3.38E-12,0,5.86E-12,0,5.73E-12,4.66E-12,0,7.06E-12
+NA1201,California coastal sage and chaparral,0,0,0,0,0,5.12E-10,0,7.98E-10,0,7.91E-10,6.91E-10,0,8.71E-10
+NA1202,California interior chaparral and woodlands,0,0,0,0,0,4.49E-10,0,6.83E-10,0,6.77E-10,5.95E-10,0,7.43E-10
+NA1203,California montane chaparral and woodlands,0,0,0,0,0,1.05E-09,0,1.64E-09,0,1.63E-09,1.42E-09,0,1.80E-09
+NA1301,Baja California desert,0,0,0,0,0,6.20E-11,0,8.84E-11,0,8.78E-11,7.89E-11,0,9.49E-11
+NA1302,Central Mexican matorral,0,0,0,0,0,5.45E-10,0,8.11E-10,0,8.05E-10,7.12E-10,0,8.80E-10
+NA1303,Chihuahuan desert,0,0,0,0,0,3.61E-11,0,4.87E-11,0,4.84E-11,4.42E-11,0,5.17E-11
+NA1304,Colorado Plateau shrublands,0,0,0,0,0,2.09E-11,0,2.83E-11,0,2.81E-11,2.55E-11,0,3.02E-11
+NA1305,Great Basin shrub steppe,0,0,0,0,0,1.78E-11,0,2.42E-11,0,2.41E-11,2.18E-11,0,2.59E-11
+NA1306,Gulf of California xeric scrub,0,0,0,0,0,6.21E-10,0,7.61E-10,0,7.58E-10,7.10E-10,0,7.96E-10
+NA1307,Meseta Central matorral,0,0,0,0,0,2.80E-10,0,4.23E-10,0,4.20E-10,3.70E-10,0,4.60E-10
+NA1308,Mojave desert,0,0,0,0,0,4.15E-11,0,5.88E-11,0,5.84E-11,5.24E-11,0,6.32E-11
+NA1309,Snake-Columbia shrub steppe,0,0,0,0,0,2.45E-11,0,3.43E-11,0,3.41E-11,3.05E-11,0,3.69E-11
+NA1310,Sonoran desert,0,0,0,0,0,3.95E-11,0,5.59E-11,0,5.56E-11,5.00E-11,0,6.00E-11
+NA1311,Tamaulipan matorral,0,0,0,0,0,2.52E-10,0,3.91E-10,0,3.87E-10,3.39E-10,0,4.26E-10
+NA1312,Tamaulipan mezquital,0,0,0,0,0,7.43E-11,0,9.97E-11,0,9.91E-11,9.03E-11,0,1.06E-10
+NA1313,Wyoming Basin shrub steppe,0,0,0,0,0,2.38E-11,0,3.46E-11,0,3.43E-11,3.05E-11,0,3.75E-11
+NT0101,Araucaria moist forests,0,0,0,0,0,1.72E-10,0,2.16E-10,0,2.15E-10,1.99E-10,0,2.35E-10
+NT0102,Atlantic Coast restingas,0,0,0,0,0,4.31E-09,0,8.46E-09,0,8.32E-09,6.58E-09,0,1.04E-08
+NT0103,Bahia coastal forests,0,0,0,0,0,1.24E-09,0,2.11E-09,0,2.08E-09,1.72E-09,0,2.50E-09
+NT0104,Bahia interior forests,0,0,0,0,0,2.11E-10,0,2.66E-10,0,2.63E-10,2.45E-10,0,2.85E-10
+NT0105,Bolivian Yungas,0,0,0,0,0,5.06E-10,0,7.05E-10,0,6.96E-10,6.21E-10,0,7.90E-10
+NT0106,Caatinga Enclaves moist forests,0,0,0,0,0,4.51E-10,0,8.79E-10,0,8.64E-10,6.85E-10,0,1.08E-09
+NT0107,Caqueta moist forests,0,0,0,0,0,1.51E-10,0,2.82E-10,0,2.78E-10,2.23E-10,0,3.44E-10
+NT0108,Catatumbo moist forests,0,0,0,0,0,2.60E-10,0,4.35E-10,0,4.30E-10,3.58E-10,0,5.17E-10
+NT0109,Cauca Valley montane forests,0,0,0,0,0,3.46E-09,0,5.69E-09,0,5.61E-09,4.69E-09,0,6.72E-09
+NT0111,Central American Atlantic moist forests,0,0,0,0,0,5.17E-10,0,7.53E-10,0,7.33E-10,6.41E-10,0,8.52E-10
+NT0112,Central American montane forests,0,0,0,0,0,2.75E-09,0,4.11E-09,0,4.04E-09,3.49E-09,0,4.72E-09
+NT0113,Chiapas montane forests,0,0,0,0,0,3.96E-09,0,7.11E-09,0,7.00E-09,5.68E-09,0,8.59E-09
+NT0114,Chimalapas montane forests,0,0,0,0,0,6.66E-09,0,1.25E-08,0,1.23E-08,9.91E-09,0,1.53E-08
+NT0115,Chocï¿½ï¿½-Dariï¿½ï¿½n moi,0,0,0,0,0,1.60E-09,0,2.79E-09,0,2.75E-09,2.26E-09,0,3.34E-09
+NT0116,Cocos Island moist forests,0,0,0,0,0,3.56E-08,0,6.13E-08,0,6.04E-08,4.98E-08,0,7.28E-08
+NT0117,Cordillera La Costa montane forests,0,0,0,0,0,1.71E-09,0,2.34E-09,0,2.31E-09,2.08E-09,0,2.60E-09
+NT0118,Cordillera Oriental montane forests,0,0,0,0,0,1.66E-09,0,2.85E-09,0,2.81E-09,2.32E-09,0,3.40E-09
+NT0119,Costa Rican seasonal moist forests,0,0,0,0,0,2.25E-09,0,3.87E-09,0,3.78E-09,3.13E-09,0,4.59E-09
+NT0120,Cuban moist forests,0,0,0,0,0,5.42E-09,0,9.66E-09,0,9.51E-09,7.74E-09,0,1.16E-08
+NT0121,Eastern Cordillera real montane forests,0,0,0,0,0,1.90E-09,0,2.86E-09,0,2.83E-09,2.44E-09,0,3.29E-09
+NT0122,Eastern Panamanian montane forests,0,0,0,0,0,1.19E-08,0,2.21E-08,0,2.17E-08,1.75E-08,0,2.69E-08
+NT0124,Guianan Highlands moist forests,0,0,0,0,0,3.05E-10,0,4.91E-10,0,4.84E-10,4.08E-10,0,5.76E-10
+NT0125,Guianan moist forests,0,0,0,0,0,8.15E-11,0,1.26E-10,0,1.24E-10,1.06E-10,0,1.46E-10
+NT0126,Gurupa varzeï,0,0,0,0,0,5.61E-10,0,1.09E-09,0,1.07E-09,8.51E-10,0,1.33E-09
+NT0127,Hispaniolan moist forests,0,0,0,0,0,5.99E-09,0,8.82E-09,0,8.71E-09,7.53E-09,0,1.01E-08
+NT0128,Iquitos varzeï,0,0,0,0,0,1.41E-10,0,2.17E-10,0,2.14E-10,1.84E-10,0,2.50E-10
+NT0129,Isthmian-Atlantic moist forests,0,0,0,0,0,1.06E-09,0,1.72E-09,0,1.70E-09,1.43E-09,0,2.02E-09
+NT0130,Isthmian-Pacific moist forests,0,0,0,0,0,1.84E-09,0,2.99E-09,0,2.94E-09,2.47E-09,0,3.51E-09
+NT0131,Jamaican moist forests,0,0,0,0,0,1.06E-08,0,1.89E-08,0,1.86E-08,1.52E-08,0,2.27E-08
+NT0132,Japurï¿½ï¿½-Solimoes-Negro moist fo,0,0,0,0,0,7.91E-11,0,1.37E-10,0,1.35E-10,1.12E-10,0,1.64E-10
+NT0133,Juruï¿½ï¿½-Purus moist fo,0,0,0,0,0,6.33E-11,0,1.04E-10,0,1.02E-10,8.62E-11,0,1.22E-10
+NT0134,Leeward Islands moist forests,0,0,0,0,0,4.16E-08,0,8.05E-08,0,7.89E-08,6.28E-08,0,9.79E-08
+NT0135,Madeira-Tapajï¿½ï¿½s moist fo,0,0,0,0,0,4.72E-11,0,6.59E-11,0,6.50E-11,5.80E-11,0,7.36E-11
+NT0136,Magdalena Valley montane forests,0,0,0,0,0,1.56E-09,0,2.38E-09,0,2.35E-09,2.02E-09,0,2.76E-09
+NT0137,Magdalena-Urabï¿½ï¿½ moist fo,0,0,0,0,0,2.49E-10,0,3.92E-10,0,3.84E-10,3.28E-10,0,4.52E-10
+NT0138,Marajï¿½ï¿½ v,0,0,0,0,0,1.08E-10,0,1.92E-10,0,1.89E-10,1.55E-10,0,2.30E-10
+NT0139,Maranhï¿½ï¿½o Babaï¿½ï¿,0,0,0,0,0,4.06E-11,0,7.12E-11,0,6.99E-11,5.78E-11,0,8.47E-11
+NT0140,Mato Grosso seasonal forests,0,0,0,0,0,2.53E-11,0,3.69E-11,0,3.63E-11,3.21E-11,0,4.15E-11
+NT0141,Monte Alegre varzeï,0,0,0,0,0,1.83E-10,0,3.23E-10,0,3.18E-10,2.61E-10,0,3.88E-10
+NT0142,Napo moist forests,0,0,0,0,0,1.68E-10,0,2.48E-10,0,2.45E-10,2.13E-10,0,2.83E-10
+NT0143,Negro-Branco moist forests,0,0,0,0,0,8.47E-11,0,1.47E-10,0,1.45E-10,1.20E-10,0,1.76E-10
+NT0144,Northeastern Brazil restingas,0,0,0,0,0,1.49E-10,0,2.84E-10,0,2.79E-10,2.23E-10,0,3.47E-10
+NT0145,Northwestern Andean montane forests,0,0,0,0,0,2.88E-09,0,4.15E-09,0,4.11E-09,3.59E-09,0,4.73E-09
+NT0146,Oaxacan montane forests,0,0,0,0,0,5.13E-09,0,7.44E-09,0,7.32E-09,6.37E-09,0,8.47E-09
+NT0147,Orinoco Delta swamp forests,0,0,0,0,0,1.79E-10,0,3.35E-10,0,3.29E-10,2.65E-10,0,4.07E-10
+NT0148,Pantanos de Centla,0,0,0,0,0,6.19E-10,0,1.19E-09,0,1.17E-09,9.30E-10,0,1.46E-09
+NT0149,Paramaribo swamp forests,0,0,0,0,0,2.58E-10,0,4.89E-10,0,4.81E-10,3.86E-10,0,5.95E-10
+NT0150,Parana-Paraiba interior forests,0,0,0,0,0,1.27E-10,0,1.59E-10,0,1.58E-10,1.46E-10,0,1.72E-10
+NT0151,Pernambuco coastal forests,0,0,0,0,0,3.92E-09,0,7.43E-09,0,7.31E-09,5.86E-09,0,9.06E-09
+NT0152,Pernambuco interior forests,0,0,0,0,0,3.88E-10,0,5.80E-10,0,5.74E-10,5.04E-10,0,6.59E-10
+NT0153,Peruvian Yungas,0,0,0,0,0,1.01E-09,0,1.46E-09,0,1.44E-09,1.26E-09,0,1.66E-09
+NT0154,Petï¿½ï¿½n-Veracruz moist fo,0,0,0,0,0,4.21E-10,0,6.50E-10,0,6.38E-10,5.45E-10,0,7.52E-10
+NT0155,Puerto Rican moist forests,0,0,0,0,0,7.83E-09,0,1.40E-08,0,1.37E-08,1.12E-08,0,1.67E-08
+NT0156,Purus varzeï,0,0,0,0,0,8.12E-11,0,1.37E-10,0,1.35E-10,1.12E-10,0,1.62E-10
+NT0157,Purus-Madeira moist forests,0,0,0,0,0,8.19E-11,0,1.38E-10,0,1.36E-10,1.13E-10,0,1.64E-10
+NT0158,Rio Negro campinarana,0,0,0,0,0,8.74E-11,0,1.48E-10,0,1.45E-10,1.21E-10,0,1.75E-10
+NT0159,Santa Marta montane forests,0,0,0,0,0,7.00E-09,0,1.20E-08,0,1.19E-08,9.81E-09,0,1.43E-08
+NT0160,Serra do Mar coastal forests,0,0,0,0,0,2.29E-09,0,3.91E-09,0,3.85E-09,3.18E-09,0,4.66E-09
+NT0161,Sierra de los Tuxtlas,0,0,0,0,0,5.74E-09,0,9.91E-09,0,9.71E-09,7.99E-09,0,1.18E-08
+NT0162,Sierra Madre de Chiapas moist forests,0,0,0,0,0,2.35E-09,0,4.16E-09,0,4.09E-09,3.34E-09,0,5.01E-09
+NT0163,Solimï¿½ï¿½es-Japurï¿½ï¿½ moi,0,0,0,0,0,1.19E-10,0,1.99E-10,0,1.96E-10,1.63E-10,0,2.35E-10
+NT0164,South Florida rocklands,0,0,0,0,0,7.56E-09,0,1.50E-08,0,1.47E-08,1.16E-08,0,1.85E-08
+NT0165,Southern Andean Yungas,0,0,0,0,0,4.28E-10,0,6.94E-10,0,6.81E-10,5.68E-10,0,8.21E-10
+NT0166,Southwest Amazon moist forests,0,0,0,0,0,7.87E-11,0,1.12E-10,0,1.10E-10,9.78E-11,0,1.26E-10
+NT0167,Talamancan montane forests,0,0,0,0,0,4.30E-09,0,6.63E-09,0,6.54E-09,5.60E-09,0,7.68E-09
+NT0168,Tapajï¿½ï¿½s-Xingu moist fo,0,0,0,0,0,5.32E-11,0,8.41E-11,0,8.28E-11,7.09E-11,0,9.74E-11
+NT0169,Tepuis,0,0,0,0,0,5.80E-10,0,7.78E-10,0,7.71E-10,6.91E-10,0,8.68E-10
+NT0170,Tocantins/Pindare moist forests,0,0,0,0,0,7.14E-11,0,1.21E-10,0,1.19E-10,9.93E-11,0,1.43E-10
+NT0171,Trinidad and Tobago moist forests,0,0,0,0,0,1.13E-08,0,2.18E-08,0,2.14E-08,1.71E-08,0,2.65E-08
+NT0173,Uatuma-Trombetas moist forests,0,0,0,0,0,4.79E-11,0,7.72E-11,0,7.61E-11,6.47E-11,0,8.98E-11
+NT0174,Ucayali moist forests,0,0,0,0,0,3.10E-10,0,4.14E-10,0,4.09E-10,3.69E-10,0,4.57E-10
+NT0175,Venezuelan Andes montane forests,0,0,0,0,0,3.27E-09,0,5.54E-09,0,5.46E-09,4.52E-09,0,6.59E-09
+NT0176,Veracruz moist forests,0,0,0,0,0,6.18E-10,0,1.08E-09,0,1.06E-09,8.69E-10,0,1.30E-09
+NT0177,Veracruz montane forests,0,0,0,0,0,3.91E-09,0,7.05E-09,0,6.93E-09,5.61E-09,0,8.52E-09
+NT0178,Western Ecuador moist forests,0,0,0,0,0,2.13E-09,0,3.79E-09,0,3.73E-09,3.05E-09,0,4.55E-09
+NT0179,Windward Islands moist forests,0,0,0,0,0,2.23E-08,0,4.24E-08,0,4.14E-08,3.32E-08,0,5.12E-08
+NT0180,Xingu-Tocantins-Araguaia moist forests,0,0,0,0,0,6.06E-11,0,1.00E-10,0,9.86E-11,8.29E-11,0,1.18E-10
+NT0181,Yucatï¿½ï¿½n moist fo,0,0,0,0,0,1.51E-10,0,2.57E-10,0,2.51E-10,2.08E-10,0,3.03E-10
+NT0182,Guianan piedmont and lowland moist forests,0,0,0,0,0,1.19E-10,0,1.90E-10,0,1.87E-10,1.57E-10,0,2.23E-10
+NT0201,Apure-Villavicencio dry forests,0,0,0,0,0,1.18E-10,0,1.81E-10,0,1.78E-10,1.53E-10,0,2.09E-10
+NT0202,Atlantic dry forests,0,0,0,0,0,5.48E-11,0,8.60E-11,0,8.46E-11,7.34E-11,0,9.87E-11
+NT0204,Bajï¿½ï¿½o dry fo,0,0,0,0,0,7.62E-10,0,1.42E-09,0,1.40E-09,1.12E-09,0,1.73E-09
+NT0205,Balsas dry forests,0,0,0,0,0,5.79E-10,0,1.00E-09,0,9.87E-10,8.11E-10,0,1.20E-09
+NT0206,Bolivian montane dry forests,0,0,0,0,0,1.57E-10,0,2.05E-10,0,1.99E-10,1.84E-10,0,2.21E-10
+NT0207,Cauca Valley dry forests,0,0,0,0,0,4.91E-10,0,8.42E-10,0,8.18E-10,6.81E-10,0,9.90E-10
+NT0209,Central American dry forests,0,0,0,0,0,3.95E-10,0,6.58E-10,0,6.44E-10,5.35E-10,0,7.79E-10
+NT0210,Chaco,0,0,0,0,0,2.21E-11,0,2.32E-11,0,2.32E-11,2.28E-11,0,2.35E-11
+NT0211,Chiapas Depression dry forests,0,0,0,0,0,1.29E-09,0,2.11E-09,0,2.07E-09,1.72E-09,0,2.49E-09
+NT0212,Chiquitano dry forests,0,0,0,0,0,3.66E-11,0,4.51E-11,0,4.43E-11,4.13E-11,0,4.86E-11
+NT0213,Cuban dry forests,0,0,0,0,0,1.35E-09,0,2.42E-09,0,2.38E-09,1.94E-09,0,2.90E-09
+NT0214,Ecuadorian dry forests,0,0,0,0,0,5.15E-10,0,8.50E-10,0,8.34E-10,7.06E-10,0,9.84E-10
+NT0215,Hispaniolan dry forests,0,0,0,0,0,3.23E-09,0,5.88E-09,0,5.79E-09,4.69E-09,0,7.07E-09
+NT0216,Islas Revillagigedo dry forests,0,0,0,0,0,4.65E-08,0,8.33E-08,0,8.22E-08,6.70E-08,0,9.99E-08
+NT0217,Jalisco dry forests,0,0,0,0,0,5.27E-10,0,8.68E-10,0,8.50E-10,7.10E-10,0,1.02E-09
+NT0218,Jamaican dry forests,0,0,0,0,0,1.47E-08,0,2.80E-08,0,2.75E-08,2.20E-08,0,3.39E-08
+NT0219,Lara-Falcï¿½ï¿½n dry fo,0,0,0,0,0,3.54E-10,0,4.77E-10,0,4.63E-10,4.11E-10,0,5.32E-10
+NT0220,Leeward Islands dry forests,0,0,0,0,0,7.20E-09,0,1.35E-08,0,1.32E-08,1.07E-08,0,1.62E-08
+NT0221,Magdalena Valley dry forests,0,0,0,0,0,3.01E-10,0,4.86E-10,0,4.73E-10,4.01E-10,0,5.66E-10
+NT0222,Maracaibo dry forests,0,0,0,0,0,2.18E-10,0,3.26E-10,0,3.27E-10,2.80E-10,0,3.85E-10
+NT0223,Maraï¿½ï¿½ï¿½ï¿½n d,0,0,0,0,0,8.23E-10,0,1.15E-09,0,1.14E-09,1.02E-09,0,1.28E-09
+NT0224,Panamanian dry forests,0,0,0,0,0,2.12E-09,0,4.04E-09,0,3.97E-09,3.17E-09,0,4.94E-09
+NT0225,Patï¿½ï¿½a Valley dry fo,0,0,0,0,0,4.27E-09,0,8.41E-09,0,8.27E-09,6.54E-09,0,1.04E-08
+NT0226,Puerto Rican dry forests,0,0,0,0,0,2.12E-08,0,4.07E-08,0,4.00E-08,3.19E-08,0,4.94E-08
+NT0227,Sierra de la Laguna dry forests,0,0,0,0,0,3.62E-10,0,5.90E-10,0,5.77E-10,4.79E-10,0,6.90E-10
+NT0228,Sinaloan dry forests,0,0,0,0,0,2.48E-10,0,4.10E-10,0,4.04E-10,3.37E-10,0,4.85E-10
+NT0229,Sinï¿½ï¿½ Valley dry fo,0,0,0,0,0,2.91E-10,0,4.16E-10,0,4.07E-10,3.62E-10,0,4.63E-10
+NT0230,Southern Pacific dry forests,0,0,0,0,0,7.56E-10,0,1.29E-09,0,1.27E-09,1.05E-09,0,1.53E-09
+NT0232,Tumbes-Piura dry forests,0,0,0,0,0,2.64E-10,0,3.82E-10,0,3.74E-10,3.32E-10,0,4.26E-10
+NT0233,Veracruz dry forests,0,0,0,0,0,1.03E-09,0,1.89E-09,0,1.85E-09,1.49E-09,0,2.30E-09
+NT0235,Yucatï¿½ï¿½n dry fo,0,0,0,0,0,1.49E-10,0,2.61E-10,0,2.55E-10,2.09E-10,0,3.12E-10
+NT0301,Bahamian-Antillean mangroves,0,0,0,0,0,3.11E-09,0,6.00E-09,0,5.90E-09,4.71E-09,0,7.30E-09
+NT0302,Belizian pine forests,0,0,0,0,0,2.55E-09,0,4.99E-09,0,4.90E-09,3.88E-09,0,6.14E-09
+NT0303,Central American pine-oak forests,0,0,0,0,0,6.88E-10,0,9.43E-10,0,9.29E-10,8.28E-10,0,1.05E-09
+NT0304,Cuban pine forests,0,0,0,0,0,7.09E-09,0,1.33E-08,0,1.31E-08,1.05E-08,0,1.61E-08
+NT0305,Hispaniolan pine forests,0,0,0,0,0,6.40E-09,0,1.13E-08,0,1.12E-08,9.12E-09,0,1.36E-08
+NT0306,Miskito pine forests,0,0,0,0,0,5.06E-10,0,9.74E-10,0,9.57E-10,7.61E-10,0,1.19E-09
+NT0307,Sierra de la Laguna pine-oak forests,0,0,0,0,0,1.41E-09,0,2.60E-09,0,2.55E-09,2.05E-09,0,3.15E-09
+NT0308,Sierra Madre de Oaxaca pine-oak forests,0,0,0,0,0,2.68E-09,0,4.07E-09,0,4.01E-09,3.44E-09,0,4.70E-09
+NT0309,Sierra Madre del Sur pine-oak forests,0,0,0,0,0,1.09E-09,0,1.56E-09,0,1.53E-09,1.34E-09,0,1.76E-09
+NT0310,Trans-Mexican Volcanic Belt pine-oak forests,0,0,0,0,0,7.60E-10,0,1.10E-09,0,1.09E-09,9.42E-10,0,1.26E-09
+NT0401,Juan Fernï¿½ï¿½ndez Islands temperate fo,0,0,0,0,0,9.22E-08,0,1.74E-07,0,1.71E-07,1.37E-07,0,2.10E-07
+NT0402,Magellanic subpolar forests,0,0,0,0,0,4.35E-11,0,4.83E-11,0,4.78E-11,4.53E-11,0,5.14E-11
+NT0404,Valdivian temperate forests,0,0,0,0,0,1.04E-10,0,1.14E-10,0,1.13E-10,1.09E-10,0,1.19E-10
+NT0702,Beni savanna,0,0,0,0,0,4.51E-11,0,5.45E-11,0,5.42E-11,5.11E-11,0,5.68E-11
+NT0703,Campos Rupestres montane savanna,0,0,0,0,0,6.34E-10,0,7.03E-10,0,7.01E-10,6.79E-10,0,7.20E-10
+NT0704,Cerrado,0,0,0,0,0,3.82E-11,0,4.31E-11,0,4.30E-11,4.14E-11,0,4.42E-11
+NT0705,Clipperton Island shrub and grasslands,0,0,0,0,0,7.06E-08,0,1.38E-07,0,1.36E-07,1.08E-07,0,1.68E-07
+NT0707,Guianan savanna,0,0,0,0,0,8.45E-11,0,1.06E-10,0,1.05E-10,9.81E-11,0,1.11E-10
+NT0708,Humid Chaco,0,0,0,0,0,3.13E-11,0,3.56E-11,0,3.56E-11,3.40E-11,0,3.69E-11
+NT0709,Llanos,0,0,0,0,0,4.00E-11,0,5.13E-11,0,5.10E-11,4.72E-11,0,5.41E-11
+NT0710,Uruguayan savanna,0,0,0,0,0,8.38E-11,0,9.52E-11,0,9.50E-11,9.10E-11,0,9.81E-11
+NT0801,Argentine Espinal,0,0,0,0,0,1.81E-11,0,1.97E-11,0,1.96E-11,1.91E-11,0,2.01E-11
+NT0802,Argentine Monte,0,0,0,0,0,1.37E-11,0,1.48E-11,0,1.48E-11,1.44E-11,0,1.51E-11
+NT0803,Humid Pampas,0,0,0,0,0,3.79E-11,0,4.45E-11,0,4.43E-11,4.19E-11,0,4.62E-11
+NT0805,Patagonian steppe,0,0,0,0,0,3.00E-11,0,3.40E-11,0,3.39E-11,3.26E-11,0,3.50E-11
+NT0902,Cuban wetlands,0,0,0,0,0,4.49E-09,0,8.41E-09,0,8.27E-09,6.64E-09,0,1.02E-08
+NT0903,Enriquillo wetlands,0,0,0,0,0,4.34E-08,0,8.46E-08,0,8.32E-08,6.62E-08,0,1.03E-07
+NT0904,Everglades,0,0,0,0,0,1.07E-09,0,1.71E-09,0,1.70E-09,1.47E-09,0,1.88E-09
+NT0905,Guayaquil flooded grasslands,0,0,0,0,0,5.05E-09,0,7.91E-09,0,7.84E-09,6.84E-09,0,8.65E-09
+NT0906,Orinoco wetlands,0,0,0,0,0,4.32E-10,0,6.87E-10,0,6.81E-10,5.92E-10,0,7.53E-10
+NT0907,Pantanal,0,0,0,0,0,3.51E-11,0,4.29E-11,0,4.27E-11,4.00E-11,0,4.48E-11
+NT0908,Paranï¿½ï¿½ flooded sa,0,0,0,0,0,9.25E-11,0,1.27E-10,0,1.26E-10,1.14E-10,0,1.36E-10
+NT0909,Southern Cone Mesopotamian savanna,0,0,0,0,0,1.39E-10,0,1.96E-10,0,1.94E-10,1.74E-10,0,2.11E-10
+NT1001,Central Andean dry puna,0,0,0,0,0,2.72E-11,0,3.04E-11,0,3.03E-11,2.93E-11,0,3.12E-11
+NT1002,Central Andean puna,0,0,0,0,0,4.83E-11,0,5.59E-11,0,5.57E-11,5.31E-11,0,5.78E-11
+NT1003,Central Andean wet puna,0,0,0,0,0,1.53E-10,0,1.70E-10,0,1.70E-10,1.64E-10,0,1.75E-10
+NT1004,Cordillera Central pï¿½ï¿,0,0,0,0,0,6.67E-10,0,8.53E-10,0,8.49E-10,7.84E-10,0,9.01E-10
+NT1005,Cordillera de Merida pï¿½ï¿,0,0,0,0,0,5.62E-09,0,8.10E-09,0,8.04E-09,7.17E-09,0,8.74E-09
+NT1006,Northern Andean pï¿½ï¿,0,0,0,0,0,2.26E-09,0,3.20E-09,0,3.18E-09,2.85E-09,0,3.44E-09
+NT1007,Santa Marta pï¿½ï¿,0,0,0,0,0,1.39E-08,0,2.10E-08,0,2.08E-08,1.83E-08,0,2.28E-08
+NT1008,Southern Andean steppe,0,0,0,0,0,2.51E-11,0,3.13E-11,0,3.12E-11,2.91E-11,0,3.29E-11
+NT1010,High Monte,0,0,0,0,0,4.55E-11,0,4.66E-11,0,4.66E-11,4.62E-11,0,4.69E-11
+NT1201,Chilean matorral,0,0,0,0,0,2.42E-10,0,3.76E-10,0,3.73E-10,3.26E-10,0,4.11E-10
+NT1301,Araya and Paria xeric scrub,0,0,0,0,0,7.16E-10,0,1.05E-09,0,1.04E-09,9.25E-10,0,1.13E-09
+NT1303,Atacama desert,0,0,0,0,0,1.44E-11,0,2.04E-11,0,2.02E-11,1.83E-11,0,2.18E-11
+NT1304,Caatinga,0,0,0,0,0,2.67E-11,0,2.95E-11,0,2.94E-11,2.86E-11,0,3.01E-11
+NT1305,Cayos Miskitos-San Andrï¿½ï¿½s and Providencia moist fo,0,0,0,0,0,3.39E-09,0,6.16E-09,0,6.00E-09,4.85E-09,0,7.37E-09
+NT1306,Cuban cactus scrub,0,0,0,0,0,7.96E-09,0,1.51E-08,0,1.49E-08,1.19E-08,0,1.83E-08
+NT1307,Galï¿½ï¿½pagos Islands scrubland m,0,0,0,0,0,3.61E-09,0,6.62E-09,0,6.52E-09,5.27E-09,0,7.97E-09
+NT1308,Guajira-Barranquilla xeric scrub,0,0,0,0,0,1.44E-10,0,1.86E-10,0,1.85E-10,1.70E-10,0,1.96E-10
+NT1309,La Costa xeric shrublands,0,0,0,0,0,1.58E-10,0,1.97E-10,0,1.96E-10,1.83E-10,0,2.06E-10
+NT1312,Motagua Valley thornscrub,0,0,0,0,0,3.73E-09,0,5.76E-09,0,5.71E-09,5.00E-09,0,6.28E-09
+NT1313,Paraguana xeric scrub,0,0,0,0,0,2.75E-10,0,3.76E-10,0,3.73E-10,3.37E-10,0,4.02E-10
+NT1314,San Lucan xeric scrub,0,0,0,0,0,3.30E-10,0,5.10E-10,0,5.06E-10,4.46E-10,0,5.54E-10
+NT1315,Sechura desert,0,0,0,0,0,4.53E-11,0,5.13E-11,0,5.12E-11,4.92E-11,0,5.28E-11
+NT1316,Tehuacï¿½ï¿½n Valley mat,0,0,0,0,0,2.12E-09,0,3.23E-09,0,3.20E-09,2.82E-09,0,3.51E-09
+NT1318,St. Peter and St. Paul rocks,0,0,0,0,0,0,0,0,0,0,0,0,0
+NT1401,Alvarado mangroves,0,0,0,0,0,8.36E-11,0,9.74E-11,0,9.65E-11,9.09E-11,0,1.03E-10
+NT1402,Amapa mangroves,0,0,0,0,0,5.66E-10,0,8.94E-10,0,8.75E-10,7.40E-10,0,1.04E-09
+NT1403,Bahamian pine mosaic,0,0,0,0,0,1.41E-10,0,1.88E-10,0,1.84E-10,1.64E-10,0,2.08E-10
+NT1404,Bahia mangroves,0,0,0,0,0,2.08E-10,0,3.53E-10,0,3.47E-10,2.85E-10,0,4.21E-10
+NT1405,Belizean Coast mangroves,0,0,0,0,0,4.14E-10,0,5.72E-10,0,5.65E-10,5.00E-10,0,6.44E-10
+NT1406,Belizean Reef mangroves,0,0,0,0,0,1.17E-09,0,1.60E-09,0,1.58E-09,1.41E-09,0,1.79E-09
+NT1407,Bocas del Toro-San Bastimentos Island-San Blas mangroves,0,0,0,0,0,3.20E-10,0,4.71E-10,0,4.63E-10,3.99E-10,0,5.39E-10
+OC0103,Cook Islands tropical moist forests,0,0,0,0,0,3.20E-08,0,6.05E-08,0,5.95E-08,4.77E-08,0,7.33E-08
+OC0105,Fiji tropical moist forests,0,0,0,0,0,6.31E-09,0,1.21E-08,0,1.18E-08,9.44E-09,0,1.47E-08
+OC0106,Hawaii tropical moist forests,0,0,0,0,0,9.26E-09,0,1.64E-08,0,1.62E-08,1.32E-08,0,1.97E-08
+OC0108,Marquesas tropical moist forests,0,0,0,0,0,2.04E-08,0,3.98E-08,0,3.92E-08,3.11E-08,0,4.86E-08
+OC0109,Ogasawara subtropical moist forests,0,0,0,0,0,3.69E-08,0,7.17E-08,0,7.06E-08,5.62E-08,0,8.75E-08
+OC0110,Palau tropical moist forests,0,0,0,0,0,2.02E-08,0,3.83E-08,0,3.77E-08,3.01E-08,0,4.65E-08
+OC0112,Samoan tropical moist forests,0,0,0,0,0,1.45E-08,0,2.73E-08,0,2.69E-08,2.15E-08,0,3.31E-08
+OC0114,Tongan tropical moist forests,0,0,0,0,0,3.08E-08,0,6.00E-08,0,5.91E-08,4.70E-08,0,7.32E-08
+OC0115,Tuamotu tropical moist forests,0,0,0,0,0,8.12E-09,0,1.53E-08,0,1.51E-08,1.21E-08,0,1.85E-08
+OC0117,Western Polynesian tropical moist forests,0,0,0,0,0,4.44E-08,0,8.68E-08,0,8.54E-08,6.79E-08,0,1.06E-07
+OC0201,Fiji tropical dry forests,0,0,0,0,0,4.10E-09,0,7.81E-09,0,7.66E-09,6.12E-09,0,9.47E-09
+OC0202,Hawaii tropical dry forests,0,0,0,0,0,6.71E-09,0,1.22E-08,0,1.21E-08,9.77E-09,0,1.47E-08
+OC0203,Marianas tropical dry forests,0,0,0,0,0,2.30E-08,0,4.28E-08,0,4.21E-08,3.39E-08,0,5.18E-08
+OC0701,Hawaii tropical high shrublands,0,0,0,0,0,4.53E-09,0,7.96E-09,0,7.83E-09,6.40E-09,0,9.51E-09
+OC0702,Hawaii tropical low shrublands,0,0,0,0,0,1.58E-08,0,3.06E-08,0,3.01E-08,2.40E-08,0,3.73E-08
+PA0101,Guizhou Plateau broadleaf and mixed forests,0,0,0,0,0,7.82E-11,0,9.34E-11,0,8.92E-11,8.13E-11,0,1.01E-10
+PA0102,Yunnan Plateau subtropical evergreen forests,0,0,0,0,0,1.01E-10,0,1.32E-10,0,1.26E-10,1.12E-10,0,1.46E-10
+PA0401,Appenine deciduous montane forests,0,0,0,0,0,1.22E-10,0,2.10E-10,0,2.05E-10,1.65E-10,0,2.56E-10
+PA0402,Atlantic mixed forests,0,0,0,0,0,9.31E-12,0,1.15E-11,0,1.08E-11,8.97E-12,0,1.36E-11
+PA0403,Azores temperate mixed forests,0,0,0,0,0,2.45E-08,0,4.75E-08,0,4.68E-08,3.72E-08,0,5.79E-08
+PA0404,Balkan mixed forests,0,0,0,0,0,2.29E-11,0,3.08E-11,0,2.98E-11,2.44E-11,0,3.76E-11
+PA0405,Baltic mixed forests,0,0,0,0,0,1.28E-11,0,2.19E-11,0,2.12E-11,1.69E-11,0,2.68E-11
+PA0406,Cantabrian mixed forests,0,0,0,0,0,3.91E-11,0,5.39E-11,0,5.17E-11,4.25E-11,0,6.51E-11
+PA0407,Caspian Hyrcanian mixed forests,0,0,0,0,0,2.39E-10,0,4.17E-10,0,4.01E-10,3.20E-10,0,5.05E-10
+PA0408,Caucasus mixed forests,0,0,0,0,0,1.87E-10,0,3.34E-10,0,3.25E-10,2.61E-10,0,4.06E-10
+PA0409,Celtic broadleaf forests,0,0,0,0,0,8.86E-12,0,1.37E-11,0,1.30E-11,1.05E-11,0,1.61E-11
+PA0410,Central Anatolian deciduous forests,0,0,0,0,0,1.21E-10,0,2.22E-10,0,2.17E-10,1.72E-10,0,2.72E-10
+PA0411,Central China loess plateau mixed forests,0,0,0,0,0,2.40E-11,0,3.46E-11,0,3.29E-11,2.78E-11,0,3.97E-11
+PA0412,Central European mixed forests,0,0,0,0,0,6.75E-12,0,7.97E-12,0,7.50E-12,6.26E-12,0,9.46E-12
+PA0413,Central Korean deciduous forests,0,0,0,0,0,4.38E-11,0,6.32E-11,0,6.12E-11,5.19E-11,0,7.29E-11
+PA0414,Changbai Mountains mixed forests,0,0,0,0,0,3.48E-11,0,6.04E-11,0,5.88E-11,4.75E-11,0,7.29E-11
+PA0415,Changjiang Plain evergreen forests,0,0,0,0,0,4.01E-11,0,4.84E-11,0,4.52E-11,4.04E-11,0,5.26E-11
+PA0416,Crimean Submediterranean forest complex,0,0,0,0,0,4.35E-10,0,8.59E-10,0,8.44E-10,6.65E-10,0,1.06E-09
+PA0417,Daba Mountains evergreen forests,0,0,0,0,0,7.64E-11,0,1.05E-10,0,1.00E-10,8.69E-11,0,1.19E-10
+PA0418,Dinaric Mountains mixed forests,0,0,0,0,0,5.78E-11,0,9.50E-11,0,9.32E-11,7.51E-11,0,1.16E-10
+PA0419,East European forest steppe,0,0,0,0,0,6.04E-12,0,7.13E-12,0,6.60E-12,5.50E-12,0,8.39E-12
+PA0420,Eastern Anatolian deciduous forests,0,0,0,0,0,1.87E-10,0,3.63E-10,0,3.56E-10,2.82E-10,0,4.47E-10
+PA0421,English Lowlands beech forests,0,0,0,0,0,2.46E-11,0,4.37E-11,0,4.24E-11,3.39E-11,0,5.27E-11
+PA0422,Euxine-Colchic broadleaf forests,0,0,0,0,0,4.21E-11,0,7.29E-11,0,7.06E-11,5.66E-11,0,8.85E-11
+PA0423,Hokkaido deciduous forests,0,0,0,0,0,3.20E-10,0,6.13E-10,0,6.02E-10,4.80E-10,0,7.45E-10
+PA0424,Huang He Plain mixed forests,0,0,0,0,0,2.17E-11,0,2.96E-11,0,2.78E-11,2.37E-11,0,3.36E-11
+PA0425,Madeira evergreen forests,0,0,0,0,0,1.08E-07,0,2.11E-07,0,2.08E-07,1.65E-07,0,2.57E-07
+PA0426,Manchurian mixed forests,0,0,0,0,0,1.45E-11,0,1.87E-11,0,1.76E-11,1.53E-11,0,2.08E-11
+PA0427,Nihonkai evergreen forests,0,0,0,0,0,6.02E-10,0,1.08E-09,0,1.06E-09,8.60E-10,0,1.29E-09
+PA0428,Nihonkai montane deciduous forests,0,0,0,0,0,2.32E-10,0,4.11E-10,0,4.03E-10,3.28E-10,0,4.92E-10
+PA0429,North Atlantic moist mixed forests,0,0,0,0,0,1.35E-11,0,2.33E-11,0,2.27E-11,1.83E-11,0,2.81E-11
+PA0430,Northeast China Plain deciduous forests,0,0,0,0,0,1.80E-11,0,2.71E-11,0,2.59E-11,2.16E-11,0,3.16E-11
+PA0431,Pannonian mixed forests,0,0,0,0,0,1.22E-11,0,1.66E-11,0,1.59E-11,1.29E-11,0,2.01E-11
+PA0432,Po Basin mixed forests,0,0,0,0,0,4.51E-11,0,5.96E-11,0,5.79E-11,4.78E-11,0,7.16E-11
+PA0433,Pyrenees conifer and mixed forests,0,0,0,0,0,5.15E-10,0,9.87E-10,0,9.69E-10,7.67E-10,0,1.22E-09
+PA0434,Qin Ling Mountains deciduous forests,0,0,0,0,0,7.97E-11,0,1.11E-10,0,1.06E-10,9.12E-11,0,1.26E-10
+PA0435,Rodope montane mixed forests,0,0,0,0,0,3.51E-10,0,6.92E-10,0,6.80E-10,5.36E-10,0,8.56E-10
+PA0436,Sarmatic mixed forests,0,0,0,0,0,3.98E-12,0,4.92E-12,0,4.53E-12,3.77E-12,0,5.74E-12
+PA0437,Sichuan Basin evergreen broadleaf forests,0,0,0,0,0,1.05E-10,0,1.43E-10,0,1.38E-10,1.20E-10,0,1.61E-10
+PA0438,South Sakhalin-Kurile mixed forests,0,0,0,0,0,4.70E-11,0,8.26E-11,0,8.06E-11,6.54E-11,0,9.88E-11
+PA0439,Southern Korea evergreen forests,0,0,0,0,0,2.48E-10,0,4.15E-10,0,3.99E-10,3.20E-10,0,4.97E-10
+PA0440,Taiheiyo evergreen forests,0,0,0,0,0,1.81E-10,0,3.15E-10,0,3.09E-10,2.52E-10,0,3.75E-10
+PA0441,Taiheiyo montane deciduous forests,0,0,0,0,0,4.47E-10,0,8.19E-10,0,8.06E-10,6.50E-10,0,9.87E-10
+PA0442,Tarim Basin deciduous forests and steppe,0,0,0,0,0,5.61E-12,0,8.55E-12,0,8.20E-12,6.78E-12,0,1.01E-11
+PA0443,Ussuri broadleaf and mixed forests,0,0,0,0,0,1.66E-11,0,2.51E-11,0,2.42E-11,2.02E-11,0,2.93E-11
+PA0444,West Siberian broadleaf and mixed forests,0,0,0,0,0,4.93E-12,0,7.24E-12,0,6.93E-12,5.77E-12,0,8.51E-12
+PA0445,Western European broadleaf forests,0,0,0,0,0,8.85E-12,0,1.17E-11,0,1.11E-11,9.14E-12,0,1.39E-11
+PA0446,Zagros Mountains forest steppe,0,0,0,0,0,4.60E-11,0,7.16E-11,0,6.89E-11,5.72E-11,0,8.44E-11
+PA0501,Alps conifer and mixed forests,0,0,0,0,0,1.40E-10,0,2.57E-10,0,2.53E-10,2.01E-10,0,3.17E-10
+PA0502,Altai montane forest and forest steppe,0,0,0,0,0,1.15E-11,0,1.53E-11,0,1.44E-11,1.23E-11,0,1.76E-11
+PA0503,Caledon conifer forests,0,0,0,0,0,1.99E-11,0,3.24E-11,0,3.06E-11,2.46E-11,0,3.85E-11
+PA0504,Carpathian montane forests,0,0,0,0,0,8.62E-11,0,1.63E-10,0,1.60E-10,1.26E-10,0,2.02E-10
+PA0505,Da Hinggan-Dzhagdy Mountains conifer forests,0,0,0,0,0,4.71E-12,0,5.94E-12,0,5.47E-12,4.73E-12,0,6.62E-12
+PA0506,East Afghan montane conifer forests,0,0,0,0,0,1.45E-10,0,2.50E-10,0,2.42E-10,1.95E-10,0,3.00E-10
+PA0507,Elburz Range forest steppe,0,0,0,0,0,8.43E-11,0,1.44E-10,0,1.40E-10,1.13E-10,0,1.74E-10
+PA0508,Helanshan montane conifer forests,0,0,0,0,0,5.44E-11,0,6.14E-11,0,6.00E-11,5.52E-11,0,6.71E-11
+PA0509,Hengduan Mountains subalpine conifer forests,0,0,0,0,0,4.86E-10,0,8.81E-10,0,8.64E-10,6.96E-10,0,1.07E-09
+PA0510,Hokkaido montane conifer forests,0,0,0,0,0,2.03E-10,0,3.85E-10,0,3.78E-10,3.02E-10,0,4.67E-10
+PA0511,Honshu alpine conifer forests,0,0,0,0,0,7.42E-10,0,1.40E-09,0,1.38E-09,1.10E-09,0,1.70E-09
+PA0512,Khangai Mountains conifer forests,0,0,0,0,0,1.33E-10,0,2.60E-10,0,2.56E-10,2.02E-10,0,3.21E-10
+PA0513,Mediterranean conifer and mixed forests,0,0,0,0,0,5.06E-10,0,9.48E-10,0,9.26E-10,7.36E-10,0,1.16E-09
+PA0514,Northeastern Himalayan subalpine conifer forests,0,0,0,0,0,5.08E-10,0,7.52E-10,0,7.38E-10,6.34E-10,0,8.67E-10
+PA0515,Northern Anatolian conifer and deciduous forests,0,0,0,0,0,2.53E-11,0,3.99E-11,0,3.81E-11,3.09E-11,0,4.77E-11
+PA0516,Nujiang Langcang Gorge alpine conifer and mixed forests,0,0,0,0,0,7.21E-10,0,1.29E-09,0,1.26E-09,1.02E-09,0,1.56E-09
+PA0517,Qilian Mountains conifer forests,0,0,0,0,0,9.54E-11,0,1.23E-10,0,1.18E-10,1.04E-10,0,1.37E-10
+PA0518,Qionglai-Minshan conifer forests,0,0,0,0,0,1.07E-09,0,1.89E-09,0,1.85E-09,1.50E-09,0,2.27E-09
+PA0519,Sayan montane conifer forests,0,0,0,0,0,4.26E-12,0,5.03E-12,0,4.74E-12,4.23E-12,0,5.54E-12
+PA0520,Scandinavian coastal conifer forests,0,0,0,0,0,1.85E-11,0,3.40E-11,0,3.31E-11,2.63E-11,0,4.16E-11
+PA0521,Tian Shan montane conifer forests,0,0,0,0,0,1.61E-10,0,3.11E-10,0,3.05E-10,2.42E-10,0,3.83E-10
+PA0601,East Siberian taiga,0,0,0,0,0,1.65E-12,0,1.73E-12,0,1.61E-12,1.50E-12,0,1.84E-12
+PA0602,Iceland boreal birch forests and alpine tundra,0,0,0,0,0,2.99E-12,0,4.11E-12,0,3.96E-12,3.40E-12,0,4.70E-12
+PA0603,Kamchatka-Kurile meadows and sparse forests,0,0,0,0,0,6.68E-12,0,8.50E-12,0,8.34E-12,7.45E-12,0,9.53E-12
+PA0604,Kamchatka-Kurile taiga,0,0,0,0,0,1.47E-11,0,2.76E-11,0,2.71E-11,2.16E-11,0,3.37E-11
+PA0605,Northeast Siberian taiga,0,0,0,0,0,1.35E-12,0,1.58E-12,0,1.50E-12,1.36E-12,0,1.73E-12
+PA0606,Okhotsk-Manchurian taiga,0,0,0,0,0,6.43E-12,0,7.38E-12,0,7.01E-12,6.37E-12,0,7.99E-12
+PA0607,Sakhalin Island taiga,0,0,0,0,0,1.43E-11,0,1.75E-11,0,1.64E-11,1.47E-11,0,1.90E-11
+PA0608,Scandinavian and Russian taiga,0,0,0,0,0,2.00E-12,0,2.11E-12,0,1.87E-12,1.61E-12,0,2.36E-12
+PA0609,Trans-Baikal conifer forests,0,0,0,0,0,5.92E-12,0,7.88E-12,0,7.54E-12,6.52E-12,0,8.96E-12
+PA0610,Ural montane forests and tundra,0,0,0,0,0,5.39E-12,0,8.97E-12,0,8.67E-12,7.02E-12,0,1.08E-11
+PA0611,West Siberian taiga,0,0,0,0,0,1.52E-12,0,1.67E-12,0,1.55E-12,1.39E-12,0,1.82E-12
+PA0801,Alai-Western Tian Shan steppe,0,0,0,0,0,7.60E-11,0,1.18E-10,0,1.17E-10,1.02E-10,0,1.29E-10
+PA0802,Altai steppe and semi-desert,0,0,0,0,0,1.67E-11,0,2.07E-11,0,2.04E-11,1.88E-11,0,2.18E-11
+PA0803,Central Anatolian steppe and woodlands,0,0,0,0,0,3.16E-10,0,4.98E-10,0,4.94E-10,4.29E-10,0,5.46E-10
+PA0804,Daurian forest steppe,0,0,0,0,0,9.93E-12,0,1.21E-11,0,1.20E-11,1.11E-11,0,1.27E-11
+PA0805,Eastern Anatolian montane steppe,0,0,0,0,0,1.38E-10,0,2.10E-10,0,2.08E-10,1.82E-10,0,2.28E-10
+PA0806,Emin Valley steppe,0,0,0,0,0,1.78E-11,0,2.43E-11,0,2.40E-11,2.16E-11,0,2.60E-11
+PA0807,Faroe Islands boreal grasslands,0,0,0,0,0,1.08E-10,0,2.07E-10,0,2.03E-10,1.62E-10,0,2.52E-10
+PA0808,Gissaro-Alai open woodlands,0,0,0,0,0,9.09E-11,0,1.35E-10,0,1.34E-10,1.18E-10,0,1.47E-10
+PA0809,Kazakh forest steppe,0,0,0,0,0,4.74E-12,0,5.88E-12,0,5.80E-12,5.33E-12,0,6.20E-12
+PA0810,Kazakh steppe,0,0,0,0,0,5.93E-12,0,6.98E-12,0,6.87E-12,6.41E-12,0,7.28E-12
+PA0811,Kazakh upland,0,0,0,0,0,1.49E-11,0,2.13E-11,0,2.10E-11,1.86E-11,0,2.31E-11
+PA0812,Middle East steppe,0,0,0,0,0,1.37E-11,0,1.83E-11,0,1.80E-11,1.62E-11,0,1.95E-11
+PA0813,Mongolian-Manchurian grassland,0,0,0,0,0,7.87E-12,0,8.28E-12,0,8.14E-12,7.88E-12,0,8.39E-12
+PA0814,Pontic steppe,0,0,0,0,0,9.09E-12,0,1.08E-11,0,1.06E-11,9.77E-12,0,1.13E-11
+PA0815,Sayan Intermontane steppe,0,0,0,0,0,9.70E-12,0,1.36E-11,0,1.34E-11,1.20E-11,0,1.46E-11
+PA0816,Selenge-Orkhon forest steppe,0,0,0,0,0,7.34E-12,0,8.52E-12,0,8.44E-12,7.98E-12,0,8.83E-12
+PA0817,South Siberian forest steppe,0,0,0,0,0,5.56E-12,0,7.93E-12,0,7.85E-12,6.99E-12,0,8.55E-12
+PA0818,Tian Shan foothill arid steppe,0,0,0,0,0,6.02E-11,0,9.06E-11,0,8.97E-11,7.89E-11,0,9.85E-11
+PA0901,Amur meadow steppe,0,0,0,0,0,1.24E-11,0,1.74E-11,0,1.72E-11,1.53E-11,0,1.87E-11
+PA0902,Bohai Sea saline meadow,0,0,0,0,0,3.76E-11,0,5.80E-11,0,5.73E-11,5.00E-11,0,6.33E-11
+PA0903,Nenjiang River grassland,0,0,0,0,0,4.90E-11,0,7.52E-11,0,7.44E-11,6.50E-11,0,8.20E-11
+PA0904,Nile Delta flooded savanna,0,0,0,0,0,3.32E-11,0,4.00E-11,0,3.94E-11,3.67E-11,0,4.18E-11
+PA0905,Saharan halophytics,0,0,0,0,0,3.56E-12,0,4.44E-12,0,4.36E-12,4.03E-12,0,4.65E-12
+PA0906,Tigris-Euphrates alluvial salt marsh,0,0,0,0,0,1.54E-11,0,1.96E-11,0,1.93E-11,1.76E-11,0,2.07E-11
+PA0907,Ussuri-Wusuli meadow and forest meadow,0,0,0,0,0,4.97E-11,0,7.41E-11,0,7.34E-11,6.46E-11,0,8.05E-11
+PA0908,Yellow Sea saline meadow,0,0,0,0,0,1.55E-10,0,2.01E-10,0,1.96E-10,1.76E-10,0,2.14E-10
+PA1001,Altai alpine meadow and tundra,0,0,0,0,0,1.49E-11,0,1.94E-11,0,1.91E-11,1.74E-11,0,2.06E-11
+PA1002,Central Tibetan Plateau alpine steppe,0,0,0,0,0,6.71E-12,0,7.14E-12,0,7.07E-12,6.87E-12,0,7.25E-12
+PA1003,Eastern Himalayan alpine shrub and meadows,0,0,0,0,0,1.31E-10,0,1.75E-10,0,1.73E-10,1.58E-10,0,1.86E-10
+PA1004,Ghorat-Hazarajat alpine meadow,0,0,0,0,0,4.35E-11,0,6.64E-11,0,6.58E-11,5.76E-11,0,7.24E-11
+PA1005,Hindu Kush alpine meadow,0,0,0,0,0,5.06E-11,0,7.70E-11,0,7.61E-11,6.65E-11,0,8.38E-11
+PA1006,Karakoram-West Tibetan Plateau alpine steppe,0,0,0,0,0,1.98E-11,0,2.17E-11,0,2.15E-11,2.07E-11,0,2.22E-11
+PA1007,Khangai Mountains alpine meadow,0,0,0,0,0,1.07E-11,0,1.40E-11,0,1.39E-11,1.26E-11,0,1.49E-11
+PA1008,Kopet Dag woodlands and forest steppe,0,0,0,0,0,2.03E-10,0,3.20E-10,0,3.17E-10,2.76E-10,0,3.50E-10
+PA1009,Kuh Rud and Eastern Iran montane woodlands,0,0,0,0,0,2.21E-11,0,3.42E-11,0,3.38E-11,2.95E-11,0,3.73E-11
+PA1010,Mediterranean High Atlas juniper steppe,0,0,0,0,0,7.46E-10,0,1.19E-09,0,1.18E-09,1.03E-09,0,1.31E-09
+PA1011,North Tibetan Plateau-Kunlun Mountains alpine desert,0,0,0,0,0,4.67E-12,0,5.12E-12,0,5.04E-12,4.81E-12,0,5.24E-12
+PA1012,Northwestern Himalayan alpine shrub and meadows,0,0,0,0,0,1.60E-10,0,2.44E-10,0,2.42E-10,2.12E-10,0,2.66E-10
+PA1013,Ordos Plateau steppe,0,0,0,0,0,1.53E-11,0,1.69E-11,0,1.67E-11,1.60E-11,0,1.73E-11
+PA1014,Pamir alpine desert and tundra,0,0,0,0,0,2.63E-11,0,3.81E-11,0,3.78E-11,3.35E-11,0,4.12E-11
+PA1015,Qilian Mountains subalpine meadows,0,0,0,0,0,1.06E-11,0,1.33E-11,0,1.32E-11,1.22E-11,0,1.40E-11
+PA1016,Sayan Alpine meadows and tundra,0,0,0,0,0,6.02E-12,0,8.19E-12,0,8.07E-12,7.24E-12,0,8.76E-12
+PA1017,Southeast Tibet shrublands and meadows,0,0,0,0,0,3.67E-11,0,3.84E-11,0,3.82E-11,3.75E-11,0,3.88E-11
+PA1018,Sulaiman Range alpine meadows,0,0,0,0,0,7.20E-11,0,1.11E-10,0,1.10E-10,9.59E-11,0,1.21E-10
+PA1019,Tian Shan montane steppe and meadows,0,0,0,0,0,4.06E-11,0,6.07E-11,0,6.01E-11,5.29E-11,0,6.60E-11
+PA1020,Tibetan Plateau alpine shrublands and meadows,0,0,0,0,0,1.23E-11,0,1.38E-11,0,1.37E-11,1.31E-11,0,1.42E-11
+PA1021,Western Himalayan alpine shrub and Meadows,0,0,0,0,0,1.37E-10,0,2.03E-10,0,2.02E-10,1.78E-10,0,2.21E-10
+PA1022,Yarlung Tsangpo arid steppe,0,0,0,0,0,2.55E-11,0,3.08E-11,0,3.06E-11,2.86E-11,0,3.21E-11
+PA1101,Arctic desert,0,0,0,0,0,6.12E-13,0,9.46E-13,0,9.28E-13,7.82E-13,0,1.10E-12
+PA1102,Bering tundra,0,0,0,0,0,2.71E-12,0,3.20E-12,0,3.15E-12,2.90E-12,0,3.50E-12
+PA1103,Cherskii-Kolyma mountain tundra,0,0,0,0,0,1.37E-12,0,1.63E-12,0,1.56E-12,1.40E-12,0,1.80E-12
+PA1104,Chukchi Peninsula tundra,0,0,0,0,0,2.90E-12,0,3.73E-12,0,3.66E-12,3.27E-12,0,4.16E-12
+PA1105,Kamchatka Mountain tundra and forest tundra,0,0,0,0,0,2.71E-12,0,3.66E-12,0,3.55E-12,3.10E-12,0,4.14E-12
+PA1106,Kola Peninsula tundra,0,0,0,0,0,4.26E-12,0,6.70E-12,0,6.46E-12,5.27E-12,0,8.06E-12
+PA1107,Northeast Siberian coastal tundra,0,0,0,0,0,3.36E-12,0,4.02E-12,0,3.87E-12,3.51E-12,0,4.39E-12
+PA1108,Northwest Russian-Novaya Zemlya tundra,0,0,0,0,0,1.47E-12,0,1.95E-12,0,1.86E-12,1.58E-12,0,2.26E-12
+PA1109,Novosibirsk Islands arctic desert,0,0,0,0,0,1.15E-12,0,2.00E-12,0,1.98E-12,1.62E-12,0,2.39E-12
+PA1110,Scandinavian Montane Birch forest and grasslands,0,0,0,0,0,3.10E-12,0,4.70E-12,0,4.48E-12,3.66E-12,0,5.59E-12
+PA1111,Taimyr-Central Siberian tundra,0,0,0,0,0,9.91E-13,0,1.15E-12,0,1.09E-12,9.91E-13,0,1.26E-12
+PA1112,Trans-Baikal Bald Mountain tundra,0,0,0,0,0,2.94E-12,0,3.72E-12,0,3.51E-12,3.06E-12,0,4.20E-12
+PA1113,Wrangel Island arctic desert,0,0,0,0,0,1.21E-10,0,1.39E-10,0,1.38E-10,1.31E-10,0,1.47E-10
+PA1114,Yamal-Gydan tundra,0,0,0,0,0,1.06E-12,0,1.32E-12,0,1.27E-12,1.12E-12,0,1.49E-12
+PA1201,Aegean and Western Turkey sclerophyllous and mixed forests,0,0,0,0,0,2.11E-10,0,3.27E-10,0,3.24E-10,2.83E-10,0,3.57E-10
+PA1202,Anatolian conifer and deciduous mixed forests,0,0,0,0,0,2.88E-10,0,4.56E-10,0,4.52E-10,3.93E-10,0,5.00E-10
+PA1203,Canary Islands dry woodlands and forests,0,0,0,0,0,2.81E-08,0,5.47E-08,0,5.39E-08,4.28E-08,0,6.67E-08
+PA1204,Corsican montane broadleaf and mixed forests,0,0,0,0,0,3.60E-09,0,6.90E-09,0,6.78E-09,5.40E-09,0,8.39E-09
+PA1205,Crete Mediterranean forests,0,0,0,0,0,1.95E-09,0,3.64E-09,0,3.54E-09,2.81E-09,0,4.41E-09
+PA1206,Cyprus Mediterranean forests,0,0,0,0,0,1.47E-09,0,2.81E-09,0,2.74E-09,2.18E-09,0,3.41E-09
+PA1207,Eastern Mediterranean conifer-sclerophyllous-broadleaf forests,0,0,0,0,0,3.50E-10,0,5.42E-10,0,5.36E-10,4.68E-10,0,5.92E-10
+PA1208,Iberian conifer forests,0,0,0,0,0,9.28E-10,0,1.49E-09,0,1.47E-09,1.28E-09,0,1.63E-09
+PA1209,Iberian sclerophyllous and semi-deciduous forests,0,0,0,0,0,1.09E-10,0,1.69E-10,0,1.67E-10,1.46E-10,0,1.84E-10
+PA1210,Illyrian deciduous forests,0,0,0,0,0,7.94E-10,0,1.26E-09,0,1.25E-09,1.08E-09,0,1.38E-09
+PA1211,Italian sclerophyllous and semi-deciduous forests,0,0,0,0,0,3.60E-10,0,5.66E-10,0,5.61E-10,4.88E-10,0,6.20E-10
+PA1212,Mediterranean acacia-argania dry woodlands and succulent thickets,0,0,0,0,0,7.12E-11,0,9.19E-11,0,9.06E-11,8.31E-11,0,9.69E-11
+PA1213,Mediterranean dry woodlands and steppe,0,0,0,0,0,2.14E-11,0,2.68E-11,0,2.64E-11,2.44E-11,0,2.81E-11
+PA1214,Mediterranean woodlands and forests,0,0,0,0,0,6.70E-11,0,9.40E-11,0,9.29E-11,8.35E-11,0,1.01E-10
+PA1215,Northeastern Spain and Southern France Mediterranean forests,0,0,0,0,0,2.93E-10,0,4.62E-10,0,4.58E-10,3.98E-10,0,5.06E-10
+PA1216,Northwest Iberian montane forests,0,0,0,0,0,2.31E-10,0,3.67E-10,0,3.64E-10,3.16E-10,0,4.03E-10
+PA1217,Pindus Mountains mixed forests,0,0,0,0,0,9.67E-10,0,1.55E-09,0,1.53E-09,1.33E-09,0,1.70E-09
+PA1218,South Appenine mixed montane forests,0,0,0,0,0,1.44E-09,0,2.31E-09,0,2.29E-09,1.98E-09,0,2.53E-09
+PA1219,Southeastern Iberian shrubs and woodlands,0,0,0,0,0,2.03E-09,0,3.25E-09,0,3.22E-09,2.79E-09,0,3.56E-09
+PA1220,Southern Anatolian montane conifer and deciduous forests,0,0,0,0,0,5.20E-10,0,8.17E-10,0,8.10E-10,7.05E-10,0,8.94E-10
+PA1221,Southwest Iberian Mediterranean sclerophyllous and mixed forests,0,0,0,0,0,3.78E-10,0,5.98E-10,0,5.93E-10,5.14E-10,0,6.56E-10
+PA1222,Tyrrhenian-Adriatic Sclerophyllous and mixed forests,0,0,0,0,0,4.10E-10,0,7.34E-10,0,7.21E-10,5.83E-10,0,8.85E-10
+PA1301,Afghan Mountains semi-desert,0,0,0,0,0,1.01E-10,0,1.57E-10,0,1.56E-10,1.36E-10,0,1.72E-10
+PA1302,Alashan Plateau semi-desert,0,0,0,0,0,3.09E-12,0,3.29E-12,0,3.27E-12,3.18E-12,0,3.34E-12
+PA1303,Arabian Desert and East Sahero-Arabian xeric shrublands,0,0,0,0,0,1.90E-12,0,2.45E-12,0,2.41E-12,2.21E-12,0,2.58E-12
+PA1304,Atlantic coastal desert,0,0,0,0,0,6.55E-12,0,9.46E-12,0,9.39E-12,8.43E-12,0,1.02E-11
+PA1305,Azerbaijan shrub desert and steppe,0,0,0,0,0,2.03E-10,0,3.10E-10,0,3.07E-10,2.68E-10,0,3.38E-10
+PA1306,Badghyz and Karabil semi-desert,0,0,0,0,0,3.01E-11,0,4.22E-11,0,4.17E-11,3.72E-11,0,4.54E-11
+PA1307,Baluchistan xeric woodlands,0,0,0,0,0,1.29E-11,0,1.57E-11,0,1.54E-11,1.43E-11,0,1.64E-11
+PA1308,Caspian lowland desert,0,0,0,0,0,8.51E-12,0,1.17E-11,0,1.16E-11,1.03E-11,0,1.26E-11
+PA1309,Central Afghan Mountains xeric woodlands,0,0,0,0,0,3.93E-11,0,5.58E-11,0,5.52E-11,4.92E-11,0,6.01E-11
+PA1310,Central Asian northern desert,0,0,0,0,0,7.80E-12,0,9.30E-12,0,9.22E-12,8.64E-12,0,9.71E-12
+PA1311,Central Asian riparian woodlands,0,0,0,0,0,2.73E-11,0,4.11E-11,0,4.07E-11,3.58E-11,0,4.47E-11
+PA1312,Central Asian southern desert,0,0,0,0,0,5.82E-12,0,7.64E-12,0,7.54E-12,6.87E-12,0,8.10E-12
+PA1313,Central Persian desert basins,0,0,0,0,0,7.51E-12,0,1.07E-11,0,1.06E-11,9.48E-12,0,1.15E-11
+PA1314,Eastern Gobi desert steppe,0,0,0,0,0,4.25E-12,0,4.60E-12,0,4.55E-12,4.39E-12,0,4.70E-12
+PA1315,Gobi Lakes Valley desert steppe,0,0,0,0,0,5.81E-12,0,6.45E-12,0,6.40E-12,6.14E-12,0,6.62E-12
+PA1316,Great Lakes Basin desert steppe,0,0,0,0,0,9.42E-12,0,1.04E-11,0,1.03E-11,9.93E-12,0,1.07E-11
+PA1317,Junggar Basin semi-desert,0,0,0,0,0,5.96E-12,0,6.83E-12,0,6.74E-12,6.37E-12,0,7.06E-12
+PA1318,Kazakh semi-desert,0,0,0,0,0,9.00E-12,0,1.08E-11,0,1.06E-11,9.93E-12,0,1.12E-11
+PA1319,Kopet Dag semi-desert,0,0,0,0,0,6.90E-11,0,1.08E-10,0,1.07E-10,9.32E-11,0,1.17E-10
+PA1320,Mesopotamian shrub desert,0,0,0,0,0,7.13E-12,0,1.03E-11,0,1.01E-11,9.02E-12,0,1.10E-11
+PA1321,North Saharan steppe and woodlands,0,0,0,0,0,2.36E-12,0,2.84E-12,0,2.81E-12,2.64E-12,0,2.95E-12
+PA1322,Paropamisus xeric woodlands,0,0,0,0,0,4.57E-11,0,6.64E-11,0,6.53E-11,5.75E-11,0,7.18E-11
+PA1323,Persian Gulf desert and semi-desert,0,0,0,0,0,4.23E-12,0,5.95E-12,0,5.88E-12,5.27E-12,0,6.38E-12
+PA1324,Qaidam Basin semi-desert,0,0,0,0,0,2.94E-12,0,3.17E-12,0,3.14E-12,3.04E-12,0,3.23E-12
+PA1325,Red Sea Nubo-Sindian tropical desert and semi-desert,0,0,0,0,0,2.89E-12,0,4.07E-12,0,4.02E-12,3.63E-12,0,4.34E-12
+PA1326,Registan-North Pakistan sandy desert,0,0,0,0,0,6.47E-12,0,9.23E-12,0,9.12E-12,8.14E-12,0,9.93E-12
+PA1327,Sahara desert,0,0,0,0,0,5.70E-13,0,6.47E-13,0,6.41E-13,6.14E-13,0,6.65E-13
+PA1328,South Iran Nubo-Sindian desert and semi-desert,0,0,0,0,0,5.78E-12,0,7.42E-12,0,7.33E-12,6.77E-12,0,7.80E-12
+PA1329,South Saharan steppe and woodlands,0,0,0,0,0,1.55E-12,0,1.81E-12,0,1.79E-12,1.70E-12,0,1.87E-12
+PA1330,Taklimakan desert,0,0,0,0,0,2.22E-12,0,2.40E-12,0,2.35E-12,2.25E-12,0,2.44E-12
+PA1331,Tibesti-Jebel Uweinat montane xeric woodlands,0,0,0,0,0,3.62E-12,0,5.50E-12,0,5.44E-12,4.76E-12,0,5.98E-12
+PA1332,West Saharan montane xeric woodlands,0,0,0,0,0,3.73E-12,0,5.63E-12,0,5.58E-12,4.98E-12,0,6.06E-12
+PA1333,Red Sea coastal desert,0,0,0,0,0,7.43E-12,0,9.43E-12,0,9.33E-12,8.61E-12,0,9.93E-12
+SUM,,0,0,0,0,0,2.75E-06,0,5.15E-06,0,5.06E-06,4.07E-06,0,6.22E-06

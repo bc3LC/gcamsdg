@@ -1,0 +1,9 @@
+category,order
+CroplandIrr,1
+CroplandRfd,2
+Pasture,3
+Grassland,4
+Forest,5
+Shrubland,6
+Urbanland,7
+RockIceDesert,8
