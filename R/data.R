@@ -20,7 +20,7 @@
 #' library(gcamsdg)
 #' gcamsdg::basin_id
 #' }
-"basin_id"
+# "basin_id"
 
 
 # region_mapping_32

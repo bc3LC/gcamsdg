@@ -4,13 +4,7 @@
 \alias{get_sdg3_health}
 \title{get_sdg3_health}
 \usage{
-get_sdg3_health(
-  prj_f,
-  output_name,
-  gcam_eur = F,
-  saveOutput = T,
-  makeFigures = F
-)
+get_sdg3_health(prj_f, output_name, gcam_eur = F, saveOutput = T)
 }
 \arguments{
 \item{prj_f}{uploaded project file}
@@ -21,8 +15,6 @@ the 'output' directory.}
 \item{gcam_eur}{boolean to indicate if the GCAM version is GCAM-Europe or not}
 
 \item{saveOutput}{save the produced output}
-
-\item{makeFigures}{generate and save graphical representation/s of the output}
 }
 \value{
 data frame with mortalities by scenario, GCAM region and year

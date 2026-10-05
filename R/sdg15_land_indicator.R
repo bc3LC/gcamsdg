@@ -12,6 +12,9 @@
 #' @param conda_env conda environment with Demeter installed, used by
 #'   reticulate (defaults to the BC3 cluster environment)
 #' @return data frame with the final PSL by scenario
+#' @import reticulate 
+#' @import sf
+#' @import ncdf4
 #' @export
 get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput = T,
                                      base_path = "C:/GCAM_working_group/gcamsdg/",
@@ -236,7 +239,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     # config_file = file.path(demeter_root, "config_files", config_name)
     
     demeter$run_model(config_file=config_file_path, write_outputs=TRUE)
-    print(paste0("Demeter run for scenario ", scenario_name, " completed"))
+    print(paste0("Demeter run for scenario ", scen_name, " completed"))
     
     # ---------------------------------------------------------
     # 2. BULLETPROOF POST-RUN CLEANUP & MOVE
@@ -266,6 +269,20 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
       warning("Could not find Demeter output folder to move. Check if the run failed.")
     }
     
+    # Clear Python logging handlers to release the moved log file
+    reticulate::py_run_string("
+import logging
+# Get all active loggers including the root logger
+loggers = [logging.getLogger(name) for name in logging.root.manager.loggerDict]
+loggers.append(logging.getLogger())
+
+# Close and remove all file handlers
+for logger in loggers:
+    for handler in logger.handlers[:]:
+        handler.close()
+        logger.removeHandler(handler)
+")
+    
   }
   print(paste0("Demeter runs completed for all scenarios of database ", prj_name))
   
@@ -276,7 +293,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
   # areas_land_types <- read.csv(system.file("extdata", "Coordinates.csv", package = "gcamsdg"))
 
   # List and rename files 
-  folders <- list.dirs(file.path(tmp_files, "demeter_outputs"), full.names = FALSE, recursive = FALSE)
+  folders <- list.dirs(dem_output_dir, full.names = FALSE, recursive = FALSE)
   
   # Filter folders using grep to match any of the scenario names as a substring
   scenario_folders <- folders[sapply(folders, function(folder) {
@@ -286,11 +303,11 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
   # Loop through each file
   if (demeterRun) for (folder in scenario_folders) {
     # Full path of the original file
-    old_folder_path <- file.path(demeter_path, "outputs", folder)
+    old_folder_path <- file.path(dem_output_dir, folder)
     # Use sub to extract the scenario name, everything before the first underscore
     new_name <- sub("_20.+", "", folder)
     # Full path for the new file name
-    new_folder_path <- file.path(demeter_path, "outputs", new_name)
+    new_folder_path <- file.path(dem_output_dir, new_name)
     # Check if target folder already exists
     if (dir.exists(new_folder_path)) {
       message(sprintf("Skipped: Destination directory '%s' already exists for '%s'.", new_name, folder))
@@ -314,8 +331,8 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
       dplyr::select(OBJECTID, eco_code)
   # Read file with the Ecoregion names from Chaudhary and Brookes (2018)
   ecoregions_ID <- read.csv(system.file("extdata", "Ecoregion_ID.csv", package = "gcamsdg"))
-  # Create the final CSV that will receive the PSL results (one line per scenario)
-  final_csv = read.csv(system.file("extdata", "PSL_template.csv", package = "gcamsdg"))
+  # # Create the final CSV that will receive the PSL results (one line per scenario)
+  # psl_template = read.csv(system.file("extdata", "PSL_template.csv", package = "gcamsdg"))
   print("Starting to create the dataframes from NetCDF files")
 
   ############################################################################
@@ -326,7 +343,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     # scen_name = "ClimPol"
     
     # Initialize the receiving dataframe 
-    coord_df = read.csv("data/lonlat_coord.csv")[,2:3]
+    coord_df = read.csv(system.file("extdata", "lonlat_coord.csv", package = "gcamsdg"))[,2:3]
     
     # Create path components 
     netcdffolder <- "spatial_landcover_netcdf"
@@ -341,15 +358,15 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
       
       # Construct file path
       nc_file <- paste0("_demeter_", scen_name, "_", output_year[j, 1], ".nc")
-      NetCDFfiles_path <- file.path(output_path, scen_name, netcdffolder, nc_file)
+      NetCDFfiles_path <- file.path(dem_output_dir, scen_name, netcdffolder, nc_file)
       message("Reading: ", NetCDFfiles_path)
       
       # Open NetCDF
-      ncin <- nc_open(NetCDFfiles_path)
+      ncin <- ncdf4::nc_open(NetCDFfiles_path)
       
       # Get lon/lat only if needed
-      lon <- ncvar_get(ncin, "longitude")
-      lat <- ncvar_get(ncin, "latitude")
+      lon <- ncdf4::ncvar_get(ncin, "longitude")
+      lat <- ncdf4::ncvar_get(ncin, "latitude")
       lonlat <- expand.grid(lon = lon, lat = lat)
       dim(ncvar_get(ncin, ncin$var[[1]]))
       
@@ -362,33 +379,33 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
       })
       
       # Combine variables into one df (column bind)
-      vars_df <- bind_cols(lonlat, var_list)
+      vars_df <- dplyr::bind_cols(lonlat, var_list)
       
       # Optional: remove unnecessary columns
       vars_df <- vars_df %>% dplyr::select(-any_of(c("basin_id", "region_id", "water")))
       
       # Keep only the rows present in coord_df
       merge_df <- vars_df %>%
-        semi_join(coord_df, by = c("lon", "lat"))
+        dplyr::semi_join(coord_df, by = c("lon", "lat"))
       
-      merge_sf <- st_as_sf(
+      merge_sf <- sf::st_as_sf(
         merge_df,
         coords = c("lon", "lat"),
         crs = 4326,
         remove = FALSE
       )
       
-      merge_sf <- st_join(
+      merge_sf <- sf::st_join(
         merge_sf,
         ecoregions_sf,
         left = FALSE   # drop points outside ecoregions (e.g. ocean, Antarctica)
       )
       
       eco_sum_df <- merge_sf %>%
-        st_drop_geometry() %>%
-        group_by(eco_code) %>%
-        summarise(
-          across(
+        sf::st_drop_geometry() %>%
+        dplyr::group_by(eco_code) %>%
+        dplyr::summarise(
+          dplyr::across(
             where(is.numeric),
             ~ sum(.x, na.rm = TRUE)
           ),
@@ -406,12 +423,12 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     
     ############################################################################
     # Combine all years into one big df
-    final_eco_df <- bind_rows(yearly_dfs) 
+    final_eco_df <- dplyr::bind_rows(yearly_dfs) 
     
     # Replace 2020 with 2021 in the 'year' column if base_year is 2021
     if (base_year == 2021) {
       final_eco_df <- final_eco_df %>%
-        mutate(year = if_else(year == 2020, 2021, year))
+        dplyr::mutate(year = dplyr::if_else(year == 2020, 2021, year))
       
       message("Replaced year 2020 with 2021 in final_eco_df.")
     }
@@ -419,10 +436,10 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     sqm <- function(x, na.rm = FALSE) (x*1000000)
     
     final_df <- final_eco_df %>% 
-      rename(ECOREGION_CODE = eco_code) %>%
+      dplyr::rename(ECOREGION_CODE = eco_code) %>%
       merge(ecoregions_ID, by = "ECOREGION_CODE") %>% 
       dplyr::select(-c("lat", "lon", "Habitat.type", "OBJECTID")) %>% 
-      mutate(across(where(is.numeric) & !any_of("year"), ~ sqm(.x, na.rm = FALSE)))
+      dplyr::mutate(dplyr::across(where(is.numeric) & !any_of("year"), ~ sqm(.x, na.rm = FALSE)))
     
     landuse_cols <- c(
       "shrubland", "grassland", "forest", "rockicedesert",
@@ -430,16 +447,16 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     )
     
     df_delta <- final_df %>%
-      group_by(ECOREGION_CODE) %>%
-      mutate(
-        across(
+      dplyr::group_by(ECOREGION_CODE) %>%
+      dplyr::mutate(
+        dplyr::across(
           all_of(landuse_cols),
           ~ .x - .x[year == base_year][1]
         )
       ) %>%
-      ungroup()
+      dplyr::ungroup()
     
-    message("All Demeter outputs combined into one dataframe aggregated per ecoregion. Difference relative to 2020 computed for each ecoregion and per year")
+    message("All Demeter outputs combined into one dataframe aggregated per ecoregion. Difference relative to base_year computed for each ecoregion and per year")
     
     
     ############################################################################
@@ -447,37 +464,37 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     CF = read.csv(system.file("extdata", "CF.csv", package = "gcamsdg"))
     
     final = merge(df_delta, CF, by = c("ECOREGION_CODE")) %>% 
-      mutate(
-             forest_PSL = forest.diff * Forest_CF,
-             pasture_PSL = pasture.diff * Pasture_CF,
-             crop_irr_PSL = crop_irr.diff * Irrigated_crop_CF,
-             crop_rfd_PSL = crop_rfd.diff * Rainfed_crop_CF,
+      dplyr::mutate(
+             forest_PSL = forest * Forest_CF,
+             pasture_PSL = pasture * Pasture_CF,
+             crop_irr_PSL = croplandirr * Irrigated_crop_CF,
+             crop_rfd_PSL = croplandrfd * Rainfed_crop_CF,
              ) %>% 
-      mutate(final_PSL = rowSums(across(ends_with("_PSL")))) %>% 
-      mutate(across(ends_with("_PSL"),
-                    ~ if_else(year < base_year, 0, .x)))
+      dplyr::mutate(final_PSL = rowSums(dplyr::across(ends_with("_PSL")))) %>% 
+      dplyr::mutate(dplyr::across(ends_with("_PSL"),
+                    ~ dplyr::if_else(year < base_year, 0, .x)))
     
     # Aggregate across the ecoregions and compute final PSL across land uses
     final_agg = final %>% 
-      group_by(year) %>% 
-      summarize(
+      dplyr::group_by(year) %>% 
+      dplyr::summarize(
                 forest_PSL = sum(forest_PSL),
                 pasture_PSL = sum(pasture_PSL),
                 crop_irr_PSL = sum(crop_irr_PSL),
                 crop_rfd_PSL = sum(crop_rfd_PSL),
                 final_PSL = sum(final_PSL)
                 ) %>% 
-      mutate(scenario = scen_name) %>% 
-      pivot_longer(!c("year", "scenario"), names_to = "Variable", values_to = "PSL") %>% 
-      pivot_wider(names_from = year, values_from = "PSL") %>% 
-      mutate(Model = "GCAM", .before=scenario) %>% 
-      mutate(Unit = "Number of species", .after=Variable) %>% 
-      mutate(Region = "World", .after=scenario) %>% 
-      rename(Scenario = scenario)
+      dplyr::mutate(scenario = scen_name) %>% 
+      tidyr::pivot_longer(!c("year", "scenario"), names_to = "Variable", values_to = "PSL") %>% 
+      tidyr::pivot_wider(names_from = year, values_from = "PSL") %>% 
+      dplyr::mutate(Model = "GCAM", .before=scenario) %>% 
+      dplyr::mutate(Unit = "Number of species", .after=Variable) %>% 
+      dplyr::mutate(Region = "World", .after=scenario) %>% 
+      dplyr::rename(Scenario = scenario)
     
-    final_total <- final_format %>% 
-      filter(Variable == "final_PSL") %>%
-      mutate(Variable = "Terrestrial Biodiversity|Potential Species Loss")
+    final_total <- final_total
+      dplyr::filter(Variable == "final_PSL") %>%
+      dplyr::mutate(Variable = "Terrestrial Biodiversity|Potential Species Loss")
     
     ############################################################################
     # (Optional) Steps of rasterizing ecoregions values and aggregating back to GCAM regions? For now just report NAs in region rows 
@@ -492,7 +509,6 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     if (saveOutput) write.csv(final_total,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_Total.csv"), row.names = F)       
     
     print(paste0("PSL dataframe for scenario ", scen_name, " saved in results"))
-    final_csv <- rbind(final_csv, final_agg)
 
   }
   
@@ -509,7 +525,7 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
       message("Reading: ", file)
       read.csv(file, check.names = FALSE)
     }) %>%
-    bind_rows()
+    dplyr::bind_rows()
   
   # final_full_all <- scen_names %>%
   #   lapply(function(scn) {
@@ -545,8 +561,8 @@ get_sdg15_land_indicator <- function(prj, prj_name, demeterRun = T, saveOutput =
     , c(cat_cols[1:2], "Region", cat_cols[3:4], year_cols)
   ]
   final_total_all = final_total_all %>% 
-    bind_rows(expanded_df) %>% 
-    filter(Region != "Global")
+    dplyr::bind_rows(expanded_df) %>% 
+    dplyr::filter(Region != "Global")
   
   # Write CSV
   if (saveOutput) { write.csv(final_total_all, file = file.path("output/SDG15-Land/results/PSL-prj-results", paste0("PSL_", gsub("\\.dat$", "", prj_name), "_TOTAL.csv")),row.names = FALSE)}

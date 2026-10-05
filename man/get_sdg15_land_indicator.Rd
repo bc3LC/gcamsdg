@@ -7,15 +7,18 @@
 get_sdg15_land_indicator(
   prj,
   prj_name,
+  demeterRun = T,
   saveOutput = T,
-  base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
-  conda_env = "/scratch/bc3lc/conda-env/dem-env-3"
+  base_path = "C:/GCAM_working_group/gcamsdg/",
+  conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"
 )
 }
 \arguments{
 \item{prj}{uploaded project file}
 
 \item{prj_name}{project file name, used to tag the saved output file}
+
+\item{demeterRun}{run Demeter for the project}
 
 \item{saveOutput}{save the produced output}
 

@@ -329,10 +329,10 @@ generate_sdg_report <- function(
     result$water <- 
       get_sdg6_water_scarcity(prj, output_name, saveOutput = saveOutput)
   }
-  # if ("land" %in% sdgs) {
-  #   result$land <- compute_across(function(p, n) get_sdg15_land_indicator(p, n, saveOutput = saveOutput,
-  #                                                                          base_path = base_path, conda_env = conda_env))
-  # }
+  if ("land" %in% sdgs) {
+    result$land <- 
+      get_sdg15_land_indicator(p, n, saveOutput = saveOutput, base_path = base_path, conda_env = conda_env)
+  }
   
   
   # ---- save results list ----

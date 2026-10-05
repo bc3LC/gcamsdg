@@ -25,7 +25,8 @@ Imports:
     raster,
     shapefiles,
     grid,
-    zoo
+    zoo,
+    magrittr
 Suggests:
     devtools,
     roxygen2,

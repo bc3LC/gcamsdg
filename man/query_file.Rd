@@ -3,20 +3,32 @@
 \docType{data}
 \name{query_file}
 \alias{query_file}
-\title{query_file}
+\title{basin_id}
 \format{
+.csv
+
 .csv
 }
 \source{
+local
+
 local
 }
 \usage{
 query_file
 }
 \description{
+GCAM basin mapping
+
 query file to report the SDGs 2,3,6,15
 }
 \examples{
+\dontrun{
+library(gcamsdg)
+gcamsdg::basin_id
+}
+query_file
+
 \dontrun{
 library(gcamsdg)
 gcamsdg::query_file
