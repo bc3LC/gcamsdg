@@ -138,7 +138,8 @@
     long_indicators <- long_indicators %>%
       dplyr::mutate(Model = mod_name) %>%
       dplyr::arrange(year) %>% 
-      tidyr::pivot_wider(names_from = year, values_from = value)
+      tidyr::pivot_wider(names_from = year, values_from = value) %>% 
+      dplyr::bind_rows(result$land)
   }
   
   # bind with the original gcamreport and organize columns
