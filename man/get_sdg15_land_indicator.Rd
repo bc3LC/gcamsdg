@@ -6,7 +6,7 @@
 \usage{
 get_sdg15_land_indicator(
   prj,
-  prj_name,
+  output_name,
   demeterRun = T,
   saveOutput = T,
   base_path = "C:/GCAM_working_group/gcamsdg/",
@@ -15,8 +15,6 @@ get_sdg15_land_indicator(
 }
 \arguments{
 \item{prj}{uploaded project file}
-
-\item{prj_name}{project file name, used to tag the saved output file}
 
 \item{demeterRun}{run Demeter for the project}
 
@@ -27,6 +25,8 @@ Demeter model (defaults to the BC3 cluster path)}
 
 \item{conda_env}{conda environment with Demeter installed, used by
 reticulate (defaults to the BC3 cluster environment)}
+
+\item{prj_name}{project file name, used to tag the saved output file}
 }
 \value{
 data frame with the final PSL by scenario

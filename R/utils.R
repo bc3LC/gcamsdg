@@ -8,6 +8,7 @@
 #' @param scenarios The name(s) of the scenario(s) to report on. If NULL, report on all of them.
 #' @param queries The name(s) of the queries(s) to report on. If NULL, report on all of them.
 #' @param anyscen If TRUE, then list queries that are in any scenario. If FALSE, list queries that are in all scenarios.
+#' @import tibble
 #' @return list of years reported in the project/scenario/queries.
 .listYears <- function (projData, scenarios = NULL, queries = NULL, anyscen = TRUE) {
   if (is.character(projData)) {
