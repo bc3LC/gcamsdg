@@ -7,26 +7,24 @@
 get_sdg15_land_indicator(
   prj,
   output_name,
-  demeterRun = T,
+  demeterRerun = F,
   saveOutput = T,
-  base_path = "C:/GCAM_working_group/gcamsdg/",
-  conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"
+  conda_env = NULL
 )
 }
 \arguments{
 \item{prj}{uploaded project file}
 
-\item{demeterRun}{run Demeter for the project}
+\item{output_name}{output file name, used to tag the saved output file in 
+the 'output' directory.}
+
+\item{demeterRerun}{Checks if Demeter outputs are available and skips rerunning if False, 
+or deleter previous outputs and reruns Demeter if True.}
 
 \item{saveOutput}{save the produced output}
 
-\item{base_path}{run directory containing the `gcamsdg/` checkout and the
-Demeter model (defaults to the BC3 cluster path)}
-
 \item{conda_env}{conda environment with Demeter installed, used by
 reticulate (defaults to the BC3 cluster environment)}
-
-\item{prj_name}{project file name, used to tag the saved output file}
 }
 \value{
 data frame with the final PSL by scenario

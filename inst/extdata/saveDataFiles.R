@@ -51,9 +51,6 @@ use_data(ecoregions_sf, overwrite = T)
 lonlat_coord <- readr::read.csv(file.path(rawDataFolder, "inst/extdata/", "lonlat_coord.csv"))
 use_data(lonlat_coord, overwrite = T)
 
-# psl_template = readr::read.csv(system.file("extdata", "PSL_template.csv"))
-# use_data(psl_template, overwrite = T)
-
 CF = readr::read.csv(system.file("extdata", "CF.csv"))
 use_data(CF, overwrite = T)
 

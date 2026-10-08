@@ -331,7 +331,7 @@ generate_sdg_report <- function(
   }
   if ("land" %in% sdgs) {
     result$land <- 
-      get_sdg15_land_indicator(prj, output_name, demeterRun = F, saveOutput = saveOutput, base_path = base_path, conda_env = conda_env)
+      get_sdg15_land_indicator(prj, output_name, demeterRerun = demeterRerun, saveOutput = saveOutput, conda_env = conda_env)
   }
   
   

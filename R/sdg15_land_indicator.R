@@ -4,11 +4,11 @@
 #' indicator, downscaling GCAM land allocation with Demeter and aggregating
 #' land-use change to the ecoregion level.
 #' @param prj uploaded project file
-#' @param prj_name project file name, used to tag the saved output file
-#' @param demeterRun run Demeter for the project
+#' @param output_name output file name, used to tag the saved output file in 
+#' the 'output' directory.
+#' @param demeterRerun Checks if Demeter outputs are available and skips rerunning if False, 
+#'   or deleter previous outputs and reruns Demeter if True. 
 #' @param saveOutput save the produced output
-#' @param base_path run directory containing the `gcamsdg/` checkout and the
-#'   Demeter model (defaults to the BC3 cluster path)
 #' @param conda_env conda environment with Demeter installed, used by
 #'   reticulate (defaults to the BC3 cluster environment)
 #' @return data frame with the final PSL by scenario
@@ -16,11 +16,10 @@
 #' @import sf
 #' @import ncdf4
 #' @export
-get_sdg15_land_indicator <- function(prj, output_name, demeterRun = T, saveOutput = T,
-                                     base_path = "C:/GCAM_working_group/gcamsdg/",
-                                     conda_env = "C:/Users/theo.rouhette/miniconda3/envs/sdg_env"){
+get_sdg15_land_indicator <- function(prj, output_name, demeterRerun = F, saveOutput = T,
+                                     conda_env = NULL){
 
-  print('computing sdg15 - land indicator ...')
+  message('computing sdg15 - land indicator ...')
 
   # Create the directories if they do not exist:
   if (!dir.exists("output")) dir.create("output")
@@ -37,7 +36,8 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRun = T, saveOutpu
   if (!dir.exists("output/SDG15-Land/results/PSL-prj-results")) dir.create("output/SDG15-Land/results/PSL-prj-results")
   
   # Set the base path for the GCAM folder
-  demeter_path = paste0(base_path, "inst/extdata/demeter")
+  root_path <- getwd()
+  demeter_path = paste0(root_path, "inst/extdata/demeter")
   tmp_files <- "output/SDG15-Land/results/tmp-files"
   dem_proj_dir <- file.path(tmp_files, "demeter_projected")
   dem_config_dir     <- file.path(tmp_files, "demeter_config")
@@ -54,9 +54,35 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRun = T, saveOutpu
   # Create vector of all scenarios in the project
   scen_names <- rgcam::listScenarios(prj)
   
+  # 1. Check if demeter_outputs contains a folder for every scenario
+  all_scens_exist <- all(sapply(scen_names, function(scen) {
+    dir.exists(file.path(dem_output_dir, scen))
+  }))
+  
+  # Initialize flag for running demeter
+  run_demeter <- TRUE 
+  
+  if (all_scens_exist) {
+    if (demeterRerun == TRUE) {
+      message("Demeter rerun is TRUE. Deleting existing scenario folders...")
+      # Delete existing folders to ensure a clean rerun
+      for (scen in scen_names) {
+        unlink(file.path(dem_output_dir, scen), recursive = TRUE)
+      }
+      run_demeter <- TRUE
+    } else {
+      message("Demeter outputs already exist and demeterRerun is FALSE. Skipping demeter...")
+      run_demeter <- FALSE
+    }
+  } else {
+    # If not all scenarios exist, we must run demeter (regardless of demeterRerun)
+    message("Missing demeter outputs for one or more scenarios. Running demeter...")
+    run_demeter <- TRUE
+  }
+  
   # Upload basin mapping
   basin_id <- read.csv(system.file("extdata", "basin_to_country_mapping.csv", package = "gcamsdg"))
-  print("Creating Demeter inputs from GCAM land allocation query")
+  message("Creating Demeter inputs from GCAM land allocation query")
   
   # Format GCAM land use outputs to fit as Demeter inputs 
   land_alloc <- rgcam::getQuery(prj, "detailed land allocation") %>% 
@@ -127,7 +153,7 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRun = T, saveOutpu
   start_year  <- adj_result$start_year
   
   # Loop to create one file per scenario in "input/projected" demeter folder and configuration files
-  if (demeterRun) for (scen_name in scen_names) {
+  if (run_demeter) for (scen_name in scen_names) {
     
     # Filter the dataframe for the current scenario
     filtered_df <- det.LU[det.LU$scenario == scen_name, ]
@@ -226,19 +252,11 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRun = T, saveOutpu
     write(config_content, file = config_file_path)
     
     # Import Python module and Run Demeter (approx. 50 min per scenario)
-    print(paste0("Importing and running Demeter for ", scen_name))
-    # sys <- reticulate::import("sys")
-    # demeter <- reticulate::import("demeter")
-    
-    # config_name = paste0("Scenario_", scenario_name, ".ini")
-    # config_file = file.path(demeter_root, "config_files", config_name)
-    
+    message(sprintf("Importing and running Demeter for ", scen_name))
     demeter$run_model(config_file=config_file_path, write_outputs=TRUE)
-    print(paste0("Demeter run for scenario ", scen_name, " completed"))
+    message(sprintf("Demeter run for scenario ", scen_name, " completed"))
     
-    # ---------------------------------------------------------
-    # 2. BULLETPROOF POST-RUN CLEANUP & MOVE
-    # ---------------------------------------------------------
+    # POST-RUN CLEANUP & MOVE
     demeter_internal_out <- file.path(abs_run_dir, "outputs")
     target_true_out      <- normalizePath(file.path(getwd(), "output/SDG15-Land/results/tmp-files/demeter_outputs"), winslash = "/", mustWork = FALSE)
     
@@ -279,13 +297,10 @@ for logger in loggers:
 ")
     
   }
-  print("Demeter runs completed for all scenarios of database")
-  
+
   # Extract surfaces by land use type from the netCDF files
   year <- seq.int(start_year, final_db_year, by = 5)
   output_year <- data.frame(year)
-  
-  # areas_land_types <- read.csv(system.file("extdata", "Coordinates.csv", package = "gcamsdg"))
 
   # List and rename files 
   folders <- list.dirs(dem_output_dir, full.names = FALSE, recursive = FALSE)
@@ -296,7 +311,7 @@ for logger in loggers:
   })]
 
   # Loop through each file
-  if (demeterRun) for (folder in scenario_folders) {
+  if (run_demeter) for (folder in scenario_folders) {
     # Full path of the original file
     old_folder_path <- file.path(dem_output_dir, folder)
     # Use sub to extract the scenario name, everything before the first underscore
@@ -319,7 +334,7 @@ for logger in loggers:
   
   ############################################################################
   # Load & Process Ecoregions shp ---- 
-  print("Loading and processing Ecoregion data")
+  message("Loading and processing Ecoregion data")
   ecoregions_sf <- sf::st_read(system.file("extdata", "Ecoregions_shp", "wwf_terr_ecos.shp", package = "gcamsdg")) %>% 
     st_make_valid() %>%
       st_transform(4326) %>%        # IMPORTANT
@@ -328,15 +343,12 @@ for logger in loggers:
   ecoregions_ID <- read.csv(system.file("extdata", "Ecoregion_ID.csv", package = "gcamsdg"))
   # # Create the final CSV that will receive the PSL results (one line per scenario)
   # psl_template = read.csv(system.file("extdata", "PSL_template.csv", package = "gcamsdg"))
-  print("Starting to create the dataframes from NetCDF files")
+  message("Starting to create the dataframes from NetCDF files")
 
   ############################################################################
   # LOOP: Create the NetCDF Files ----
   for (scen_name in scen_names) {
-    
-    # # # DEBUG
-    # scen_name = "ClimPol"
-    
+
     # Initialize the receiving dataframe 
     coord_df = read.csv(system.file("extdata", "lonlat_coord.csv", package = "gcamsdg"))[,2:3]
     
@@ -347,10 +359,7 @@ for logger in loggers:
     yearly_dfs <- vector("list", length = nrow(output_year))
     
     for (j in seq_len(nrow(output_year))) {
-      
-      # DEBUG
-      # j = 1
-      
+
       # Construct file path
       nc_file <- paste0("_demeter_", scen_name, "_", output_year[j, 1], ".nc")
       NetCDFfiles_path <- file.path(dem_output_dir, scen_name, netcdffolder, nc_file)
@@ -501,7 +510,7 @@ for logger in loggers:
     if (saveOutput) write.csv(final_agg,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_LU.csv"), row.names = F)       
     if (saveOutput) write.csv(final_total,paste0("output/SDG15-Land/results/PSL-results/",scen_name,"_PSL_Total.csv"), row.names = F)       
     
-    print(paste0("PSL dataframe for scenario ", scen_name, " saved in results"))
+    message("PSL dataframe for scenario ", scen_name, " saved in results")
 
   }
   
@@ -560,7 +569,7 @@ for logger in loggers:
                               row.names = FALSE)
     }
   
-  print("PSL dataframe for all scenarios of the saved in results")
+  message("PSL dataframe for all scenarios of the saved in results")
   
   return(invisible(final_total_all))
   
