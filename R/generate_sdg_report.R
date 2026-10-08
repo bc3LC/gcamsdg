@@ -35,8 +35,6 @@
 #' @param sdgs which indicators to compute: any of "population", "gdp",
 #'   "poverty", "health", "water", "land", or "all" (default). 
 #'   Run `available_sdgs()` to list them.
-#' @param ssp SSP tag needed by the "expenditure" indicator to determine the 
-#'   "baseline" to compare with (or "base" if this project *is* the baseline)
 #' @param final_db_year last model year to consider. Takes last available
 #'   year in the db by default
 #' @param saveOutput save each indicator's individual output to disk (under
@@ -63,7 +61,7 @@
 #' @export
 generate_sdg_report <- function(
     prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
-    output_name = NULL, desired_scen = NULL, sdgs = "all", ssp = NULL, 
+    output_name = NULL, desired_scen = NULL, sdgs = "all", 
     final_db_year = 2100, saveOutput = TRUE, makeFigures = FALSE,
     base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
     conda_env = "/scratch/bc3lc/conda-env/dem-env-3",

@@ -12,7 +12,6 @@ generate_sdg_report(
   output_name = NULL,
   desired_scen = NULL,
   sdgs = "all",
-  ssp = NULL,
   final_db_year = 2100,
   saveOutput = TRUE,
   makeFigures = FALSE,
@@ -52,9 +51,6 @@ database in `db_name`. NULL uses every scenario present.}
 \item{sdgs}{which indicators to compute: any of "population", "gdp",
 "poverty", "health", "water", "land", or "all" (default). 
 Run `available_sdgs()` to list them.}
-
-\item{ssp}{SSP tag needed by the "expenditure" indicator to determine the 
-"baseline" to compare with (or "base" if this project *is* the baseline)}
 
 \item{final_db_year}{last model year to consider. Takes last available
 year in the db by default}
