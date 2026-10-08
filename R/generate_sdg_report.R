@@ -10,7 +10,7 @@
 #' and combines everything before any diffing, so no separate gather step
 #' is needed. Lets you pick which SDG indicators to compute (skipping
 #' expensive ones you don't need, SDG15's Demeter run especially), where
-#' your run directory/cluster lives, and optionally submits itself as a
+#' your run directory lives, and optionally submits itself as a
 #' SLURM job instead of running locally.
 #'
 #' @param prj an already-loaded rgcam project. If supplied, takes priority
@@ -37,16 +37,6 @@
 #'   Run `available_sdgs()` to list them.
 #' @param ssp SSP tag needed by the "expenditure" indicator to determine the 
 #'   "baseline" to compare with (or "base" if this project *is* the baseline)
-#' @param prj_base rgcam project holding the baseline (REF) scenario,
-#'   needed by the "expenditure" indicator. If not supplied and `base_scen`
-#'   is set, `generate_sdg_report()` looks for `base_scen` among the already-resolved
-#'   projects and uses that one automatically.
-#' @param show_diff if TRUE, return each indicator diffed against
-#'   `base_scen` (averaged over the model period, tagged by policy sector,
-#'   pivoted wide) instead of raw per-scenario values. CURRENTLY NOT SUPPORTED,
-#'   WORK IN PROGRESS.
-#' @param base_scen name of the baseline scenario to diff every other
-#'   scenario against. Required when `show_diff = TRUE`.
 #' @param final_db_year last model year to consider. Takes last available
 #'   year in the db by default
 #' @param saveOutput save each indicator's individual output to disk (under
@@ -59,14 +49,6 @@
 #'   or a different cluster.
 #' @param conda_env conda environment with Demeter installed, used by the
 #'   "land" indicator. Defaults to the BC3 cluster environment.
-#' @param cluster if TRUE, don't run locally - fill in the bundled sbatch
-#'   template with this call's arguments and submit it (fire-and-forget:
-#'   returns the SLURM job ID immediately, does not wait for it to finish).
-#'   Only the db_path+db_name or existing-prj_name-file input modes are
-#'   allowed (an in-memory `prj` can't be handed to a separate job).
-#' @param sbatch_args named list overriding specific `#SBATCH` directives
-#'   in the bundled template (e.g. `list(time = "48:00:00")`) without
-#'   editing the template file itself
 #' @param run_gcamreport also produce the standard gcamreport output from
 #'   the same project (requires the `gcamreport` package, `GCAM_version`,
 #'   and a single database/project - not combinable with a vector `db_name`)
@@ -81,12 +63,10 @@
 #' @export
 generate_sdg_report <- function(
     prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
-    output_name = NULL, desired_scen = NULL, sdgs = "all",
-    ssp = NULL, prj_base = NULL, show_diff = FALSE, base_scen = NULL,
+    output_name = NULL, desired_scen = NULL, sdgs = "all", ssp = NULL, 
     final_db_year = 2100, saveOutput = TRUE, makeFigures = FALSE,
     base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
     conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
-    cluster = FALSE, sbatch_args = list(),
     run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
   
   all_sdgs <- c("population", "gdp", "expenditure", "poverty", "health", "water", "land")
@@ -97,27 +77,8 @@ generate_sdg_report <- function(
     stop("Unknown sdgs: ", paste(unknown_sdgs, collapse = ", "),
          ". Valid options are: ", paste(all_sdgs, collapse = ", "), ', or "all".')
   }
-  if (show_diff && is.null(base_scen)) {
-    stop("show_diff = TRUE requires base_scen (the name of the baseline scenario to diff against).")
-  }
-  
-  # ---- cluster submission: build + submit the sbatch job, then return ----        # TODO check & test
-  if (cluster) {
-    if (!is.null(prj)) {
-      stop("cluster = TRUE can't be combined with an in-memory prj object - ",
-           "use db_path/db_name or an existing prj_name file instead (a live ",
-           "R object can't be handed to a separate SLURM job).")
-    }
-    return(.submit_gcamsdg_cluster_job(
-      prj_name = prj_name, db_path = db_path, db_name = db_name,
-      desired_scen = desired_scen, sdgs = sdgs, ssp = ssp,
-      show_diff = show_diff, base_scen = base_scen,
-      final_db_year = final_db_year, saveOutput = saveOutput, makeFigures = makeFigures,
-      base_path = base_path, conda_env = conda_env, sbatch_args = sbatch_args,
-      run_gcamreport = run_gcamreport, GCAM_version = GCAM_version, gcamreport_args = gcamreport_args
-    ))
-  }
-  
+
+
   # ---- check project entries ---- # TODO try again that the workflow works, also for a list of projects
   if (run_gcamreport && is.null(prj_name) && (length(db_name) > 1 || length(prj_name) > 1)) {
     stop("`run_gcamreport = TRUE` does not support multiple inputs. Please",
@@ -264,48 +225,6 @@ generate_sdg_report <- function(
   available_years <<- c(1990,years_in_prj[years_in_prj >= 2005 & years_in_prj <= final_available_year])
 
   
-  # ---- auto-detect prj_base base_scen, if not supplied ----
-  if (show_diff) {
-    scens_list <- rgcam::listScenarios(prj) 
-    
-    # if only one scenario availabe, set show_diff to FALSE and warn the user
-    if (length(scens_list) == 1) {       
-      warning(
-        sprintf(
-          "Only one scenarios detected [%s]. `show_diff` set to FALSE. Provide more than one scenario to activate this option.",
-          scens_list
-        ),
-        call. = FALSE
-      )
-      
-      
-    # search for scenarios containing "base" or "ref" in their names
-    # if multiple matches are found, raise a warning and default to the first one
-    } else if (!base_scen %in% scens_list) {
-      base_scen <- grep("base|ref", scens_list, ignore.case = TRUE, value = TRUE)
-      if (length(base_scen) > 1) {
-        warning(
-          sprintf(
-            "Multiple baseline scenarios detected for the `show_diff` tag. Available options: [%s]. Defaulting to '%s'. To choose a different baseline, specify it via the `show_diff` variable.",
-            paste(base_scen, collapse = ", "),
-            base_scen[1]
-          ),
-          call. = FALSE
-        )
-      }
-      base_scen <- base_scen[1]
-    }
-    
-    # if none of the available scenarios has the "ref" or "base" tag in 
-    # their names, pick the first available scenarios
-    if (length(scens_list) > 1 && is.null(base_scen)) {
-      base_scen <- scens_list[1]
-    }
-    
-    prj_base <- rgcam::dropScenarios(prj, base_scen, invert = TRUE)
-  }
-  
-
   
   # ---- compute the requested indicators, across every loaded project ----
   if ("population" %in% sdgs) {
@@ -349,14 +268,9 @@ generate_sdg_report <- function(
   result_gathered <- .gather_sdgs(result)
   
   
-  # # ---- optional diff-vs-baseline (replaces the old run_comparison()) ----
-  # if (show_diff) {
-  #   result <- .diff_vs_baseline(result, base_scen, final_db_year)
-  # }
-  
+
   return(invisible(result_gathered))
   
-  # TODO check the showdiff, cluster, figures, and do more testing
 }
 
 
