@@ -4,10 +4,10 @@
 \alias{get_sdg6_water_scarcity}
 \title{get_sdg6_water_scarcity}
 \usage{
-get_sdg6_water_scarcity(prj, output_name, saveOutput = T)
+get_sdg6_water_scarcity(prj_f, output_name, saveOutput = T)
 }
 \arguments{
-\item{prj}{uploaded project file}
+\item{prj_f}{uploaded project file}
 
 \item{output_name}{output file name, used to tag the saved output file in 
 the 'output' directory.}

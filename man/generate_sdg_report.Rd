@@ -15,7 +15,6 @@ generate_sdg_report(
   final_db_year = 2100,
   saveOutput = TRUE,
   makeFigures = FALSE,
-  base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
   conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
   run_gcamreport = FALSE,
   GCAM_version = NULL,
@@ -34,7 +33,7 @@ save newly extracted project(s) under (when they are). Recycled
 against `db_name` if shorter.}
 
 \item{db_path}{path to the folder containing the GCAM `.basex`
-database(s) (defaults to `<base_path>/output` if NULL and `db_name`
+database(s) (defaults to `<current_dir>/output` if NULL and `db_name`
 is supplied)}
 
 \item{db_name}{name(s) of the GCAM database(s) to extract from. A
@@ -61,10 +60,6 @@ year in the db by default}
 \item{makeFigures}{generate and save a basic figure for each computed
 indicator (a scenario-colored time series, or a bar chart for
 indicators without a year dimension) under `output/figures/`. Defaults to FALSE}
-
-\item{base_path}{run directory containing `output/`/`prj_files/`.
-Defaults to the BC3 "DIPC" cluster path; pass your own for a local run
-or a different cluster.}
 
 \item{conda_env}{conda environment with Demeter installed, used by the
 "land" indicator. Defaults to the BC3 cluster environment.}

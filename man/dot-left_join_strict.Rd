@@ -10,8 +10,7 @@
   by = NULL,
   by_message = by,
   mapping = "",
-  ignore = if (exists("ignore.global", envir = .myGlobals)) .myGlobals$ignore.global else
-    NULL,
+  ignore = NULL,
   ...
 )
 }
@@ -26,7 +25,7 @@
 
 \item{mapping}{Optional. Mapping name to be displayed in case of ERROR.}
 
-\item{ignore}{Optional. Policy names introduced by the user to ignore during gcamreport processing of physical quantities, since otherwise they will be flagged as names missing from mapping files and cause an error. Note: Currently having one of the specified name patterns in any column of the query results, such as sector, subsector, input, etc. will cause the error to be disregarded. Same behavior than adding the policy names to the corresponding mappings indicating `NoReported`.}
+\item{ignore}{Optional. Policy names introduced by the user to ignore during processing of physical quantities, since otherwise they will be flagged as names missing from mapping files and cause an error. Note: Currently having one of the specified name patterns in any column of the query results, such as sector, subsector, input, etc. will cause the error to be disregarded. Same behavior than adding the policy names to the corresponding mappings indicating `NoReported`.}
 
 \item{...}{Additional arguments passed to `dplyr::left_join()`.}
 }

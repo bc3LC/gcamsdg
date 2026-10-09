@@ -4,10 +4,10 @@
 \alias{get_sdg0_pop}
 \title{get_sdg0_pop}
 \usage{
-get_sdg0_pop(prj, output_name, saveOutput = T)
+get_sdg0_pop(prj_f, output_name, saveOutput = T)
 }
 \arguments{
-\item{prj}{uploaded project file}
+\item{prj_f}{uploaded project file}
 
 \item{output_name}{output file name, used to tag the saved output file in 
 the 'output' directory.}

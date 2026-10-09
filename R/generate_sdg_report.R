@@ -22,7 +22,7 @@
 #'   save newly extracted project(s) under (when they are). Recycled
 #'   against `db_name` if shorter.
 #' @param db_path path to the folder containing the GCAM `.basex`
-#'   database(s) (defaults to `<base_path>/output` if NULL and `db_name`
+#'   database(s) (defaults to `<current_dir>/output` if NULL and `db_name`
 #'   is supplied)
 #' @param db_name name(s) of the GCAM database(s) to extract from. A
 #'   character vector processes each database separately and combines the
@@ -42,9 +42,6 @@
 #' @param makeFigures generate and save a basic figure for each computed
 #'   indicator (a scenario-colored time series, or a bar chart for
 #'   indicators without a year dimension) under `output/figures/`. Defaults to FALSE
-#' @param base_path run directory containing `output/`/`prj_files/`.
-#'   Defaults to the BC3 "DIPC" cluster path; pass your own for a local run
-#'   or a different cluster.
 #' @param conda_env conda environment with Demeter installed, used by the
 #'   "land" indicator. Defaults to the BC3 cluster environment.
 #' @param run_gcamreport also produce the standard gcamreport output from
@@ -63,7 +60,6 @@ generate_sdg_report <- function(
     prj = NULL, prj_name = NULL, db_path = NULL, db_name = NULL,
     output_name = NULL, desired_scen = NULL, sdgs = "all", 
     final_db_year = 2100, saveOutput = TRUE, makeFigures = FALSE,
-    base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
     conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
     run_gcamreport = FALSE, GCAM_version = NULL, gcamreport_args = list()) {
   
@@ -95,7 +91,7 @@ generate_sdg_report <- function(
   }
   
 
-  if (is.null(db_path) && !is.null(db_name) && !endsWith(db_path, "output")) db_path <- file.path(base_path, "output")
+  if (is.null(db_path) && !is.null(db_name) && !endsWith(db_path, "output")) db_path <- file.path(getwd(), "output")
 
   if (is.null(prj_name)) prj_name <- prj_name <- db_name
   if (!endsWith(prj_name, ".dat")) prj_name <- paste0(prj_name, ".dat")

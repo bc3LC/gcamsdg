@@ -4,10 +4,10 @@
 \alias{get_sdg1_gdp}
 \title{get_sdg1_gdp}
 \usage{
-get_sdg1_gdp(prj, output_name, saveOutput = T, makeFigures = F)
+get_sdg1_gdp(prj_f, output_name, saveOutput = T, makeFigures = F)
 }
 \arguments{
-\item{prj}{uploaded project file}
+\item{prj_f}{uploaded project file}
 
 \item{output_name}{output file name, used to tag the saved output file in 
 the 'output' directory.}
