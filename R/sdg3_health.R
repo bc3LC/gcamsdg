@@ -195,9 +195,9 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T){
     mort.pm25 <- rbind(
       mort.pm25_reg,
       mort.pm25_reg %>% 
-        dplyr::group_by(scenario, pollutant, Units, year) %>% 
+        dplyr::group_by(scenario, year) %>% 
         dplyr::summarise(mort = sum(mort),
-                         region = 'World') %>% 
+                         GCAM_region = 'World') %>% 
         dplyr::ungroup()
     )
     
@@ -299,9 +299,9 @@ get_sdg3_health <- function(prj_f, output_name, gcam_eur = F, saveOutput = T){
     mort.o3 <- rbind(
       mort.o3_reg,
       mort.o3_reg %>% 
-        dplyr::group_by(scenario, pollutant, Units, year) %>% 
+        dplyr::group_by(scenario,  year) %>% 
         dplyr::summarise(mort = sum(mort),
-                         region = 'World') %>% 
+                         GCAM_region = 'World') %>% 
         dplyr::ungroup()
     )
     

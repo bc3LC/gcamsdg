@@ -12,17 +12,11 @@ generate_sdg_report(
   output_name = NULL,
   desired_scen = NULL,
   sdgs = "all",
-  ssp = NULL,
-  prj_base = NULL,
-  show_diff = FALSE,
-  base_scen = NULL,
   final_db_year = 2100,
   saveOutput = TRUE,
   makeFigures = FALSE,
   base_path = "/scratch/bc3lc/GCAM_v7p1_plus",
   conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
-  cluster = FALSE,
-  sbatch_args = list(),
   run_gcamreport = FALSE,
   GCAM_version = NULL,
   gcamreport_args = list()
@@ -58,22 +52,6 @@ database in `db_name`. NULL uses every scenario present.}
 "poverty", "health", "water", "land", or "all" (default). 
 Run `available_sdgs()` to list them.}
 
-\item{ssp}{SSP tag needed by the "expenditure" indicator to determine the 
-"baseline" to compare with (or "base" if this project *is* the baseline)}
-
-\item{prj_base}{rgcam project holding the baseline (REF) scenario,
-needed by the "expenditure" indicator. If not supplied and `base_scen`
-is set, `generate_sdg_report()` looks for `base_scen` among the already-resolved
-projects and uses that one automatically.}
-
-\item{show_diff}{if TRUE, return each indicator diffed against
-`base_scen` (averaged over the model period, tagged by policy sector,
-pivoted wide) instead of raw per-scenario values. CURRENTLY NOT SUPPORTED,
-WORK IN PROGRESS.}
-
-\item{base_scen}{name of the baseline scenario to diff every other
-scenario against. Required when `show_diff = TRUE`.}
-
 \item{final_db_year}{last model year to consider. Takes last available
 year in the db by default}
 
@@ -90,16 +68,6 @@ or a different cluster.}
 
 \item{conda_env}{conda environment with Demeter installed, used by the
 "land" indicator. Defaults to the BC3 cluster environment.}
-
-\item{cluster}{if TRUE, don't run locally - fill in the bundled sbatch
-template with this call's arguments and submit it (fire-and-forget:
-returns the SLURM job ID immediately, does not wait for it to finish).
-Only the db_path+db_name or existing-prj_name-file input modes are
-allowed (an in-memory `prj` can't be handed to a separate job).}
-
-\item{sbatch_args}{named list overriding specific `#SBATCH` directives
-in the bundled template (e.g. `list(time = "48:00:00")`) without
-editing the template file itself}
 
 \item{run_gcamreport}{also produce the standard gcamreport output from
 the same project (requires the `gcamreport` package, `GCAM_version`,
@@ -128,6 +96,6 @@ scenario is its own separate GCAM database - `generate_sdg_report()` loops inter
 and combines everything before any diffing, so no separate gather step
 is needed. Lets you pick which SDG indicators to compute (skipping
 expensive ones you don't need, SDG15's Demeter run especially), where
-your run directory/cluster lives, and optionally submits itself as a
+your run directory lives, and optionally submits itself as a
 SLURM job instead of running locally.
 }

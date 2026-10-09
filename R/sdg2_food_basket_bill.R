@@ -2,13 +2,13 @@
 #'
 #' Compute SDG 2 (Zero Hunger) as the per-capita food basket bill, expressed
 #' as a percentage of GDP, weighted globally by population.
-#' @param prj uploaded project file
+#' @param prj_f uploaded project file
 #' @param output_name output file name, used to tag the saved output file in 
 #' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @return data frame with the global food basket bill (% GDP) by scenario and year
 #' @export
-get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
+get_sdg2_food_basket_bill <- function(prj_f, output_name, saveOutput = T){
 
   print('computing sdg2 - food basket bill...')
 
@@ -20,17 +20,18 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
   food_subsector <- get('food_subsector', envir = asNamespace("gcamsdg"))
 
   food_basket_bill_regional <- rbind(
-    rgcam::getQuery(prj, "food consumption by type (specific)"),
-    rgcam::getQuery(prj, "food consumption by type (specific) v2")) %>%
+    rgcam::getQuery(prj_f, "food consumption by type (specific)"),
+    rgcam::getQuery(prj_f, "food consumption by type (specific) v2")) %>%
     dplyr::distinct() %>% 
     dplyr::group_by(Units, region, scenario, technology, year) %>%
     dplyr::summarise(value = sum(value)) %>%
     dplyr::ungroup() %>%
     dplyr::left_join(food_subsector %>%
                        dplyr::rename('technology' = 'subsector'),
-                     relationship = "many-to-many") %>%
+                     relationship = "many-to-many",
+                     by = 'technology') %>%
     # Pcal to kcal/capita/day
-    dplyr::left_join(rgcam::getQuery(prj, "population by region") %>%
+    dplyr::left_join(rgcam::getQuery(prj_f, "population by region") %>%
                        dplyr::mutate(value = value * 1000) %>% # Convert from thous ppl to total ppl
                        dplyr::select(-Units) %>%
                        dplyr::rename(population = value),
@@ -45,12 +46,12 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
     dplyr::filter(year %in% available_years) %>%
     # compute the expenditure by supplysector
     dplyr::left_join(
-      rgcam::getQuery(prj, "food demand prices v2") %>% 
+      rgcam::getQuery(prj_f, "food demand prices v2") %>% 
         dplyr::mutate(value = value / 0.923287) %>% 
         dplyr::mutate(Units = "2005$/Mcal/day") %>%
         dplyr::filter(year %in% available_years) %>% 
         # add food_weights to estimate Staples & NonStaples price
-       left_join_strict(.get_food_weights(prj) %>%
+       left_join_strict(.get_food_weights(prj_f) %>%
                           tidyr::complete(tidyr::nesting(scenario, region, supplysector, supplysector_disaggregated),
                                           year = unique(year),
                                           fill = list(weight = 0)) %>%
@@ -73,7 +74,7 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
     dplyr::ungroup()
 
   # report food basket expenditure as % of the GDP
-  GDP <- get_sdg1_gdp(prj, output_name) %>%
+  GDP <- get_sdg1_gdp(prj_f, output_name) %>%
     dplyr::rename(GDP = value) %>%
     # take care of units
     dplyr::mutate(GDP = GDP * 1e-6) %>% # million 1990$ to 1990$
@@ -94,7 +95,7 @@ get_sdg2_food_basket_bill <- function(prj, output_name, saveOutput = T){
 
   # compute GLOBAL food basket expenditure
   # consider the regional food basket bill with respect the GDP and weight it by the regional population
-  pop_weights <- rgcam::getQuery(prj, "population by region") %>%
+  pop_weights <- rgcam::getQuery(prj_f, "population by region") %>%
     dplyr::select(-Units) %>%
     dplyr::rename(population = value) %>%
     dplyr::group_by(year, scenario) %>%
