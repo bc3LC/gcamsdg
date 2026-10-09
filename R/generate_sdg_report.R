@@ -109,7 +109,7 @@ generate_sdg_report <- function(
   # (output_name.dat) retaining only the specified target scenarios.
   if (length(prj_name) > 1) {
     if (is.null(desired_scen) || desired_scen == 'All' || desired_scen == 'all') {
-      prj <<- rgcam::mergeProjects(paste0(output_name, '.dat'), prjlist = prj_name)
+      prj <- rgcam::mergeProjects(paste0(output_name, '.dat'), prjlist = prj_name)
     } else {
       for (pn in prj_name) {
         prj_tmp <- rgcam::loadProject(pn)
@@ -122,11 +122,10 @@ generate_sdg_report <- function(
         }
       }
       rgcam::saveProject(prj, paste0(output_name, '.dat'))
-      prj <<- prj
     }
     prj_name <- paste0(output_name, '.dat')
   }
-  
+
   
   # define the entries
   max_length <- max(length(prj_name), length(db_name), length(db_path), 1)
@@ -172,23 +171,22 @@ generate_sdg_report <- function(
               )
             )
     result$gcamreport <- report
+    prj <- prj
   }
   
   # ---- create/modify project to estimate the remaining SDGs ----
-  prj <<- prj
-  
   # if prj is not already loaded, check if it already exists
   if (is.null(prj)) {
     # load project
     all_prj_names <- sapply(entries, function(x) x$prj_name)
-    valid_paths <- ifelse(!is.null(all_prj_names), all_prj_names[file.exists(all_prj_names)], NULL)
-    if (length(valid_paths) > 0) {
-      prj_list <- lapply(valid_paths, rgcam::loadProject)
-      
+    prj_list <- ifelse(!is.null(all_prj_names), all_prj_names[file.exists(all_prj_names)], NULL)
+    if (length(prj_list) > 0) {
+
       if (length(prj_list) == 1) {
-        prj <- prj_list[[1]]
+        prj <- rgcam::loadProject(prj_list)
       } else if (length(prj_list) > 1) {
-        prj <- do.call(rgcam::mergeProjects, prj_list)
+        loaded_projects <- lapply(prj_list, rgcam::loadProject)
+        prj <- do.call(rgcam::mergeProjects, loaded_projects)
       } else {
         stop("None of the specified project files were found or loaded succesfully")
       }
@@ -206,8 +204,7 @@ generate_sdg_report <- function(
                  include_nonco2_query = "health" %in% sdgs)
     }
   }
-  prj <<- prj
-  
+
   
   # check final db year
   final_available_year <- max(

@@ -3,13 +3,13 @@
 #' Compute SDG 6 (Clean Water and Sanitation) as the physical water scarcity
 #' index (withdrawals over renewable water supply) by basin, weighted by the
 #' 2015 baseline withdrawal/supply volume.
-#' @param prj uploaded project file
+#' @param prj_f uploaded project file
 #' @param output_name output file name, used to tag the saved output file in 
 #' the 'output' directory.
 #' @param saveOutput save the produced output
 #' @return data frame with the water scarcity index by scenario, resource and year
 #' @export
-get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T){
+get_sdg6_water_scarcity <- function(prj_f, output_name, saveOutput = T){
 
   print('GCAMSDG info: computing sdg6 - water scarcity ...')
 
@@ -18,10 +18,10 @@ get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T){
   if (!dir.exists("output/SDG6-Water/figures")) dir.create("output/SDG6-Water/figures", recursive = T)
 
   # Get Water Supply Data
-  water_supply = rgcam::getQuery(prj, "Basin level available runoff") %>%
+  water_supply = rgcam::getQuery(prj_f, "Basin level available runoff") %>%
     dplyr::filter(year %in% available_years) %>%
     dplyr::bind_rows(
-        rgcam::getQuery(prj, "resource supply curves") %>%
+        rgcam::getQuery(prj_f, "resource supply curves") %>%
           dplyr::filter(stringr::str_detect(subresource, "groundwater")) %>%
           dplyr::mutate(subresource = "groundwater") %>%
           dplyr::group_by(scenario, year, resource, subresource, Units, region) %>%
@@ -31,11 +31,11 @@ get_sdg6_water_scarcity <- function(prj, output_name, saveOutput = T){
     dplyr::rename(value_sup = value)
 
   # Get Water Withdrawal Data
-  water_withdrawal = rgcam::getQuery(prj, "Water Withdrawals by Basin (Runoff)") %>%
+  water_withdrawal = rgcam::getQuery(prj_f, "Water Withdrawals by Basin (Runoff)") %>%
     dplyr::rename(basin = "runoff water") %>%
     dplyr::filter(year %in% available_years) %>%
     dplyr::bind_rows(
-      rgcam::getQuery(prj, "Water Withdrawals by Basin (Groundwater)") %>%
+      rgcam::getQuery(prj_f, "Water Withdrawals by Basin (Groundwater)") %>%
         dplyr::filter(stringr::str_detect(subresource, "groundwater")) %>%
         dplyr::mutate(subresource = "groundwater") %>%
         dplyr::group_by(scenario, year, groundwater, subresource, Units, region) %>%
