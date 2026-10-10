@@ -1,0 +1,805 @@
+ECOREGION_CODE,ECO_NAME,Habitat type
+AA0101,Admiralty Islands lowland rain forests,island
+PA1201,Aegean and Western Turkey sclerophyllous and mixed forests,non-forest
+PA1301,Afghan Mountains semi-desert,non-forest
+AT0801,Al Hajar montane woodlands,non-forest
+PA0801,Alai-Western Tian Shan steppe,non-forest
+PA1302,Alashan Plateau semi-desert,non-forest
+NA0601,Alaska Peninsula montane taiga,forest
+NA1101,Alaska-St. Elias Range tundra,forest
+AT1201,Albany thickets,non-forest
+NA0501,Alberta Mountain forests,forest
+NA0502,Alberta-British Columbia foothills forests,forest
+AT0101,Albertine Rift montane forests,forest
+NA1102,Aleutian Islands tundra,island
+NA0401,Allegheny Highlands forests,forest
+PA0501,Alps conifer and mixed forests,forest
+PA1001,Altai alpine meadow and tundra,non-forest
+PA0502,Altai montane forest and forest steppe,forest
+PA0802,Altai steppe and semi-desert,non-forest
+NT1401,Alvarado mangroves,forest
+NT1402,Amapa mangroves,island
+AT0802,Amsterdam and Saint-Paul Islands temperate grasslands,island
+PA0901,Amur meadow steppe,non-forest
+PA1202,Anatolian conifer and deciduous mixed forests,non-forest
+IM0101,Andaman Islands rain forests,island
+AT0701,Angolan Miombo woodlands,non-forest
+AT1001,Angolan montane forest-grassland mosaic,non-forest
+AT0702,Angolan Mopane woodlands,non-forest
+AT1002,Angolan scarp savanna and woodlands,non-forest
+AA1101,Antipodes Subantarctic Islands tundra,island
+NA0402,Appalachian mixed mesophytic forests,forest
+NA0403,Appalachian-Blue Ridge forests,forest
+PA0401,Appenine deciduous montane forests,forest
+NT0201,Apure-Villavicencio dry forests,forest
+PA1303,Arabian Desert and East Sahero-Arabian xeric shrublands,non-forest
+AT1302,Arabian Peninsula coastal fog desert,non-forest
+NT0101,Araucaria moist forests,forest
+NT1301,Araya and Paria xeric scrub,non-forest
+NA1103,Arctic coastal tundra,forest
+PA1101,Arctic desert,island
+NA1104,Arctic foothills tundra,forest
+NT0801,Argentine Espinal,non-forest
+NT0802,Argentine Monte,non-forest
+NA0503,Arizona Mountains forests,forest
+AA0701,Arnhem Land tropical savanna,non-forest
+AT0703,Ascension scrub and grasslands,island
+NT1303,Atacama desert,non-forest
+NT0102,Atlantic Coast restingas,forest
+PA1304,Atlantic coastal desert,non-forest
+NA0504,Atlantic coastal pine barrens,forest
+NT0202,Atlantic dry forests,forest
+AT0102,Atlantic Equatorial coastal forests,forest
+PA0402,Atlantic mixed forests,forest
+AA1001,Australian Alps montane grasslands,non-forest
+PA1305,Azerbaijan shrub desert and steppe,non-forest
+PA0403,Azores temperate mixed forests,island
+PA1306,Badghyz and Karabil semi-desert,non-forest
+NA1105,Baffin coastal tundra,forest
+NT1403,Bahamian pine mosaic,forest
+NT0301,Bahamian-Antillean mangroves,island
+NT0103,Bahia coastal forests,forest
+NT0104,Bahia interior forests,forest
+NT1404,Bahia mangroves,forest
+NA1301,Baja California desert,non-forest
+NT0204,BajÍo dry forest,forest
+PA0404,Balkan mixed forests,forest
+NT0205,Balsas dry forests,forest
+PA0405,Baltic mixed forests,forest
+PA1307,Baluchistan xeric woodlands,non-forest
+AA0102,Banda Sea Islands moist deciduous forests,island
+NT1405,Belizean Coast mangroves,forest
+NT1406,Belizean Reef mangroves,forest
+NT0302,Belizian pine forests,forest
+NT0702,Beni savanna,non-forest
+PA1102,Bering tundra,forest
+NA1106,Beringia lowland tundra,forest
+NA1107,Beringia upland tundra,forest
+AA0103,Biak-Numfoor rain forests,island
+NA0505,Blue Mountains forests,forest
+NT1407,Bocas del Toro-San Bastimentos Island-San Blas mangroves,forest
+PA0902,Bohai Sea saline meadow,non-forest
+NT0206,Bolivian montane dry forests,forest
+NT0105,Bolivian Yungas,forest
+IM0102,Borneo lowland rain forests,island
+IM0103,Borneo montane rain forests,island
+IM0104,Borneo peat swamp forests,island
+IM0105,Brahmaputra Valley semi-evergreen forests,forest
+AA0702,Brigalow tropical savanna,non-forest
+NA0506,British Columbia mainland coastal forests,forest
+NA1108,Brooks-British Range tundra,forest
+AA0104,Buru rain forests,island
+NT1304,Caatinga,non-forest
+NT0106,Caatinga Enclaves moist forests,forest
+PA0503,Caledon conifer forests,island
+NA0801,California Central Valley grasslands,non-forest
+NA1201,California coastal sage and chaparral,non-forest
+NA1202,California interior chaparral and woodlands,non-forest
+NA1203,California montane chaparral and woodlands,non-forest
+AT0103,Cameroonian Highlands forests,forest
+NT0703,Campos Rupestres montane savanna,non-forest
+NA0802,Canadian Aspen forests and parklands,non-forest
+PA1203,Canary Islands dry woodlands and forests,island
+PA0406,Cantabrian mixed forests,forest
+AA0801,Cantebury-Otago tussock grasslands,island
+AT0201,Cape Verde Islands dry forests,island
+AA0703,Cape York Peninsula tropical savanna,non-forest
+NT0107,Caqueta moist forests,forest
+IM0106,Cardamom Mountains rain forests,forest
+AA1301,Carnarvon xeric shrublands,non-forest
+PA0504,Carpathian montane forests,forest
+AA0704,Carpentaria tropical savanna,non-forest
+NA0507,Cascade Mountains leeward forests,forest
+PA0407,Caspian Hyrcanian mixed forests,forest
+PA1308,Caspian lowland desert,non-forest
+NT0108,Catatumbo moist forests,forest
+NT0207,Cauca Valley dry forests,forest
+NT0109,Cauca Valley montane forests,forest
+PA0408,Caucasus mixed forests,forest
+NT1305,Cayos Miskitos-San Andrés and Providencia moist forest,island
+PA0409,Celtic broadleaf forests,island
+PA1309,Central Afghan Mountains xeric woodlands,non-forest
+AT1401,Central African mangroves,forest
+NT0111,Central American Atlantic moist forests,forest
+NT0209,Central American dry forests,forest
+NT0112,Central American montane forests,forest
+NT0303,Central American pine-oak forests,forest
+PA0410,Central Anatolian deciduous forests,forest
+PA0803,Central Anatolian steppe and woodlands,non-forest
+NA0508,Central and Southern Cascades forests,forest
+NA0803,Central and Southern mixed grasslands,non-forest
+NT1001,Central Andean dry puna,non-forest
+NT1002,Central Andean puna,non-forest
+NT1003,Central Andean wet puna,non-forest
+PA1310,Central Asian northern desert,non-forest
+PA1311,Central Asian riparian woodlands,non-forest
+PA1312,Central Asian southern desert,non-forest
+NA0509,Central British Columbia Mountain forests,forest
+NA0602,Central Canadian Shield forests,forest
+PA0411,Central China loess plateau mixed forests,forest
+AT0104,Central Congolian lowland forests,forest
+IM0201,Central Deccan Plateau dry deciduous forests,forest
+PA0412,Central European mixed forests,forest
+NA0804,Central forest-grasslands transition,non-forest
+IM0202,Central Indochina dry forests,forest
+PA0413,Central Korean deciduous forests,forest
+NA1302,Central Mexican matorral,non-forest
+NA0510,Central Pacific coastal forests,forest
+PA1313,Central Persian desert basins,non-forest
+AA0105,Central Polynesian tropical moist forests,island
+AA1002,Central Range sub-alpine grasslands,island
+AA1302,Central Ranges xeric scrub,non-forest
+NA0805,Central tall grasslands,non-forest
+PA1002,Central Tibetan Plateau alpine steppe,non-forest
+NA0404,Central U.S. hardwood forests,forest
+AT0704,Central Zambezian Miombo woodlands,non-forest
+NT0704,Cerrado,non-forest
+NT0210,Chaco,non-forest
+PA0414,Changbai Mountains mixed forests,forest
+PA0415,Changjiang Plain evergreen forests,forest
+IM0107,Chao Phraya freshwater swamp forests,forest
+IM0108,Chao Phraya lowland moist deciduous forests,forest
+AA0401,Chatham Island temperate forests,island
+PA1103,Cherskii-Kolyma mountain tundra,forest
+IM0203,Chhota-Nagpur dry deciduous forests,forest
+NT0211,Chiapas Depression dry forests,forest
+NT0113,Chiapas montane forests,forest
+NA1303,Chihuahuan desert,non-forest
+NT1201,Chilean matorral,non-forest
+NT0114,Chimalapas montane forests,forest
+IM0109,Chin Hills-Arakan Yoma montane forests,forest
+NT0212,Chiquitano dry forests,forest
+NT0115,Chocó-Darién moist fores,forest
+IM0110,Christmas and Cocos Islands tropical forests,island
+PA1104,Chukchi Peninsula tundra,forest
+NT0705,Clipperton Island shrub and grasslands,island
+NT0116,Cocos Island moist forests,island
+NA1304,Colorado Plateau shrublands,non-forest
+NA0511,Colorado Rockies forests,forest
+AT0105,Comoros forests,island
+NA0603,Cook Inlet taiga,forest
+OC0103,Cook Islands tropical moist forests,island
+AA1201,Coolgardie woodlands,non-forest
+NA0604,Copper Plateau taiga,forest
+NT1004,Cordillera Central páram,non-forest
+NT1005,Cordillera de Merida páram,non-forest
+NT0117,Cordillera La Costa montane forests,forest
+NT0118,Cordillera Oriental montane forests,forest
+PA1204,Corsican montane broadleaf and mixed forests,island
+NT0119,Costa Rican seasonal moist forests,forest
+PA1205,Crete Mediterranean forests,island
+PA0416,Crimean Submediterranean forest complex,forest
+AT0106,Cross-Niger transition forests,forest
+AT0107,Cross-Sanaga-Bioko coastal forests,forest
+NT1306,Cuban cactus scrub,island
+NT0213,Cuban dry forests,island
+NT0120,Cuban moist forests,island
+NT0304,Cuban pine forests,island
+NT0902,Cuban wetlands,island
+PA1206,Cyprus Mediterranean forests,island
+PA0505,Da Hinggan-Dzhagdy Mountains conifer forests,forest
+PA0417,Daba Mountains evergreen forests,forest
+PA0804,Daurian forest steppe,non-forest
+NA1109,Davis Highlands tundra,forest
+IM1301,Deccan thorn scrub forests,non-forest
+PA0418,Dinaric Mountains mixed forests,forest
+AT1003,Drakensberg alti-montane grasslands and woodlands,non-forest
+AT1004,"Drakensberg montane grasslands, woodlands and forests",non-forest
+PA0506,East Afghan montane conifer forests,forest
+AT0901,East African halophytics,non-forest
+AT1402,East African mangroves,forest
+AT0108,East African montane forests,forest
+AT1005,East African montane moorlands,non-forest
+NA0405,East Central Texas forests,forest
+IM0204,East Deccan dry-evergreen forests,forest
+PA0419,East European forest steppe,forest
+AT1303,East Saharan montane xeric woodlands,non-forest
+PA0601,East Siberian taiga,forest
+AT0705,East Sudanian savanna,non-forest
+PA0420,Eastern Anatolian deciduous forests,forest
+PA0805,Eastern Anatolian montane steppe,non-forest
+AT0109,Eastern Arc forests,forest
+AA0802,Eastern Australia mulga shrublands,non-forest
+AA0402,Eastern Australian temperate forests,forest
+NA0605,Eastern Canadian forests,forest
+NA0606,Eastern Canadian Shield taiga,forest
+NA0512,Eastern Cascades forests,forest
+AT0110,Eastern Congolian swamp forests,forest
+NT0121,Eastern Cordillera real montane forests,forest
+NA0406,Eastern forest-boreal transition,forest
+PA1314,Eastern Gobi desert steppe,non-forest
+NA0407,Eastern Great Lakes lowland forests,forest
+AT0111,Eastern Guinean forests,forest
+IM0111,Eastern highlands moist deciduous forests,forest
+PA1003,Eastern Himalayan alpine shrub and meadows,non-forest
+IM0401,Eastern Himalayan broadleaf forests,forest
+IM0501,Eastern Himalayan subalpine conifer forests,forest
+IM0112,Eastern Java-Bali montane rain forests,island
+IM0113,Eastern Java-Bali rain forests,island
+PA1207,Eastern Mediterranean conifer-sclerophyllous-broadleaf forests,non-forest
+AT0706,Eastern Miombo woodlands,non-forest
+NT0122,Eastern Panamanian montane forests,forest
+AT1006,Eastern Zimbabwe montane forest-grassland mosaic,non-forest
+NT0214,Ecuadorian dry forests,island
+NA0806,Edwards Plateau savanna,non-forest
+AA0705,Einasleigh upland savanna,non-forest
+PA0507,Elburz Range forest steppe,forest
+PA0806,Emin Valley steppe,non-forest
+PA0421,English Lowlands beech forests,island
+NT0903,Enriquillo wetlands,island
+AT1304,Eritrean coastal desert,non-forest
+AA1202,Esperance mallee,non-forest
+AT0112,Ethiopian montane forests,forest
+AT1007,Ethiopian montane grasslands and woodlands,non-forest
+AT1008,Ethiopian montane moorlands,non-forest
+AT1305,Ethiopian xeric grasslands and shrublands,non-forest
+AT0902,Etosha Pan halophytics,non-forest
+PA0422,Euxine-Colchic broadleaf forests,forest
+NT0904,Everglades,non-forest
+AA1203,Eyre and York mallee,non-forest
+PA0807,Faroe Islands boreal grasslands,island
+OC0201,Fiji tropical dry forests,island
+OC0105,Fiji tropical moist forests,island
+AA0403,Fiordland temperate forests,island
+NA0807,Flint Hills tall grasslands,non-forest
+NA0513,Florida sand pine scrub,forest
+NA0514,Fraser Plateau and Basin complex,forest
+NT1307,Galápagos Islands scrubland mosai,island
+PA1004,Ghorat-Hazarajat alpine meadow,non-forest
+AA1303,Gibson desert,non-forest
+PA0808,Gissaro-Alai open woodlands,non-forest
+PA0101,Guizhou Plateau broadleaf and mixed forests,forest
+PA1315,Gobi Lakes Valley desert steppe,non-forest
+IM1401,Goadavari-Krishna mangroves,forest
+AT0113,Granitic Seychelles forests,island
+NA0515,Great Basin montane forests,forest
+NA1305,Great Basin shrub steppe,non-forest
+PA1316,Great Lakes Basin desert steppe,non-forest
+AA1304,Great Sandy-Tanami desert,non-forest
+AA1305,Great Victoria desert,non-forest
+IM0114,Greater Negros-Panay rain forests,island
+NT1308,Guajira-Barranquilla xeric scrub,non-forest
+NT0124,Guianan Highlands moist forests,forest
+NT0905,Guayaquil flooded grasslands,non-forest
+NT0125,Guianan moist forests,forest
+NT0182,Guianan piedmont and lowland moist forests,forest
+AT0707,Guinean forest-savanna mosaic,non-forest
+AT1403,Guinean mangroves,forest
+AT0114,Guinean montane forests,forest
+NA1306,Gulf of California xeric scrub,non-forest
+AT1306,Gulf of Oman desert and semi-desert,non-forest
+NA0408,Gulf of St. Lawrence lowland forests,forest
+NT0126,Gurupa varze�,forest
+NT0707,Guianan savanna,non-forest
+IM0169,Hainan Island monsoon rain forests,island
+AA0106,Halmahera rain forests,island
+OC0202,Hawaii tropical dry forests,island
+OC0701,Hawaii tropical high shrublands,island
+OC0702,Hawaii tropical low shrublands,island
+OC0106,Hawaii tropical moist forests,island
+PA0508,Helanshan montane conifer forests,forest
+PA0509,Hengduan Mountains subalpine conifer forests,forest
+NA1110,High Arctic tundra,island
+NT1010,High Monte,non-forest
+AT1009,Highveld grasslands,non-forest
+IM0115,Himalayan subtropical broadleaf forests,forest
+IM0301,Himalayan subtropical pine forests,forest
+PA1005,Hindu Kush alpine meadow,non-forest
+NT0215,Hispaniolan dry forests,island
+NT0127,Hispaniolan moist forests,island
+NT0305,Hispaniolan pine forests,island
+AT1307,Hobyo grasslands and shrublands,non-forest
+PA0423,Hokkaido deciduous forests,island
+PA0510,Hokkaido montane conifer forests,island
+PA0511,Honshu alpine conifer forests,island
+PA0424,Huang He Plain mixed forests,forest
+NT0708,Humid Chaco,non-forest
+NT0803,Humid Pampas,non-forest
+AA0107,Huon Peninsula montane rain forests,island
+PA1208,Iberian conifer forests,non-forest
+PA1209,Iberian sclerophyllous and semi-deciduous forests,non-forest
+PA0602,Iceland boreal birch forests and alpine tundra,island
+AT1308,Ile Europa and Bassas da India xeric scrub,island
+PA1210,Illyrian deciduous forests,non-forest
+IM1402,Indochina mangroves,forest
+IM1403,Indus River Delta-Arabian Sea mangroves,forest
+IM1302,Indus Valley desert,non-forest
+AT0903,Inner Niger Delta flooded savanna,non-forest
+NA0607,Interior Alaska-Yukon lowland taiga,forest
+NA1111,Interior Yukon-Alaska alpine tundra,forest
+NT0128,Iquitos varze�,forest
+IM0205,Irrawaddy dry forests,forest
+IM0116,Irrawaddy freshwater swamp forests,forest
+IM0117,Irrawaddy moist deciduous forests,forest
+NT0216,Islas Revillagigedo dry forests,island
+NT0129,Isthmian-Atlantic moist forests,forest
+NT0130,Isthmian-Pacific moist forests,forest
+PA1211,Italian sclerophyllous and semi-deciduous forests,non-forest
+AT0708,Itigi-Sumbu thicket,non-forest
+NT0217,Jalisco dry forests,forest
+NT0218,Jamaican dry forests,island
+NT0131,Jamaican moist forests,island
+AA0108,Japen rain forests,island
+NT0132,Japurá-Solimoes-Negro moist forest,forest
+AA1204,Jarrah-Karri forest and shrublands,non-forest
+IM0118,Jian Nan subtropical evergreen forests,forest
+AT1010,Jos Plateau forest-grassland mosaic,non-forest
+NT0401,Juan Fernández Islands temperate forest,island
+PA1317,Junggar Basin semi-desert,non-forest
+NT0133,Juruá-Purus moist forest,forest
+NA1112,Kalaallit Nunaat high arctic tundra,forest
+NA1113,Kalaallit Nunaat low arctic tundra,forest
+AT0709,Kalahari Acacia-Baikiaea woodlands,non-forest
+AT1309,Kalahari xeric savanna,non-forest
+PA1105,Kamchatka Mountain tundra and forest tundra,forest
+PA0603,Kamchatka-Kurile meadows and sparse forests,forest
+PA0604,Kamchatka-Kurile taiga,forest
+AT1310,Kaokoveld desert,non-forest
+PA1006,Karakoram-West Tibetan Plateau alpine steppe,non-forest
+IM0119,Kayah-Karen montane rain forests,forest
+PA0809,Kazakh forest steppe,non-forest
+PA1318,Kazakh semi-desert,non-forest
+PA0810,Kazakh steppe,non-forest
+PA0811,Kazakh upland,non-forest
+PA1007,Khangai Mountains alpine meadow,non-forest
+PA0512,Khangai Mountains conifer forests,forest
+IM0206,Khathiar-Gir dry deciduous forests,forest
+AA0706,Kimberly tropical savanna,non-forest
+IM1001,Kinabalu montane alpine meadows,island
+NA0516,Klamath-Siskiyou forests,forest
+AT0115,Knysna-Amatole montane forests,forest
+PA1106,Kola Peninsula tundra,forest
+PA1319,Kopet Dag semi-desert,non-forest
+PA1008,Kopet Dag woodlands and forest steppe,non-forest
+PA1009,Kuh Rud and Eastern Iran montane woodlands,non-forest
+AT0116,KwaZulu-Cape coastal forest mosaic,forest
+AA1205,Kwongan heathlands (Swan Coastal Plain Scrub and Woodlands),non-forest
+NT1309,La Costa xeric shrublands,non-forest
+AT0904,Lake Chad flooded savanna,non-forest
+NT0219,Lara-Falcón dry forest,forest
+NT0220,Leeward Islands dry forests,island
+NT0134,Leeward Islands moist forests,island
+AA0201,Lesser Sundas deciduous forests,island
+NT0709,Llanos,non-forest
+AA0109,Lord Howe Island subtropical forests,island
+AA0110,Louisiade Archipelago rain forests,island
+NA1114,Low Arctic tundra,forest
+IM0120,Lower Gangetic Plains moist deciduous forests,forest
+AT1202,Lowland fynbos and renosterveld,non-forest
+IM0121,Luang Prabang montane rain forests,forest
+IM0122,Luzon montane rain forests,island
+IM0123,Luzon rain forests,island
+IM0302,Luzon tropical pine forests,island
+AT0202,Madagascar dry deciduous forests,island
+AT1011,Madagascar ericoid thickets,island
+AT0117,Madagascar lowland forests,island
+AT1404,Madagascar mangroves,island
+AT1311,Madagascar spiny thickets,island
+AT0118,Madagascar subhumid forests,island
+AT1312,Madagascar succulent woodlands,island
+PA0425,Madeira evergreen forests,island
+NT0135,Madeira-Tapajós moist forest,forest
+NT0221,Magdalena Valley dry forests,forest
+NT0136,Magdalena Valley montane forests,forest
+NT0137,Magdalena-Urabá moist forest,forest
+NT0402,Magellanic subpolar forests,forest
+IM0124,Malabar Coast moist forests,forest
+IM0125,Maldives-Lakshadweep-Chagos Archipelago tropical moist forests,island
+PA0426,Manchurian mixed forests,forest
+AT0710,Mandara Plateau mosaic,non-forest
+AT0119,Maputaland coastal forest mosaic,forest
+AT1012,Maputaland-Pondoland bushland and thickets,non-forest
+NT0222,Maracaibo dry forests,forest
+NT0138,Marajó varze,forest
+NT0139,Maranhão Babaçu fores,forest
+NT0223,Marañón dry fores,forest
+OC0203,Marianas tropical dry forests,island
+OC0108,Marquesas tropical moist forests,island
+AT1313,Masai xeric grasslands and shrublands,non-forest
+AT0120,Mascarene forests,island
+NT0140,Mato Grosso seasonal forests,forest
+PA1212,Mediterranean acacia-argania dry woodlands and succulent thickets,non-forest
+PA0513,Mediterranean conifer and mixed forests,forest
+PA1213,Mediterranean dry woodlands and steppe,non-forest
+PA1010,Mediterranean High Atlas juniper steppe,non-forest
+PA1214,Mediterranean woodlands and forests,non-forest
+IM0126,Meghalaya subtropical forests,forest
+IM0127,Mentawai Islands rain forests,island
+NA1307,Meseta Central matorral,non-forest
+PA1320,Mesopotamian shrub desert,non-forest
+NA0608,Mid-Continental Canadian forests,forest
+NA1115,Middle Arctic tundra,island
+NA0517,Middle Atlantic coastal forests,forest
+PA0812,Middle East steppe,non-forest
+NA0609,Midwestern Canadian Shield forests,forest
+IM0128,Mindanao montane rain forests,island
+IM0129,Mindanao-Eastern Visayas rain forests,island
+IM0130,Mindoro rain forests,island
+NT0306,Miskito pine forests,forest
+NA0409,Mississippi lowland forests,forest
+AA0707,Mitchell grass downs,non-forest
+IM0131,Mizoram-Manipur-Kachin rain forests,forest
+NA1308,Mojave desert,non-forest
+PA0813,Mongolian-Manchurian grassland,non-forest
+NA0808,Montana Valley and Foothill grasslands,non-forest
+AT1203,Montane fynbos and renosterveld,non-forest
+NT0141,Monte Alegre varze�,forest
+NT1312,Motagua Valley thornscrub,non-forest
+AT0121,Mount Cameroon and Bioko montane forests,forest
+AA1206,Mount Lofty woodlands,non-forest
+AA1207,Murray-Darling woodlands and mallee,non-forest
+NA0610,Muskwa-Slave Lake forests,forest
+IM1404,Myanmar Coast mangroves,forest
+IM0132,Myanmar coastal rain forests,forest
+AT1314,Nama Karoo,non-forest
+AT1315,Namib desert,non-forest
+AT1316,Namibian savanna woodlands,non-forest
+IM0170,Nansei Islands subtropical evergreen forests,island
+NT0142,Napo moist forests,forest
+AA1208,Naracoorte woodlands,non-forest
+IM0207,Narmada Valley dry deciduous forests,forest
+NA0809,Nebraska Sand Hills mixed grasslands,non-forest
+NT0143,Negro-Branco moist forests,forest
+AA0404,Nelson Coast temperate forests,island
+PA0903,Nenjiang River grassland,non-forest
+AA0111,New Britain-New Ireland lowland rain forests,island
+AA0112,New Britain-New Ireland montane rain forests,island
+AA0202,New Caledonia dry forests,island
+AA0113,New Caledonia rain forests,island
+NA0410,New England-Acadian forests,forest
+AA1401,New Guinea mangroves,island
+NA0611,Newfoundland Highland forests,island
+IM0133,Nicobar Islands rain forests,island
+AT0122,Niger Delta swamp forests,forest
+AT0123,Nigerian lowland forests,forest
+PA0427,Nihonkai evergreen forests,island
+PA0428,Nihonkai montane deciduous forests,island
+PA0904,Nile Delta flooded savanna,non-forest
+AA0114,Norfolk Island subtropical forests,island
+PA0429,North Atlantic moist mixed forests,island
+NA0518,North Central Rockies forests,forest
+PA1321,North Saharan steppe and woodlands,non-forest
+PA1011,North Tibetan Plateau-Kunlun Mountains alpine desert,non-forest
+IM0134,North Western Ghats moist deciduous forests,forest
+IM0135,North Western Ghats montane rain forests,forest
+PA0430,Northeast China Plain deciduous forests,forest
+IM0303,Northeast India-Myanmar pine forests,forest
+PA1107,Northeast Siberian coastal tundra,forest
+PA0605,Northeast Siberian taiga,forest
+NT0144,Northeastern Brazil restingas,forest
+NA0411,Northeastern coastal forests,forest
+AT0124,Northeastern Congolian lowland forests,forest
+PA0514,Northeastern Himalayan subalpine conifer forests,forest
+PA1215,Northeastern Spain and Southern France Mediterranean forests,non-forest
+AT0711,Northern Acacia-Commiphora bushlands and thickets,non-forest
+PA0515,Northern Anatolian conifer and deciduous forests,forest
+NT1006,Northern Andean páram,non-forest
+IM0136,Northern Annamites rain forests,forest
+NA0519,Northern California coastal forests,forest
+NA0612,Northern Canadian Shield taiga,forest
+AT0712,Northern Congolian forest-savanna mosaic,non-forest
+NA0613,Northern Cordillera forests,forest
+IM0208,Northern dry deciduous forests,forest
+IM0137,Northern Indochina subtropical forests,forest
+IM0138,Northern Khorat Plateau moist deciduous forests,forest
+NA0810,Northern mixed grasslands,non-forest
+AA0115,Northern New Guinea lowland rain and freshwater swamp forests,island
+AA0116,Northern New Guinea montane rain forests,island
+NA0520,Northern Pacific coastal forests,forest
+NA0811,Northern short grasslands,non-forest
+NA0812,Northern tall grasslands,non-forest
+IM0139,Northern Thailand-Laos moist deciduous forests,forest
+NA0521,Northern transitional alpine forests,forest
+IM0140,Northern Triangle subtropical forests,forest
+IM0402,Northern Triangle temperate forests,forest
+IM0141,Northern Vietnam lowland rain forests,forest
+AT0125,Northern Zanzibar-Inhambane coastal forest mosaic,island
+AA0405,Northland temperate forests,island
+AA0406,Northland temperate kauri forests,island
+PA1216,Northwest Iberian montane forests,non-forest
+PA1108,Northwest Russian-Novaya Zemlya tundra,forest
+NA0614,Northwest Territories taiga,forest
+NT0145,Northwestern Andean montane forests,forest
+AT0126,Northwestern Congolian lowland forests,forest
+PA1012,Northwestern Himalayan alpine shrub and meadows,non-forest
+IM1303,Northwestern thorn scrub forests,non-forest
+PA1109,Novosibirsk Islands arctic desert,island
+PA0516,Nujiang Langcang Gorge alpine conifer and mixed forests,forest
+AA1306,Nullarbor Plains xeric shrublands,non-forest
+NT0146,Oaxacan montane forests,forest
+OC0109,Ogasawara subtropical moist forests,island
+NA1116,Ogilvie-MacKenzie alpine tundra,forest
+NA0522,Okanagan dry forests,forest
+PA0606,Okhotsk-Manchurian taiga,forest
+PA1013,Ordos Plateau steppe,non-forest
+NT0147,Orinoco Delta swamp forests,forest
+NT0906,Orinoco wetlands,non-forest
+IM0142,Orissa semi-evergreen forests,forest
+NA0412,Ozark Mountain forests,forest
+NA1117,Pacific Coastal Mountain icefields and tundra,forest
+OC0110,Palau tropical moist forests,island
+IM0143,Palawan rain forests,island
+NA0813,Palouse grasslands,non-forest
+PA1014,Pamir alpine desert and tundra,non-forest
+NT0224,Panamanian dry forests,forest
+PA0431,Pannonian mixed forests,forest
+NT0907,Pantanal,non-forest
+NT0148,Pantanos de Centla,forest
+NT1313,Paraguana xeric scrub,non-forest
+NT0149,Paramaribo swamp forests,forest
+NT0908,Paraná flooded savann,non-forest
+NT0150,Parana-Paraiba interior forests,forest
+PA1322,Paropamisus xeric woodlands,non-forest
+NT0805,Patagonian steppe,non-forest
+NT0225,Patía Valley dry forest,forest
+IM0144,Peninsular Malaysian montane rain forests,forest
+IM0145,Peninsular Malaysian peat swamp forests,forest
+IM0146,Peninsular Malaysian rain forests,forest
+NT0151,Pernambuco coastal forests,forest
+NT0152,Pernambuco interior forests,forest
+PA1323,Persian Gulf desert and semi-desert,non-forest
+NT0153,Peruvian Yungas,forest
+NT0154,Petén-Veracruz moist forest,forest
+AA1307,Pilbara shrublands,non-forest
+PA1217,Pindus Mountains mixed forests,non-forest
+NA0523,Piney Woods forests,forest
+PA0432,Po Basin mixed forests,forest
+PA0814,Pontic steppe,non-forest
+NT0226,Puerto Rican dry forests,island
+NT0155,Puerto Rican moist forests,island
+NA0524,Puget lowland forests,forest
+NT0156,Purus varze�,forest
+NT0157,Purus-Madeira moist forests,forest
+PA0433,Pyrenees conifer and mixed forests,forest
+PA1324,Qaidam Basin semi-desert,non-forest
+PA0517,Qilian Mountains conifer forests,forest
+PA1015,Qilian Mountains subalpine meadows,non-forest
+PA0434,Qin Ling Mountains deciduous forests,forest
+PA0518,Qionglai-Minshan conifer forests,forest
+NA0525,Queen Charlotte Islands,island
+AA0117,Queensland tropical rain forests,forest
+AA0407,Rakiura Island temperate forests,island
+IM0901,Rann of Kutch seasonal salt marsh,non-forest
+IM0147,Red River freshwater swamp forests,forest
+PA1333,Red Sea coastal desert,non-forest
+PA1325,Red Sea Nubo-Sindian tropical desert and semi-desert,non-forest
+PA1326,Registan-North Pakistan sandy desert,non-forest
+AA0408,Richmond temperate forests,island
+NT0158,Rio Negro campinarana,forest
+PA0435,Rodope montane mixed forests,forest
+AT1013,Rwenzori-Virunga montane moorlands,non-forest
+PA1327,Sahara desert,non-forest
+AT0905,Saharan flooded grasslands,non-forest
+PA0905,Saharan halophytics,non-forest
+AT0713,Sahelian Acacia savanna,non-forest
+PA0607,Sakhalin Island taiga,island
+OC0112,Samoan tropical moist forests,island
+NT1314,San Lucan xeric scrub,non-forest
+NT0159,Santa Marta montane forests,forest
+NT1007,Santa Marta páram,non-forest
+AT0127,"Sao Tome, Principe and Annobon moist lowland forests",island
+PA0436,Sarmatic mixed forests,forest
+PA1016,Sayan Alpine meadows and tundra,non-forest
+PA0815,Sayan Intermontane steppe,non-forest
+PA0519,Sayan montane conifer forests,forest
+PA0608,Scandinavian and Russian taiga,forest
+PA0520,Scandinavian coastal conifer forests,forest
+PA1110,Scandinavian Montane Birch forest and grasslands,forest
+NT1315,Sechura desert,non-forest
+PA0816,Selenge-Orkhon forest steppe,non-forest
+AA0118,Seram rain forests,island
+AT0714,Serengeti volcanic grasslands,non-forest
+NT0160,Serra do Mar coastal forests,forest
+PA0437,Sichuan Basin evergreen broadleaf forests,forest
+NT0227,Sierra de la Laguna dry forests,forest
+NT0307,Sierra de la Laguna pine-oak forests,forest
+NT0161,Sierra de los Tuxtlas,forest
+NA0526,Sierra Juarez and San Pedro Martir pine-oak forests,forest
+NT0162,Sierra Madre de Chiapas moist forests,forest
+NT0308,Sierra Madre de Oaxaca pine-oak forests,forest
+NT0309,Sierra Madre del Sur pine-oak forests,forest
+NA0302,Sierra Madre Occidental pine-oak forests,forest
+NA0303,Sierra Madre Oriental pine-oak forests,forest
+NA0527,Sierra Nevada forests,forest
+AA1308,Simpson desert,non-forest
+NT0228,Sinaloan dry forests,forest
+NT0229,Sinú Valley dry forest,forest
+NA1309,Snake-Columbia shrub steppe,non-forest
+AT1318,Socotra Island xeric shrublands,island
+NT0163,Solimões-Japurá moist fores,forest
+AA0119,Solomon Islands rain forests,island
+AT0715,Somali Acacia-Commiphora bushlands and thickets,non-forest
+AT1319,Somali montane xeric woodlands,non-forest
+NA1310,Sonoran desert,non-forest
+NA0201,Sonoran-Sinaloan transition subtropical dry forest,forest
+PA1218,South Appenine mixed montane forests,non-forest
+NA0615,South Avalon-Burin oceanic barrens,island
+NA0528,South Central Rockies forests,forest
+IM0148,South China Sea Islands,island
+IM0149,South China-Vietnam subtropical evergreen forests,forest
+IM0209,South Deccan Plateau dry deciduous forests,forest
+NT0164,South Florida rocklands,forest
+PA1328,South Iran Nubo-Sindian desert and semi-desert,non-forest
+AT1014,South Malawi montane forest-grassland mosaic,non-forest
+PA1329,South Saharan steppe and woodlands,non-forest
+PA0438,South Sakhalin-Kurile mixed forests,island
+PA0817,South Siberian forest steppe,non-forest
+IM0171,South Taiwan monsoon rain forests,island
+IM0150,South Western Ghats moist deciduous forests,forest
+IM0151,South Western Ghats montane rain forests,forest
+AA0409,Southeast Australia temperate forests,forest
+AA0803,Southeast Australia temperate savanna,non-forest
+PA1017,Southeast Tibet shrublands and meadows,non-forest
+NA0529,Southeastern conifer forests,forest
+PA1219,Southeastern Iberian shrubs and woodlands,non-forest
+IM0210,Southeastern Indochina dry evergreen forests,forest
+NA0413,Southeastern mixed forests,forest
+AA0120,Southeastern Papuan rain forests,island
+AT0716,Southern Acacia-Commiphora bushlands and thickets,non-forest
+AT0717,Southern Africa bushveld,non-forest
+AT1405,Southern Africa mangroves,forest
+PA1220,Southern Anatolian montane conifer and deciduous forests,non-forest
+NT1008,Southern Andean steppe,non-forest
+NT0165,Southern Andean Yungas,forest
+IM0152,Southern Annamites montane rain forests,forest
+NT0909,Southern Cone Mesopotamian savanna,non-forest
+AT0718,Southern Congolian forest-savanna mosaic,non-forest
+NA0414,Southern Great Lakes forests,forest
+NA0616,Southern Hudson Bay taiga,forest
+PA0439,Southern Korea evergreen forests,forest
+AT0719,Southern Miombo woodlands,non-forest
+AA0121,Southern New Guinea freshwater swamp forests,island
+AA0122,Southern New Guinea lowland rain forests,island
+NT0230,Southern Pacific dry forests,forest
+AT1015,Southern Rift montane forest-grassland mosaic,non-forest
+IM0211,Southern Vietnam lowland dry forests,forest
+AT0128,Southern Zanzibar-Inhambane coastal forest mosaic,forest
+AA1003,Southland montane grasslands,island
+AA0410,Southland temperate forests,island
+NT0166,Southwest Amazon moist forests,forest
+AA1209,Southwest Australia savanna,non-forest
+AA1210,Southwest Australia woodlands,non-forest
+IM0153,Southwest Borneo freshwater swamp forests,island
+PA1221,Southwest Iberian Mediterranean sclerophyllous and mixed forests,non-forest
+AT1320,Southwestern Arabian foothills savanna,non-forest
+AT1321,Southwestern Arabian montane woodlands,non-forest
+IM0212,Sri Lanka dry-zone dry evergreen forests,island
+IM0154,Sri Lanka lowland rain forests,island
+IM0155,Sri Lanka montane rain forests,island
+NT1318,St. Peter and St. Paul rocks,non-forest
+AT1322,Succulent Karoo,non-forest
+PA1018,Sulaiman Range alpine meadows,non-forest
+AA0123,Sulawesi lowland rain forests,island
+AA0124,Sulawesi montane rain forests,island
+IM0156,Sulu Archipelago rain forests,island
+IM0157,Sumatran freshwater swamp forests,island
+IM0158,Sumatran lowland rain forests,island
+IM0159,Sumatran montane rain forests,island
+IM0160,Sumatran peat swamp forests,island
+IM0304,Sumatran tropical pine forests,island
+AA0203,Sumba deciduous forests,island
+IM1405,Sunda Shelf mangroves,island
+IM0161,Sundaland heath forests,island
+IM0162,Sundarbans freshwater swamp forests,forest
+IM1406,Sundarbans mangroves,forest
+PA0440,Taiheiyo evergreen forests,island
+PA0441,Taiheiyo montane deciduous forests,island
+PA1111,Taimyr-Central Siberian tundra,forest
+IM0172,Taiwan subtropical evergreen forests,island
+PA1330,Taklimakan desert,non-forest
+NT0167,Talamancan montane forests,forest
+NA1311,Tamaulipan matorral,non-forest
+NA1312,Tamaulipan mezquital,non-forest
+NT0168,Tapajós-Xingu moist forest,forest
+PA0442,Tarim Basin deciduous forests and steppe,forest
+AA0411,Tasmanian Central Highland forests,island
+AA0412,Tasmanian temperate forests,island
+AA0413,Tasmanian temperate rain forests,island
+NT1316,Tehuacán Valley matorra,non-forest
+IM0163,Tenasserim-South Thailand semi-evergreen rain forests,forest
+NT0169,Tepuis,forest
+IM0701,Terai-Duar savanna and grasslands,non-forest
+NA0814,Texas blackland prairies,non-forest
+IM1304,Thar desert,non-forest
+PA0818,Tian Shan foothill arid steppe,non-forest
+PA0521,Tian Shan montane conifer forests,forest
+PA1019,Tian Shan montane steppe and meadows,non-forest
+PA1331,Tibesti-Jebel Uweinat montane xeric woodlands,non-forest
+PA1020,Tibetan Plateau alpine shrublands and meadows,non-forest
+PA0906,Tigris-Euphrates alluvial salt marsh,non-forest
+AA0204,Timor and Wetar deciduous forests,island
+AA1309,Tirari-Sturt stony desert,non-forest
+NT0170,Tocantins/Pindare moist forests,forest
+OC0114,Tongan tropical moist forests,island
+IM0164,Tonle Sap freshwater swamp forests,forest
+IM0165,Tonle Sap-Mekong peat swamp forests,forest
+NA1118,Torngat Mountain tundra,forest
+AA0708,Trans Fly savanna and grasslands,island
+PA1112,Trans-Baikal Bald Mountain tundra,forest
+PA0609,Trans-Baikal conifer forests,forest
+NT0310,Trans-Mexican Volcanic Belt pine-oak forests,forest
+NT0171,Trinidad and Tobago moist forests,island
+AT0803,Tristan Da Cunha-Gough Islands shrub and grasslands,island
+AA0125,Trobriand Islands rain forests,island
+OC0115,Tuamotu tropical moist forests,island
+NT0232,Tumbes-Piura dry forests,forest
+PA1222,Tyrrhenian-Adriatic Sclerophyllous and mixed forests,island
+NT0173,Uatuma-Trombetas moist forests,forest
+NT0174,Ucayali moist forests,forest
+IM0166,Upper Gangetic Plains moist deciduous forests,forest
+NA0415,Upper Midwest forest-savanna transition,forest
+PA0610,Ural montane forests and tundra,forest
+NT0710,Uruguayan savanna,non-forest
+PA0443,Ussuri broadleaf and mixed forests,forest
+PA0907,Ussuri-Wusuli meadow and forest meadow,non-forest
+NT0404,Valdivian temperate forests,forest
+AA0126,Vanuatu rain forests,island
+NT0175,Venezuelan Andes montane forests,forest
+NT0233,Veracruz dry forests,forest
+NT0176,Veracruz moist forests,forest
+NT0177,Veracruz montane forests,forest
+AT0721,Victoria Basin forest-savanna mosaic,non-forest
+AA0709,Victoria Plains tropical savanna,non-forest
+AA0127,Vogelkop montane rain forests,island
+AA0128,Vogelkop-Aru lowland rain forests,island
+NA0530,Wasatch and Uinta montane forests,forest
+PA1332,West Saharan montane xeric woodlands,non-forest
+PA0444,West Siberian broadleaf and mixed forests,forest
+PA0611,West Siberian taiga,forest
+AT0722,West Sudanian savanna,non-forest
+AA1310,Western Australian Mulga shrublands,non-forest
+AT0723,Western Congolian forest-savanna mosaic,non-forest
+AT0129,Western Congolian swamp forests,forest
+NT0178,Western Ecuador moist forests,forest
+PA0445,Western European broadleaf forests,forest
+NA0416,Western Great Lakes forests,forest
+AT0130,Western Guinean lowland forests,forest
+NA0701,Western Gulf coastal grasslands,non-forest
+PA1021,Western Himalayan alpine shrub and Meadows,non-forest
+IM0403,Western Himalayan broadleaf forests,forest
+IM0502,Western Himalayan subalpine conifer forests,forest
+IM0167,Western Java montane rain forests,island
+IM0168,Western Java rain forests,island
+OC0117,Western Polynesian tropical moist forests,island
+NA0815,Western short grasslands,non-forest
+AT0724,Western Zambezian grasslands,non-forest
+AA0414,Westland temperate forests,island
+NA0417,Willamette Valley forests,forest
+NT0179,Windward Islands moist forests,island
+PA1113,Wrangel Island arctic desert,island
+NA1313,Wyoming Basin shrub steppe,non-forest
+NT0180,Xingu-Tocantins-Araguaia moist forests,forest
+PA1114,Yamal-Gydan tundra,forest
+PA1022,Yarlung Tsangpo arid steppe,non-forest
+PA0908,Yellow Sea saline meadow,non-forest
+NT0235,Yucatán dry forest,forest
+NT0181,Yucatán moist forest,forest
+NA0617,Yukon Interior dry forests,forest
+PA0102,Yunnan Plateau subtropical evergreen forests,forest
+PA0446,Zagros Mountains forest steppe,forest
+AT0725,Zambezian and Mopane woodlands,non-forest
+AT0726,Zambezian Baikiaea woodlands,non-forest
+AT0906,Zambezian coastal flooded savanna,non-forest
+AT0203,Zambezian Cryptosepalum dry forests,forest
+AT0907,Zambezian flooded grasslands,non-forest
+AT0908,Zambezian halophytics,non-forest

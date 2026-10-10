@@ -1,0 +1,160 @@
+---
+title: "Step-by-step full example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Step_By_Step_Full_Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This tutorial walks through the main operating modes of `gcamsdg` (which supports both GCAM and GCAM-Europe databases).
+**Note**: We highly recommend reading the [Before Starting](#beforestarting) section and [Example 1](#example1) first. Foundational concepts are explained in detail there, whereas subsequent examples assume you are already familiar with those basics to avoid repetition.
+
+The walkthrough covers: processing a single database ([Example 1](#example1)), handling several separate policy-scenario databases ([Example 2](#example2)), using a single project file ([Example 3](#example3)), specifying multiple project files ([Example 4](#example4)), pairing the tool with a standard `gcamreport` run ([Example 5](#example5)), and selecting specific SDGs to generate basic figures ([Example 6](#example6)).
+For the complete parameter list, run `?generate_sdg_report` in your console or consult the [reference index](https://bc3lc.github.io/gcamsdg/reference/generate_sdg_report.html).
+
+---
+
+## Before starting: load the `gcamsdg` package {#beforestarting}
+
+1) Install the package (see the [README](https://github.com/bc3LC/gcamsdg#installation)):
+
+``` r
+devtools::install_github("bc3LC/gcamsdg")
+```
+
+2) Load it. If you are using RStudio working directly on a clone, run
+
+``` r
+devtools::load_all()
+```
+
+and otherwise
+
+``` r
+library(gcamsdg)
+```
+
+<span style="color:white">newline</span>
+
+## Example 1: compute SDG indicators form a single database {#example1}
+
+
+Once the package is installed and your GCAM or GCAM-Europe database is ready, run `generate_sdg_report()` by specifying the `db_path` and `db_name` arguments:
+
+``` r
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = "my_gcam_database",             # extension added automatically if missing
+  desired_scen = c("scen1", "scen2"),       # omit to use every scenario in the database
+  sdgs = "all"                              # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
+)
+```
+
+Behind the scenes this creates an rgcam project via `create_prj()`, which reads all the SDG queries bundled with the package (`gcamsdg::query_file`) plus a couple of heavier queries added only when needed (*detailed land allocation* for `"land"` and *nonCO2 emissions by sector* for `"health"`); then computes each requested indicator.
+
+Check the individual results: The function returns a named list containing one data frame per requested SDG (e.g., `result$gdp`, `result$water`), which is automatically saved to your local drive as `output/<output_name>_resultSDGs.RData`. Simultaneously, the raw CSV data for each indicator is exported to dedicated subfolders based on the SDG module (e.g., `SDG1-GDP`, `SDG6-Water`) located under `output/<SDG>/indiv_results/`.
+
+Review the consolidated report: The function binds these individual metrics together into a single, standardized dataset, which is saved automatically as a comprehensive CSV & RData file at `output/<output_name>_reportSDGs.csv` and `output/<output_name>_reportSDGs.RData`.
+
+
+<span style="color:white">newline</span>
+
+
+## Example 2: compute SDG indicators from several policy-scenario databases {#example2}
+
+In large scenario ensembles, each policy is typically stored in its own separate GCAM database. To process multiple databases simultaneously, pass a vector of database names to the `db_name` argument (and optionally, an `output_name` to customize the output (generated project and SDG estimates) prefixes). `generate_sdg_report()` will automatically extract and compute the requested sdgs for each one. Note: The function evaluates every possible combination of `db_path` and `db_name`. To avoid unintended paths, store all target databases in the same directory and provide a single path string for `db_path`.
+
+``` r
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = c("database_basexdb_policyA",   # extension added automatically if missing
+              "database_basexdb_policyB", 
+              "database_basexdb_policyC"),
+  sdgs = "all",                             # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
+)
+```
+
+The function generates a combined project file stored at `output/<output_name>.dat`, 
+alongside the computed SDG metrics and the standardized comprehensive dataset, as shown in
+[Example 1](#example1).
+
+
+<span style="color:white">newline</span>
+
+
+## Example 3: compute SDG indicators from a single project file {#example3}
+
+In case you already hold the project file (with all the required queries to compute the desired SDGs),
+you can directly indicate its path via `prj_name`. The project will be loaded and the SDGs computed:
+
+``` r
+result <- generate_sdg_report(
+  prj_name = "/path/and/name/to/my/GCAMproject",  # extension added automatically if missing
+  sdgs = "all",                                   # run `available_sdgs()` to see the options
+  final_db_year = 2050                            # defaults to 2100. Indicate otherwise
+)
+```
+<span style="color:white">newline</span>
+
+
+## Example 4: compute SDG indicators from several project files {#example4}
+
+In case your scenarios are scattered across several project files, the function
+loads them, selecting only the desired scenarios, and creates a single project file
+(save at `output/<output_name>.dat`) before computing the SDGs:
+
+``` r
+result <- generate_sdg_report(
+  prj_name = c("/path/to/prjA.dat",
+               "/path/to/prjB.dat",
+               "/path/to/prjC.dat"),        # extension added automatically if missing
+  output_name = "desired_name",             # prjA name considered if missing
+  sdgs = "all",                             # run `available_sdgs()` to see the options
+  final_db_year = 2050                      # defaults to 2100. Indicate otherwise
+)
+```
+
+<span style="color:white">newline</span>
+
+
+## Example 5: compute SDG indicators producing also the standard gcamreport output {#example5}
+
+If you also want the standard [gcamreport](https://github.com/bc3LC/gcamreport) IPCC-style output from the same project (instead of extracting the database a second time) and taking advantage of all the SDG variables already computed by this tool, set `run_gcamreport = TRUE` and provide `GCAM_version`. You can also specify other `gcamreport::generate_report()` variables via `gcamreport_args`: 
+
+``` r
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",      # path to the database
+  db_name = "my_gcam_database"            # extension added automatically if missing
+  sdgs = "all",                           # run `available_sdgs()` to see the options
+  run_gcamreport = TRUE, 
+  GCAM_version = "vEurope7.2",            # run `gcamreport::available_GCAM_versions()` to see the options
+  final_db_year = 2050                    # defaults to 2100. Indicate otherwise
+)
+result$gcamreport                         # gcamreport's standardized output
+```
+
+This requires the `gcamreport` package (`devtools::install_github("bc3LC/gcamreport")`). Currently, the function supports only a single database input (`db_name`), although it can accept an array of pre-existing project files.
+
+<span style="color:white">newline</span>
+
+
+## Example 6: compute SDG indicators and produce basic figures {#example6}
+
+Set `makeFigures = TRUE` to also generate a basic PNG per computed indicator:
+
+``` r
+result <- generate_sdg_report(
+  db_path = "/path/to/my/databases",        # path to the database
+  db_name = "my_gcam_database"              # extension added automatically if missing
+  sdgs = c("gdp", "poverty", "water"),      # run `available_sdgs()` to see the options
+  final_db_year = 2050,                     # defaults to 2100. Indicate otherwise
+  makeFigures = TRUE
+)
+```
+
+Each PNG is saved alongside that indicator's other output, under `output/figures/` (e.g. `.../SDG1-GDP_<output_name>.png`). The figures are simple scenario-colored time series line charts for indicators with a year dimension, or a bar chart by scenario for SDG15's PSL (a single net 2020-2050 value, no year dimension). Regional indicators (population, GDP, health) are aggregated to one global series first, water indicators are depicted by region.
+
+
