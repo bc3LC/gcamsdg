@@ -55,6 +55,18 @@ Or, for local development within an RStudio project clone:
 devtools::load_all()
 ```
 
+To run SDG15, set up a Conda environment to install the Demeter package: 
+```
+conda env create -f inst/extdata/gcamsdg_env.yml
+```
+
+To test if Demeter is correctly installed, activate the environment and import Demeter:
+```
+conda activate gcamsdg_env
+python -c "import demeter; print('Demeter installed and imported successfully!')"
+```
+
+
 
 <!-- ------------------------>
 <!-- ------------------------>

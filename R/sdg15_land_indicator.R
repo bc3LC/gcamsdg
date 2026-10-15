@@ -9,15 +9,14 @@
 #' @param demeterRerun Checks if Demeter outputs are available and skips rerunning if False, 
 #'   or deleter previous outputs and reruns Demeter if True. 
 #' @param saveOutput save the produced output
-#' @param conda_env conda environment with Demeter installed, used by
-#'   reticulate (defaults to the BC3 cluster environment)
+#' @param gcamsdg_env conda environment with Demeter is installed, used by reticulate 
 #' @return data frame with the final PSL by scenario
 #' @import reticulate 
 #' @import sf
 #' @import ncdf4
 #' @export
 get_sdg15_land_indicator <- function(prj, output_name, demeterRerun = F, saveOutput = T,
-                                     conda_env = NULL){
+                                     gcamsdg_env = "gcamsdg_env"){
 
   message('computing sdg15 - land indicator ...')
 
@@ -43,13 +42,23 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRerun = F, saveOut
   dem_config_dir     <- file.path(tmp_files, "demeter_config")
   dem_output_dir <- file.path(tmp_files, "demeter_outputs")
   
-  # Set the name of the conda environment read by reticulate
-  Sys.setenv(RETICULATE_PYTHON = file.path(conda_env, "python.exe"))
+  # Use the gcamsdg environment read by reticulate
   require(reticulate, quietly = TRUE)
-  reticulate::use_condaenv(conda_env, required=TRUE)
+  conda_envs <- reticulate::conda_list()
+  if (gcamsdg_env %in% conda_envs$name) {
+    # Extract the exact path to the python executable for this env (cross-platform safe)
+    env_python_path <- conda_envs$python[conda_envs$name == gcamsdg_env][1]
+  } else {
+    stop(paste("Conda environment '", gcamsdg_env, "' was not found. Please verify it is installed."))
+  }
+  
+  # 2. Bind Reticulate to the found environment
+  Sys.setenv(RETICULATE_PYTHON = env_python_path)
+  reticulate::use_condaenv(gcamsdg_env, required = TRUE)
   reticulate::py_config()
   sys <- reticulate::import("sys")
   demeter <- reticulate::import("demeter")
+  message('Demeter successfully loaded via reticulate.')
   
   # Create vector of all scenarios in the project
   scen_names <- rgcam::listScenarios(prj)
