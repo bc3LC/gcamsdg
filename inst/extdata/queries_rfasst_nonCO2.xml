@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <queries>
-   <aQuery>
-      <all-regions />
-      <emissionsQueryBuilder title="nonCO2 emissions by sector (excluding resource production)">
-         <axis1 name="GHG">GHG</axis1>
-         <axis2 name="Year">emissions</axis2>
-         <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG' and current_emis]/emissions/node()</xPath>
-         <comments />
-         <labelRewriteList append-values="false">
-            <level name="GHG">
-               <rewrite from="afoluCO2" to="CO2" />
-               <rewrite from="bldCO2" to="CO2" />
-               <rewrite from="indCO2" to="CO2" />
-               <rewrite from="indCO2ccs90" to="CO2" />
-               <rewrite from="supCO2" to="CO2" />
-               <rewrite from="supCO2ccs26" to="CO2" />
-               <rewrite from="supCO2ccs82" to="CO2" />
-               <rewrite from="supCO2ccs88" to="CO2" />
-               <rewrite from="supCO2ccs90" to="CO2" />
-               <rewrite from="supCO2ccs92" to="CO2" />
-               <rewrite from="trnCO2" to="CO2" />
-            </level>
-         </labelRewriteList>
-      </emissionsQueryBuilder>
-   </aQuery>
+      <aQuery>
+         <all-regions/>
+         <emissionsQueryBuilder title="nonCO2 emissions by sector (excluding resource production)">
+               <axis1 name="GHG">GHG</axis1>
+               <axis2 name="Year">emissions</axis2>
+               <xPath buildList="true" dataName="emissions" group="false" sumAll="false">*[@type = 'sector']//*[@type = 'GHG' and current_emis]/emissions/node()</xPath>
+               <comments/>
+         </emissionsQueryBuilder>
+      </aQuery>
 </queries>
