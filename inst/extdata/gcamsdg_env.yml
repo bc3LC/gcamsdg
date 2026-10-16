@@ -3,17 +3,19 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python>=3.9
-  - numpy
-  - pandas
+  - python=3.9
+  - pip
+  - zstandard  # Added to fix the pip backports.zstd error
+  - setuptools<70.0.0
+  - numpy=1.21.6
+  - pandas=1.3.5
   - scipy
   - netcdf4
   - xarray
   - matplotlib
-  - pip
-  - setuptools<70.0.0
   - configobj
   - requests
+  - sqlite
   - pip:
       # Install Demeter directly from the JGCRI GitHub repository
       - git+https://github.com/JGCRI/demeter.git

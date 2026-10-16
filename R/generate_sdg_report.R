@@ -206,9 +206,9 @@ generate_sdg_report <- function(
   final_available_year <- max(
     rgcam::getQuery(prj, 'population by region')[['year']]) # TODO check this query is ok to stablish the max available year
   if (!is.null(final_db_year)) {
-    final_db_year <<- min(final_db_year, final_available_year)
+    final_db_year <- min(final_db_year, final_available_year)
   } else {
-    final_db_year <<- final_available_year
+    final_db_year <- final_available_year
   }
   years_in_prj <- .listYears(prj)
   years_in_prj <- years_in_prj[!is.na(years_in_prj)]
@@ -256,7 +256,7 @@ generate_sdg_report <- function(
   
   
   # --- gather sdg indicators 
-  result_gathered <- .gather_sdgs(result)
+  result_gathered <- .gather_sdgs(result, output_name)
   
   
 

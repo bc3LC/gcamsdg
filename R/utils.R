@@ -62,9 +62,12 @@
 #' Gathers all the SDG individual indicators and binds them into a single dataset.
 #' 
 #' @param result list containing the calculated SDG indicators.
+#' @param output_name name of the output file. When processing multiple projects 
+#'   (`prj_name`), this specifies the filename for the SDG outputs saved in 
+#'   the 'output' directory.
 #' 
 #' @return standardised dataset with all the SDGs
-.gather_sdgs <- function(result) {
+.gather_sdgs <- function(result, output_name) {
   
   base_report <- tibble::as_tibble(result$gcamreport)
   

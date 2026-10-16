@@ -158,14 +158,14 @@ get_sdg15_land_indicator <- function(prj, output_name, demeterRerun = F, saveOut
   
   # 2. Run the function and extract outputs
   adj_result  <- adjust_base_year(land_alloc, base_year)
-  filtered_df <- adj_result$df
+  adj_land <- adj_result$df
   start_year  <- adj_result$start_year
   
   # Loop to create one file per scenario in "input/projected" demeter folder and configuration files
   if (run_demeter) for (scen_name in scen_names) {
     
     # Filter the dataframe for the current scenario
-    filtered_df <- det.LU[det.LU$scenario == scen_name, ]
+    filtered_df <- adj_land[adj_land$scenario == scen_name, ]
     
     # Set file names and paths for config and projected 
     proj_csv_filename <- paste0("Scenario_", scen_name, ".csv")

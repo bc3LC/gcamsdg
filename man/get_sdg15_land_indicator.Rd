@@ -9,7 +9,7 @@ get_sdg15_land_indicator(
   output_name,
   demeterRerun = F,
   saveOutput = T,
-  conda_env = NULL
+  gcamsdg_env = "gcamsdg_env"
 )
 }
 \arguments{
@@ -23,8 +23,7 @@ or deleter previous outputs and reruns Demeter if True.}
 
 \item{saveOutput}{save the produced output}
 
-\item{conda_env}{conda environment with Demeter installed, used by
-reticulate (defaults to the BC3 cluster environment)}
+\item{gcamsdg_env}{conda environment with Demeter is installed, used by reticulate}
 }
 \value{
 data frame with the final PSL by scenario

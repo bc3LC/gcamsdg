@@ -4,10 +4,14 @@
 \alias{.gather_sdgs}
 \title{.gather_sdgs}
 \usage{
-.gather_sdgs(result)
+.gather_sdgs(result, output_name)
 }
 \arguments{
 \item{result}{list containing the calculated SDG indicators.}
+
+\item{output_name}{name of the output file. When processing multiple projects 
+(`prj_name`), this specifies the filename for the SDG outputs saved in 
+the 'output' directory.}
 }
 \value{
 standardised dataset with all the SDGs

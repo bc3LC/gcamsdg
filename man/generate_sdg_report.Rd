@@ -15,7 +15,7 @@ generate_sdg_report(
   final_db_year = 2100,
   saveOutput = TRUE,
   makeFigures = FALSE,
-  conda_env = "/scratch/bc3lc/conda-env/dem-env-3",
+  gcamasdg_env = "gcamsdg_env",
   run_gcamreport = FALSE,
   GCAM_version = NULL,
   gcamreport_args = list()
@@ -61,9 +61,6 @@ year in the db by default}
 indicator (a scenario-colored time series, or a bar chart for
 indicators without a year dimension) under `output/figures/`. Defaults to FALSE}
 
-\item{conda_env}{conda environment with Demeter installed, used by the
-"land" indicator. Defaults to the BC3 cluster environment.}
-
 \item{run_gcamreport}{also produce the standard gcamreport output from
 the same project (requires the `gcamreport` package, `GCAM_version`,
 and a single database/project - not combinable with a vector `db_name`)}
@@ -73,6 +70,9 @@ and a single database/project - not combinable with a vector `db_name`)}
 
 \item{gcamreport_args}{additional named arguments passed through to
 `gcamreport::generate_report()`}
+
+\item{gcamsdg_env}{conda environment with Demeter installed, used by the
+"land" indicator.}
 }
 \value{
 a named list, one data frame per computed SDG indicator (using

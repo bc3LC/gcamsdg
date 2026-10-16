@@ -66,7 +66,7 @@ conda activate gcamsdg_env
 python -c "import demeter; print('Demeter installed and imported successfully!')"
 ```
 
-
+Note: If you do not already have Conda installed, we recommend installing Miniconda, a lightweight version of Anaconda (available on [Miniconda Download Page](https://docs.conda.io/en/latest/miniconda.html))
 
 <!-- ------------------------>
 <!-- ------------------------>
