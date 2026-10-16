@@ -57,7 +57,7 @@ devtools::load_all()
 
 To run SDG15, set up a Conda environment to install the Demeter package: 
 ```
-conda env create -f inst/extdata/gcamsdg_env.yml
+conda env create -f /path/to/gcamsdg/inst/extdata/gcamsdg_env.yml
 ```
 
 To test if Demeter is correctly installed, activate the environment and import Demeter:
